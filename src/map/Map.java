@@ -10,23 +10,28 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Map {
-    GamePanel gamePanel;
-    public Map(GamePanel gamePanel){
-        this.gamePanel = gamePanel;
+    final int tileWidth = 225;
+    final int tileHeight = 75;
 
-        loadImage();
-    }
-
-    int maxWorldCol = 7;
-    int maxWorldRow = 7;
+    final int maxWorldCol = 2;
+    final int maxWorldRow = 2;
 
     Tile[][] tileMap;
     Entity[][] entityMap;
 
+    GamePanel gamePanel;
+    public Map(GamePanel gamePanel){
+        this.gamePanel = gamePanel;
+
+        tileMap = new Tile[maxWorldRow][maxWorldCol];
+
+        loadImage();
+        createPoints();
+    }
+
+
     public BufferedImage tile;
 
-    final int tileWidth = 225;
-    final int tileHeight = 75;
 
 
     public void loadImage() {
@@ -49,7 +54,7 @@ public class Map {
                 tileXPosition += tileWidth/2;
                 tileYPosition += tileHeight/2;
                 tileMap[rows][cols] = new Tile(tileXPosition, tileYPosition);
-                System.out.println(tileMap[rows][cols]);
+                System.out.println(tileMap[rows][cols].col + ", " + tileMap[rows][cols].row);
             }
             startX -= tileWidth/2;
             startY += tileHeight/2;
@@ -79,6 +84,16 @@ public class Map {
             tileYPosition = startY;
         }
         //drawCoordinates(g2);
+        drawAAA(g2);
+    }
+
+    public void drawAAA(Graphics2D g2) {
+        g2.setColor(Color.PINK);
+        for (int cols = 0; cols < maxWorldCol; cols++) {
+            for (int rows = 0; rows < maxWorldRow; rows++) {
+                g2.fillOval(tileMap[rows][cols].row, tileMap[rows][cols].col, 10, 10);
+            }
+        }
     }
 
     public void drawCoordinates(Graphics2D g2){
