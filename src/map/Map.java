@@ -2,6 +2,8 @@ package map;
 
 import main.GamePanel;
 import objects.Entity;
+import objects.Item;
+import objects.OBJ;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,46 +12,66 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Map {
+    final int tileWidth = 151;
+    final int tileHeight = 51;
+
+    final int entityWidth =  51;
+    final int entityHeight = 101;
+    int maxWorldCol = 6;
+    int maxWorldRow = 6;
+
+    public Tile[][] tileMap;
+    public OBJ[][] objectsMap;
+
+    public int x, y;
+
     GamePanel gamePanel;
     public Map(GamePanel gamePanel){
         this.gamePanel = gamePanel;
 
+        tileMap = new Tile[maxWorldRow][maxWorldCol];
+        objectsMap = new OBJ[maxWorldRow][maxWorldCol];
+
+        x = gamePanel.screenWidth / 2 - tileWidth/2;
+        y = 75;
+
         loadImage();
+        createRoom(x, y, maxWorldRow, maxWorldCol);
     }
 
-    int maxWorldCol = 7;
-    int maxWorldRow = 7;
-
-    Tile[][] tileMap;
-    Entity[][] entityMap;
 
     public BufferedImage tile;
+    public BufferedImage tileHigh;
 
-    final int tileWidth = 225;
-    final int tileHeight = 75;
+
 
 
     public void loadImage() {
         try {
-            tile = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/tile02.png")));
+            tile = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/tiles/tile01.png")));
+            tileHigh = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/tiles/tile01H.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-    public void createPoints(){
-        int tileXPosition = gamePanel.screenWidth / 2 - tileWidth/2;
-        int tileYPosition = 50;
+    public void createRoom(int minX, int minY, int maxX, int maxY){
+        int tileXPosition = minX;
+        int tileYPosition = minY;
         int startX = tileXPosition;
         int startY = tileYPosition;
 
-        for (int cols = 0; cols < maxWorldCol; cols++) {
-            for (int rows = 0; rows < maxWorldRow; rows++) {
+        for (int cols = 0; cols < maxY; cols++) {
+            for (int rows = 0; rows < maxX; rows++) {
+
                 tileXPosition += tileWidth/2;
                 tileYPosition += tileHeight/2;
+
                 tileMap[rows][cols] = new Tile(tileXPosition, tileYPosition);
-                System.out.println(tileMap[rows][cols]);
+                objectsMap[rows][cols] = new OBJ(tileXPosition, tileYPosition);
+
+                //System.out.println("Tile: " + rows + cols + ' ' + tileMap[rows][cols].row + ' ' + tileMap[rows][cols].col);
             }
             startX -= tileWidth/2;
             startY += tileHeight/2;
@@ -60,30 +82,21 @@ public class Map {
         }
     }
 
-    public void draw(Graphics2D g2){
-        int tileXPosition = gamePanel.screenWidth / 2 - tileWidth/2;
-        int tileYPosition = 50;
-        int startX = tileXPosition;
-        int startY = tileYPosition;
 
+    public void draw(Graphics2D g2){
         for (int cols = 0; cols < maxWorldCol; cols++) {
             for (int rows = 0; rows < maxWorldRow; rows++) {
-                g2.drawImage(tile, tileXPosition, tileYPosition, null);
-                tileXPosition += tileWidth/2;
-                tileYPosition += tileHeight/2;
+                g2.drawImage(tile, tileMap[rows][cols].row - tileWidth / 2, tileMap[rows][cols].col - tileHeight / 2, null);
             }
-            startX -= tileWidth/2;
-            startY += tileHeight/2;
-
-            tileXPosition = startX;
-            tileYPosition = startY;
         }
-        //drawCoordinates(g2);
+
+        drawCoordinates(g2);
+        g2.drawImage(tileHigh, 470, 150, null);
     }
 
     public void drawCoordinates(Graphics2D g2){
         int tileXPosition = gamePanel.screenWidth / 2 - tileWidth/2;
-        int tileYPosition = 50;
+        int tileYPosition = 75;
         int startX = tileXPosition;
         int startY = tileYPosition;
 
@@ -92,7 +105,7 @@ public class Map {
         char startCordX = x;
         int startCordY = y;
 
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.WHITE);
 
         for (int cols = 0; cols < maxWorldCol; cols++) {
             for (int rows = 0; rows < maxWorldRow; rows++) {
