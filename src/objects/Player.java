@@ -1,7 +1,6 @@
 package objects;
 
 import main.GamePanel;
-import map.Map;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,7 +9,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Player{
-    BufferedImage sprite;
+    BufferedImage playerImage;
     public int playerX;
     public int playerY;
 
@@ -19,29 +18,34 @@ public class Player{
     GamePanel gamePanel;
     public Player(GamePanel gamePanel){
         this.gamePanel = gamePanel;
+        //loadImage();
+//        playerX = gamePanel.map.objectsMap[row][col].x;
+//        playerY = gamePanel.map.objectsMap[row][col].y;
+//        playerX = gamePanel.screenWidth / 2 - playerImage.getWidth() / 2;
+//        playerY = gamePanel.screenHeight / 2 - playerImage.getHeight() / 2;
 
-        playerX = gamePanel.map.objectsMap[row][col].x;
-        playerY = gamePanel.map.objectsMap[row][col].y;
-        loadImage();
     }
-
-
 
     public void loadImage(){
         try {
-            sprite = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/entities/keeper.png")));
+            playerImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/entities/keeper.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public void move(int dx, int dy){
+        gamePanel.map.mapStartX += dx;
+        gamePanel.map.mapStartY += dy;
+        gamePanel.repaint();
+    }
 
     public void draw(Graphics2D g2){
-        playerX -= 10;
-        playerY -= 45;
+//        playerX -= 10;
+//        playerY -= 45;
 //        playerX -= sprite.getWidth(null)/4;
 //        playerY -= sprite.getHeight(null)/2;
-        g2.drawImage(sprite, playerX, playerY, null);
+        //g2.drawImage(playerImage, playerX, playerY, null);
 
     }
 }

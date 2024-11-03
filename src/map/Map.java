@@ -1,133 +1,123 @@
 package map;
 
 import main.GamePanel;
-import objects.Entity;
-import objects.Item;
-import objects.OBJ;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Map {
-    final int tileWidth = 151;
-    final int tileHeight = 51;
+    GamePanel gamePanel;
+    public final int tileWidth = 151;
+    public final int tileHeight = 51;
 
     final int entityWidth =  51;
     final int entityHeight = 101;
-    int maxWorldCol = 6;
-    int maxWorldRow = 6;
+    int maxWorldCol = 100;
+    int maxWorldRow = 100;
 
     public Tile[][] tileMap;
-    public OBJ[][] objectsMap;
+    //public Entity[][] entities;
 
-    public int x, y;
+    public int mapStartX, mapStartY;
 
-    GamePanel gamePanel;
     public Map(GamePanel gamePanel){
         this.gamePanel = gamePanel;
 
-        tileMap = new Tile[maxWorldRow][maxWorldCol];
-        objectsMap = new OBJ[maxWorldRow][maxWorldCol];
+        tileMap = new Tile[maxWorldCol][maxWorldRow];
+        //entities = new Entity[maxWorldCol][maxWorldRow];
 
-        x = gamePanel.screenWidth / 2 - tileWidth/2;
-        y = 75;
+        mapStartX = gamePanel.screenWidth / 2 - tileWidth/2;
+        mapStartY = gamePanel.screenHeight / 2 - tileHeight/2;
 
-        loadImage();
-        createRoom(x, y, maxWorldRow, maxWorldCol);
+        createMap(mapStartX, mapStartY);
+
+        createRoom(1, 1, "/maps/room01.txt");
+        createRoom(1, 5, "/maps/room02.txt");
+        createRoom(5, 2, "/maps/room03.txt");
+
+
+
+        //loadMap(getMap("/maps/map01.txt", maxWorldCol, maxWorldRow));
     }
 
-
-    public BufferedImage tile;
-    public BufferedImage tileHigh;
+    //to przenies do gracza jak bedziesz robic ruszanie ok ok ok
 
 
+    public void createMap(int beginX, int beginY){
+        int tileXPosition = beginX;
+        int tileYPosition = beginY;
+        int startX = tileXPosition;
+        int startY = tileYPosition;
 
+        for (int col = 0; col < maxWorldCol; col++) {
+            for (int rows = 0; rows < maxWorldRow; rows++) {
+                tileXPosition += tileWidth/2;
+                tileYPosition += tileHeight/2;
 
-    public void loadImage() {
+                tileMap[rows][col] = new Tile(tileXPosition, tileYPosition);
+                tileMap[rows][col].row = rows;
+                tileMap[rows][col].col = col;
+                tileMap[rows][col].setTileType(-1);
+//                entities[rows][cols] = new Entity(tileXPosition, tileYPosition);
+//                entities[rows][cols].row = rows;
+//                entities[rows][cols].col = cols;
+
+            }
+            startX -= tileWidth/2;
+            startY += tileHeight/2;
+
+            tileXPosition = startX;
+            tileYPosition = startY;
+        }
+    }
+
+    public void createRoom(int startCol, int startRow, String roomPath){
+        int[][] roomMap = getMap(roomPath);
+
+        for (int col = 0; col < roomMap.length; col++){
+            for (int row = 0; row < roomMap[0].length; row++){
+                tileMap[col + startCol][row + startRow].setTileType(roomMap[col][row]);
+            }
+        }
+    }
+
+    public int[][] getMap(String filePath){
+        ArrayList<int[]> rows = new ArrayList<>();
         try {
-            tile = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/tiles/tile01.png")));
-            tileHigh = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/tiles/tile01H.png")));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(filePath))));
+        String line;
+        while ((line = reader.readLine()) != null){
+            String[] characters = line.split(" ");
+            int[] row = new int[characters.length];
+
+            for (int col = 0; col < characters.length; col++){
+                row[col] = Integer.parseInt(characters[col]);
+            }
+            rows.add(row);
+        }
+            return rows.toArray(new int[0][]);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-    public void createRoom(int minX, int minY, int maxX, int maxY){
-        int tileXPosition = minX;
-        int tileYPosition = minY;
-        int startX = tileXPosition;
-        int startY = tileYPosition;
-
-        for (int cols = 0; cols < maxY; cols++) {
-            for (int rows = 0; rows < maxX; rows++) {
-
-                tileXPosition += tileWidth/2;
-                tileYPosition += tileHeight/2;
-
-                tileMap[rows][cols] = new Tile(tileXPosition, tileYPosition);
-                objectsMap[rows][cols] = new OBJ(tileXPosition, tileYPosition);
-
-                //System.out.println("Tile: " + rows + cols + ' ' + tileMap[rows][cols].row + ' ' + tileMap[rows][cols].col);
+    public void loadMap(int[][] map){
+        for (int col = 0; col < maxWorldCol; col++){
+            for (int row = 0; row < maxWorldRow; row++){
+                tileMap[col][row].setTileType(map[col][row]);
             }
-            startX -= tileWidth/2;
-            startY += tileHeight/2;
-
-            tileXPosition = startX;
-            tileYPosition = startY;
-
         }
     }
-
 
     public void draw(Graphics2D g2){
-        for (int cols = 0; cols < maxWorldCol; cols++) {
-            for (int rows = 0; rows < maxWorldRow; rows++) {
-                g2.drawImage(tile, tileMap[rows][cols].row - tileWidth / 2, tileMap[rows][cols].col - tileHeight / 2, null);
+        for (int col = 0; col < maxWorldCol; col++) {
+            for (int row = 0; row < maxWorldRow; row++) {
+                g2.drawImage(tileMap[col][row].tileImage, tileMap[col][row].x + mapStartX, tileMap[col][row].y + mapStartY, null);
             }
         }
-
-        drawCoordinates(g2);
-        g2.drawImage(tileHigh, 470, 150, null);
     }
-
-    public void drawCoordinates(Graphics2D g2){
-        int tileXPosition = gamePanel.screenWidth / 2 - tileWidth/2;
-        int tileYPosition = 75;
-        int startX = tileXPosition;
-        int startY = tileYPosition;
-
-        char x = 'A';
-        int y = 1;
-        char startCordX = x;
-        int startCordY = y;
-
-        g2.setColor(Color.WHITE);
-
-        for (int cols = 0; cols < maxWorldCol; cols++) {
-            for (int rows = 0; rows < maxWorldRow; rows++) {
-                tileXPosition += tileWidth/2;
-                tileYPosition += tileHeight/2;
-
-                g2.drawString(String.valueOf(x) + y, tileXPosition, tileYPosition);
-                x++;
-                y++;
-            }
-            x = startCordX;
-            startCordY += 1;
-            y = startCordY;
-
-            startX -= tileWidth/2;
-            startY += tileHeight/2;
-
-            tileXPosition = startX;
-            tileYPosition = startY;
-        }
-    }
-
-
 
 }

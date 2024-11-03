@@ -10,7 +10,7 @@ import java.awt.*;
 
 //passphrase: kamyk
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel {
     public int screenWidth = 640;
     public int screenHeight = 480;
 
@@ -19,21 +19,23 @@ public class GamePanel extends JPanel implements Runnable {
     public Map map;
     public MouseHandler mouseHandler;
     public ObjectManager objectManager;
+    public KeyHandler keyHandler;
 
     public GamePanel(){
-        map = new Map(this);
-        player = new Player(this);
-        objectManager = new ObjectManager(this);
-        mouseHandler = new MouseHandler();
-
-
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.addMouseListener(mouseHandler);
-    }
+        setFocusable(true);
 
-    @Override
-    public void run() {
+        map = new Map(this);
+        player = new Player(this);
+        objectManager = new ObjectManager(this);
+//        mouseHandler = new MouseHandler();
+
+        keyHandler = new KeyHandler(this);
+        this.addKeyListener(keyHandler);
+
+
 
     }
 
@@ -48,6 +50,4 @@ public class GamePanel extends JPanel implements Runnable {
 
         g2.dispose();
     }
-
-
 }

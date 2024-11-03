@@ -1,12 +1,40 @@
 package map;
 
+import main.GamePanel;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
+
 public class Tile {
-    boolean collision = false;
-    public int row;
-    public int col;
-    public Tile(int row, int col){
-        this.row = row;
-        this.col = col;
+    public BufferedImage tileImage;
+    public boolean collision = false;
+    public int tileType;
+    public int x, y;
+    public int col, row;
+
+    public Tile(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
+    public void setTileType(int tileType){
+        this.tileType = tileType;
+        loadImage();
+    }
+
+    public void loadImage(){
+        String path = switch (tileType){
+            case 0 -> "/sprites/tiles/tile01.png";
+            case 1 -> "/sprites/tiles/tile02.png";
+            default -> "/sprites/tiles/missing_tile.png";
+        };
+
+        try {
+            tileImage = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
