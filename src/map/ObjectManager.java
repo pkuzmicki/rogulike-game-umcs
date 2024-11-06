@@ -62,6 +62,7 @@ public class ObjectManager {
         }
     }
 
+
     public void draw(Graphics2D g2){
         for (Monster monster : monsters){
             g2.drawImage(monster.monsterImage, monster.x + gamePanel.map.entityWidth + gamePanel.map.mapStartX, monster.y - (int)(gamePanel.map.entityHeight * 0.6)  + gamePanel.map.mapStartY, null);

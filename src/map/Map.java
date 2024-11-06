@@ -95,7 +95,6 @@ public class Map {
         }
     }
 
-
     public void loadMap(int[][] map){
         for (int col = 0; col < maxWorldCol; col++){
             for (int row = 0; row < maxWorldRow; row++){
