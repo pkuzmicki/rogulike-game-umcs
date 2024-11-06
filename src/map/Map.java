@@ -14,11 +14,10 @@ public class Map {
 
     final int entityWidth =  51;
     final int entityHeight = 101;
-    int maxWorldCol = 100;
-    int maxWorldRow = 100;
+    int maxWorldCol = 8;
+    int maxWorldRow = 8;
 
     public Tile[][] tileMap;
-    //public Entity[][] entities;
 
     public int mapStartX, mapStartY;
 
@@ -26,18 +25,15 @@ public class Map {
         this.gamePanel = gamePanel;
 
         tileMap = new Tile[maxWorldCol][maxWorldRow];
-        //entities = new Entity[maxWorldCol][maxWorldRow];
 
-        mapStartX = gamePanel.screenWidth / 2 - tileWidth/2;
-        mapStartY = gamePanel.screenHeight / 2 - tileHeight/2;
+        mapStartX = 0;
+        mapStartY = 0;
 
         createMap(mapStartX, mapStartY);
 
         createRoom(1, 1, "/maps/room01.txt");
         createRoom(1, 5, "/maps/room02.txt");
         createRoom(5, 2, "/maps/room03.txt");
-
-
 
         //loadMap(getMap("/maps/map01.txt", maxWorldCol, maxWorldRow));
     }
@@ -60,10 +56,6 @@ public class Map {
                 tileMap[rows][col].row = rows;
                 tileMap[rows][col].col = col;
                 tileMap[rows][col].setTileType(-1);
-//                entities[rows][cols] = new Entity(tileXPosition, tileYPosition);
-//                entities[rows][cols].row = rows;
-//                entities[rows][cols].col = cols;
-
             }
             startX -= tileWidth/2;
             startY += tileHeight/2;
