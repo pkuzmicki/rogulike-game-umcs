@@ -1,5 +1,7 @@
 package main;
 
+import map.ObjectManager;
+import objects.OBJ;
 import objects.Player;
 import map.Map;
 
@@ -9,19 +11,32 @@ import java.awt.*;
 //passphrase: kamyk
 
 public class GamePanel extends JPanel {
-    public int screenWidth = 1000;
-    public int screenHeight = 600;
+    public int screenWidth = 640;
+    public int screenHeight = 480;
 
-    Player player = new Player(this);
-    Map map = new Map(this);
+
+    public Player player;
+    public Map map;
+    public MouseHandler mouseHandler;
+    public ObjectManager objectManager;
+    public KeyHandler keyHandler;
 
     public GamePanel(){
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-    }
+        this.addMouseListener(mouseHandler);
+        setFocusable(true);
 
-    public void setupGame(){
-        player.setPlayerPosition();
+        map = new Map(this);
+        player = new Player(this);
+        objectManager = new ObjectManager(this);
+//        mouseHandler = new MouseHandler();
+
+        keyHandler = new KeyHandler(this);
+        this.addKeyListener(keyHandler);
+
+
+
     }
 
     public void paintComponent(Graphics g){
@@ -31,14 +46,8 @@ public class GamePanel extends JPanel {
 
         map.draw(g2);
         player.draw(g2);
+        objectManager.draw(g2);
 
         g2.dispose();
-
     }
-
-    public void repaint(){
-
-    }
-
-
 }
