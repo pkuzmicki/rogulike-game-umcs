@@ -17,10 +17,10 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_UP) gamePanel.player.move(0, +gamePanel.map.tileHeight);
-        if (key == KeyEvent.VK_DOWN) gamePanel.player.move(0 ,-gamePanel.map.tileHeight);
-        if (key == KeyEvent.VK_LEFT) gamePanel.player.move(+gamePanel.map.tileWidth, 0);
-        if (key == KeyEvent.VK_RIGHT) gamePanel.player.move(-gamePanel.map.tileWidth, 0);
+        if (key == KeyEvent.VK_UP) gamePanel.player.move(0, -1);
+        if (key == KeyEvent.VK_DOWN) gamePanel.player.move(0 ,1);
+        if (key == KeyEvent.VK_LEFT) gamePanel.player.move(-1, 0);
+        if (key == KeyEvent.VK_RIGHT) gamePanel.player.move(1, 0);
     }
 
     @Override

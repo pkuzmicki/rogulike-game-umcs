@@ -14,8 +14,8 @@ public class Map {
 
     final int entityWidth =  51;
     final int entityHeight = 101;
-    int maxWorldCol = 8;
-    int maxWorldRow = 8;
+    int maxWorldCol = 10;
+    int maxWorldRow = 10;
 
     public Tile[][] tileMap;
 
@@ -26,8 +26,8 @@ public class Map {
 
         tileMap = new Tile[maxWorldCol][maxWorldRow];
 
-        mapStartX = 0;
-        mapStartY = 0;
+        mapStartX = tileWidth;
+        mapStartY = tileHeight;
 
         createMap(mapStartX, mapStartY);
 
@@ -38,9 +38,6 @@ public class Map {
         //loadMap(getMap("/maps/map01.txt", maxWorldCol, maxWorldRow));
     }
 
-    //to przenies do gracza jak bedziesz robic ruszanie ok ok ok
-
-
     public void createMap(int beginX, int beginY){
         int tileXPosition = beginX;
         int tileYPosition = beginY;
@@ -49,13 +46,14 @@ public class Map {
 
         for (int col = 0; col < maxWorldCol; col++) {
             for (int rows = 0; rows < maxWorldRow; rows++) {
-                tileXPosition += tileWidth/2;
-                tileYPosition += tileHeight/2;
 
                 tileMap[rows][col] = new Tile(tileXPosition, tileYPosition);
                 tileMap[rows][col].row = rows;
                 tileMap[rows][col].col = col;
                 tileMap[rows][col].setTileType(-1);
+
+                tileXPosition += tileWidth/2;
+                tileYPosition += tileHeight/2;
             }
             startX -= tileWidth/2;
             startY += tileHeight/2;
@@ -95,13 +93,13 @@ public class Map {
         }
     }
 
-    public void loadMap(int[][] map){
-        for (int col = 0; col < maxWorldCol; col++){
-            for (int row = 0; row < maxWorldRow; row++){
-                tileMap[col][row].setTileType(map[col][row]);
-            }
-        }
-    }
+//    public void loadMap(int[][] map){
+//        for (int col = 0; col < maxWorldCol; col++){
+//            for (int row = 0; row < maxWorldRow; row++){
+//                tileMap[col][row].setTileType(map[col][row]);
+//            }
+//        }
+//    }
 
     public void draw(Graphics2D g2){
         for (int col = 0; col < maxWorldCol; col++) {

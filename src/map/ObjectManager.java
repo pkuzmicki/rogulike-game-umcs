@@ -1,26 +1,26 @@
 package map;
 
 import main.GamePanel;
+import objects.Entity;
 import objects.Monster;
-import objects.Obstacle;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ObjectManager {
     GamePanel gamePanel;
 
+    public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Monster> monsters = new ArrayList<>();
-    public ArrayList<Obstacle> obstacles = new ArrayList<>();
+    //public ArrayList<Obstacle> obstacles = new ArrayList<>();
 
     public ObjectManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
 
-        createObjects("/maps/map01E.txt");
+        //setObjectsFromMap("/maps/map01E.txt");
+
+        //setEntitiesFromMap("/maps/room01E.txt", 1, 1);
+        
     }
 
 //    public void loadObjects(){
@@ -41,32 +41,54 @@ public class ObjectManager {
 //        }
 //    }
 
-        void createObjects(String filePath){
-        int[][] monsterMap = gamePanel.map.getMap(filePath);
-        for (int col = 0; col < monsterMap.length; col++){
-            for (int row = 0; row < monsterMap[0].length; row++){
-                if (monsterMap[col][row] == 1){
-                    Monster monster = new Monster(gamePanel, col, row);
-                    monster.col = col;
-                    monster.row = row;
-
-                    try {
-                        monster.monsterImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/entities/keeper_green.png")));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    monsters.add(monster);
-                }
+    void setEntitiesFromMap(String filePath, int startCol, int startRow){
+        int[][] entitiesMap = gamePanel.map.getMap(filePath);
+        for (int col = startCol; col < entitiesMap.length; col++){
+            for (int row = startRow; row < entitiesMap[0].length; row++){
+                Entity entity = new Entity(col, row);
+                entity.entityId = entitiesMap[col][row];
+                entity.loadImage();
+                entity.col = col;
+                entity.row = row;
+                entities.add(entity);
             }
         }
     }
 
+        void setObjectsFromMap(String filePath){
+        int[][] monsterMap = gamePanel.map.getMap(filePath);
+        for (int col = 0; col < monsterMap.length; col++){
+            for (int row = 0; row < monsterMap[0].length; row++){
+
+                Monster monster = new Monster(gamePanel, col, row);
+                monster.monsterId = monsterMap[col][row];
+                monster.loadImage();
+                monster.col = col;
+                monster.row = row;
+                monsters.add(monster);
+
+            }
+        }
+    }
+
+    void createObject(int col, int row, int monsterId){
+        Monster monster = new Monster(gamePanel, col, row);
+        monster.monsterId = monsterId;
+        monster.loadImage();
+    }
+
+    void deleteObject(int col, int row , String entityName){
+
+    }
 
     public void draw(Graphics2D g2){
-        for (Monster monster : monsters){
-            g2.drawImage(monster.monsterImage, monster.x + gamePanel.map.entityWidth + gamePanel.map.mapStartX, monster.y - (int)(gamePanel.map.entityHeight * 0.6)  + gamePanel.map.mapStartY, null);
+        for (Entity entity : entities) {
+            g2.drawImage(entity.entityImage, entity.x, entity.y, null);
         }
+
+//        for (Monster monster : monsters){
+//            g2.drawImage(monster.monsterImage, monster.x + gamePanel.map.entityWidth + gamePanel.map.mapStartX, monster.y - (int)(gamePanel.map.entityHeight * 0.6)  + gamePanel.map.mapStartY, null);
+//        }
     }
 
 //    public void draw(Graphics2D g2){
