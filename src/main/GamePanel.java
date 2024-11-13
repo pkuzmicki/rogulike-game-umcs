@@ -1,19 +1,15 @@
 package main;
 
 import map.ObjectManager;
-import objects.OBJ;
 import objects.Player;
 import map.Map;
 
 import javax.swing.*;
 import java.awt.*;
 
-//passphrase: kamyk
-
 public class GamePanel extends JPanel {
     public int screenWidth = 640;
     public int screenHeight = 480;
-
 
     public Player player;
     public Map map;
@@ -35,8 +31,6 @@ public class GamePanel extends JPanel {
         keyHandler = new KeyHandler(this);
         this.addKeyListener(keyHandler);
 
-
-
     }
 
     public void paintComponent(Graphics g){
@@ -45,6 +39,7 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D)g;
 
         map.draw(g2);
+
         player.draw(g2);
         objectManager.draw(g2);
 

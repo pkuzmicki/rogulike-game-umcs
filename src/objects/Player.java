@@ -1,3 +1,4 @@
+//passphrase: kamyk
 package objects;
 
 import main.GamePanel;
@@ -12,18 +13,22 @@ public class Player{
     BufferedImage playerImage;
     public int playerX;
     public int playerY;
+    public int playerCol;
+    public int playerRow;
 
-    int row = 0, col = 0;
 
     GamePanel gamePanel;
     public Player(GamePanel gamePanel){
         this.gamePanel = gamePanel;
-        //loadImage();
-//        playerX = gamePanel.map.objectsMap[row][col].x;
-//        playerY = gamePanel.map.objectsMap[row][col].y;
-//        playerX = gamePanel.screenWidth / 2 - playerImage.getWidth() / 2;
-//        playerY = gamePanel.screenHeight / 2 - playerImage.getHeight() / 2;
+        playerCol = 0;
+        playerRow = 0;
+        loadImage();
+        setPositions();
+    }
 
+    void setPositions() {
+        playerX = gamePanel.map.tileMap[playerCol][playerRow].x;
+        playerY = gamePanel.map.tileMap[playerCol][playerRow].y;
     }
 
     public void loadImage(){
@@ -34,18 +39,18 @@ public class Player{
         }
     }
 
-    public void move(int dx, int dy){
-        gamePanel.map.mapStartX += dx;
-        gamePanel.map.mapStartY += dy;
+    public void move(int colMove, int rowMove){
+        playerCol += colMove;
+        playerRow += rowMove;
+        setPositions();
         gamePanel.repaint();
     }
 
     public void draw(Graphics2D g2){
-//        playerX -= 10;
-//        playerY -= 45;
-//        playerX -= sprite.getWidth(null)/4;
-//        playerY -= sprite.getHeight(null)/2;
-        //g2.drawImage(playerImage, playerX, playerY, null);
+//        playerX += playerImage.getWidth() / 2 + (int)(playerImage.getWidth() * 0.6);
+//        playerY -= playerImage.getHeight() / 2 + (int)(playerImage.getHeight() * 0.6);
+        playerY -= playerImage.getHeight();
 
+        g2.drawImage(playerImage, playerX, playerY, null);
     }
 }
