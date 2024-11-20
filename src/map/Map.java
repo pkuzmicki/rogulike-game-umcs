@@ -12,24 +12,25 @@ public class Map {
     public final int tileWidth = 151;
     public final int tileHeight = 51;
 
-    final int entityWidth =  51;
-    final int entityHeight = 101;
     int maxWorldCol = 10;
     int maxWorldRow = 10;
 
     public Tile[][] tileMap;
 
-    public int mapStartX, mapStartY;
+    public final int mapStartX, mapStartY;
+
+    public int dx, dy;
 
     public Map(GamePanel gamePanel){
         this.gamePanel = gamePanel;
 
         tileMap = new Tile[maxWorldCol][maxWorldRow];
 
-        mapStartX = tileWidth;
-        mapStartY = tileHeight;
 
-        createMap(mapStartX, mapStartY);
+        mapStartX = gamePanel.screenWidth / 2 - tileWidth / 2;
+        mapStartY = gamePanel.screenHeight / 2 - tileHeight / 2;
+
+        createMap(mapStartX - dx, mapStartY - dy);
 
         createRoom(1, 1, "/maps/room01.txt");
         createRoom(1, 5, "/maps/room02.txt");
@@ -104,7 +105,8 @@ public class Map {
     public void draw(Graphics2D g2){
         for (int col = 0; col < maxWorldCol; col++) {
             for (int row = 0; row < maxWorldRow; row++) {
-                g2.drawImage(tileMap[col][row].tileImage, tileMap[col][row].x + mapStartX, tileMap[col][row].y + mapStartY, null);
+                //g2.drawImage(tileMap[col][row].tileImage, tileMap[col][row].x + mapStartX, tileMap[col][row].y + mapStartY, null);
+                g2.drawImage(tileMap[col][row].tileImage, tileMap[col][row].x, tileMap[col][row].y, null);
             }
         }
     }

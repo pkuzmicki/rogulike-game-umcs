@@ -1,6 +1,7 @@
 package main;
 
 import map.ObjectManager;
+import objects.Monster;
 import objects.Player;
 import map.Map;
 
@@ -42,7 +43,7 @@ public class GamePanel extends JPanel {
 
         player.draw(g2);
         objectManager.draw(g2);
-
+        System.out.println("Wywolanie rysowania");
         g2.dispose();
     }
 }
