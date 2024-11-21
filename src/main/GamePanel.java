@@ -1,7 +1,6 @@
 package main;
 
 import map.ObjectManager;
-import objects.Monster;
 import objects.Player;
 import map.Map;
 
