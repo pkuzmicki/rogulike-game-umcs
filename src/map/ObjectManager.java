@@ -6,10 +6,7 @@ import objects.Item;
 import objects.Monster;
 import objects.Obstacle;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ObjectManager {
     GamePanel gamePanel;
@@ -19,16 +16,17 @@ public class ObjectManager {
     public ObjectManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
 
-        //setEntitiesFromMap("/maps/room01E.txt", 1, 1);
+        setEntitiesFromMap("/maps/room01E.txt", 1, 1);
 
-        createEntity(0, 0, 1);
+        createEntity(3, 0, 1);
+        createEntity(0, 3, 11);
     }
 
     void setEntitiesFromMap(String filePath, int startCol, int startRow){
         int[][] entitiesMap = gamePanel.map.getMap(filePath);
-        for (int col = startCol; col < entitiesMap.length; col++){
-            for (int row = startRow; row < entitiesMap[0].length; row++){
-                createEntity(col, row, entitiesMap[col][row]);
+        for (int col = 0; col < entitiesMap.length; col++){
+            for (int row = 0; row < entitiesMap[0].length; row++){
+                createEntity(col + startCol, row + startRow, entitiesMap[col][row]);
             }
         }
     }
@@ -48,13 +46,11 @@ public class ObjectManager {
         }
     }
 
-    void destroyEntity(int col, int row) {
+    public void damageEntity(int col, int row) {
+    }
+
+    public void destroyEntity(int col, int row) {
         entities.removeIf(entity -> entity.col == col && entity.row == row);
     }
 
-    public void draw(Graphics2D g2){
-        for (Entity entity : entities) {
-            g2.drawImage(entity.entityImage, entity.x, entity.y, null);
-        }
-    }
 }

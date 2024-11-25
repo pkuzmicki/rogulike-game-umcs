@@ -1,35 +1,43 @@
 package main;
 
 import map.ObjectManager;
+import objects.OBJ;
 import objects.Player;
 import map.Map;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class GamePanel extends JPanel {
     public int screenWidth = 640;
     public int screenHeight = 480;
 
-    public Player player;
     public Map map;
-    public MouseHandler mouseHandler;
+
+    public Player player;
     public ObjectManager objectManager;
+
     public KeyHandler keyHandler;
+    public MouseHandler mouseHandler;
 
     public GamePanel(){
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.addMouseListener(mouseHandler);
         setFocusable(true);
 
         map = new Map(this);
+
         player = new Player(this);
         objectManager = new ObjectManager(this);
-//        mouseHandler = new MouseHandler();
 
+        mouseHandler = new MouseHandler(this);
         keyHandler = new KeyHandler(this);
         this.addKeyListener(keyHandler);
+        this.addMouseListener(mouseHandler);
+
 
     }
 
@@ -40,9 +48,16 @@ public class GamePanel extends JPanel {
 
         map.draw(g2);
 
-        player.draw(g2);
-        objectManager.draw(g2);
-        System.out.println("Wywolanie rysowania");
+        List<OBJ> objectsToDraw = new ArrayList<>();
+        objectsToDraw.add(player);
+        objectsToDraw.addAll(objectManager.entities);
+        objectsToDraw.sort(Comparator.comparing(OBJ::getY));
+
+        for (OBJ obj : objectsToDraw) {
+            obj.draw(g2);
+        }
+
+
         g2.dispose();
     }
 }

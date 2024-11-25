@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Player{
+public class Player extends OBJ {
     GamePanel gamePanel;
     BufferedImage playerImage;
     final int playerScreenX;
@@ -19,9 +19,11 @@ public class Player{
     public int playerCol;
     public int playerRow;
 
+    public int playerTurn;
+    public int playerHitpoints;
 
 
-    public Player(GamePanel gamePanel){
+    public Player(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         playerCol = 0;
         playerRow = 0;
@@ -32,15 +34,15 @@ public class Player{
     }
 
     void setPositions() {
-        playerX = gamePanel.map.tileMap[playerCol][playerRow].x + playerImage.getWidth();
+        playerX = gamePanel.map.tileMap[playerCol][playerRow].x + playerImage.getWidth() / 2;
         playerY = gamePanel.map.tileMap[playerCol][playerRow].y - 65;
-        System.out.println(gamePanel.map.tileMap[playerCol][playerRow].x + " " + gamePanel.map.tileMap[playerCol][playerRow].y);
+        //System.out.println(gamePanel.map.tileMap[playerCol][playerRow].x + " " + gamePanel.map.tileMap[playerCol][playerRow].y);
         //System.out.println(playerX  + " " + playerY);
     }
 
     public void loadImage(){
         try {
-            playerImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/entities/keeper.png")));
+            playerImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/entities/crazy_wizard.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -49,9 +51,6 @@ public class Player{
     public void move(int colMove, int rowMove){
         int x1 = gamePanel.map.tileMap[playerCol][playerRow].x;
         int y1 = gamePanel.map.tileMap[playerCol][playerRow].y;
-
-//        int x1 = gamePanel.map.tileMap[-colMove][-rowMove].x;
-//        int y1 = gamePanel.map.tileMap[-colMove][-rowMove].y;
 
         playerCol += colMove;
         playerRow += rowMove;
@@ -62,10 +61,16 @@ public class Player{
 
         gamePanel.map.dx = x1 - x2;
         gamePanel.map.dy = y1 - y2;
-        System.out.println(gamePanel.map.dx + " " + gamePanel.map.dy);
+        //System.out.println(gamePanel.map.dx + " " + gamePanel.map.dy);
 
 
         gamePanel.repaint();
+    }
+
+
+    @Override
+    public int getY() {
+        return this.playerY;
     }
 
     public void draw(Graphics2D g2){

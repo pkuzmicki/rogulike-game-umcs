@@ -1,38 +1,92 @@
 package main;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import objects.Entity;
 
-public class KeyHandler implements KeyListener {
+import javax.sound.sampled.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URL;
+
+public class KeyHandler extends KeyAdapter {
     GamePanel gamePanel;
+
+    boolean  wPressed, aPressed, sPressed, dPressed;
+    boolean upPressed, downPressed, leftPressed, rightPressed;
+    boolean onePressed, twoPressed, threePressed, fourPressed;
+
 
     public KeyHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
-    }
-    @Override
-    public void keyTyped(KeyEvent e) {
 
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        if (key == KeyEvent.VK_W) {
+            if (gamePanel.player.playerRow > 0) {
+                gamePanel.player.move(0, -1);
+            }
+        }
+        //MOVEMENT
+        if (key == KeyEvent.VK_S) {
+            if (gamePanel.player.playerRow < gamePanel.map.maxWorldRow - 1) {
+                gamePanel.player.move(0 ,1);
+            }
+
+        }
+        if (key == KeyEvent.VK_A) {
+            if (gamePanel.player.playerCol > 0) {
+                gamePanel.player.move(-1, 0);
+            }
+        }
+        if (key == KeyEvent.VK_D) {
+            if (gamePanel.player.playerCol < gamePanel.map.maxWorldCol - 1) {
+                gamePanel.player.move(1, 0);
+            }
+        }
+        //ATTACK
         if (key == KeyEvent.VK_UP) {
-            gamePanel.player.move(0, -1);
+            upPressed = true;
+            if (gamePanel.player.playerRow > 0) {
+                gamePanel.map.tileMap[gamePanel.player.playerCol][gamePanel.player.playerRow - 1].setTileType(2);
+            }
         }
         if (key == KeyEvent.VK_DOWN) {
-            gamePanel.player.move(0 ,1);
+            downPressed = true;
+            if (gamePanel.player.playerRow < gamePanel.map.maxWorldRow - 1) {
+                gamePanel.map.tileMap[gamePanel.player.playerCol][gamePanel.player.playerRow + 1].setTileType(2);
+            }
+
         }
         if (key == KeyEvent.VK_LEFT) {
-            gamePanel.player.move(-1, 0);
+            leftPressed = true;
+            if (gamePanel.player.playerCol > 0) {
+                gamePanel.map.tileMap[gamePanel.player.playerCol - 1][gamePanel.player.playerRow].setTileType(2);
+            }
         }
         if (key == KeyEvent.VK_RIGHT) {
-            gamePanel.player.move(1, 0);
+            rightPressed = true;
+            if (gamePanel.player.playerCol < gamePanel.map.maxWorldCol - 1) {
+                gamePanel.map.tileMap[gamePanel.player.playerCol + 1][gamePanel.player.playerRow].setTileType(2);
+                for (Entity entity : gamePanel.objectManager.entities) {
+                    if (entity.col == gamePanel.player.playerCol + 1 && entity.row == gamePanel.player.playerRow) {
+
+                        gamePanel.objectManager.destroyEntity(gamePanel.player.playerCol + 1, gamePanel.player.playerRow);
+
+                        gamePanel.repaint();
+                    }
+                }
+            }
         }
-    }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-
+        if (key == KeyEvent.VK_1) {
+            gamePanel.map.tileMap[gamePanel.player.playerCol + 1][gamePanel.player.playerRow].setTileType(2);
+            gamePanel.map.tileMap[gamePanel.player.playerCol - 1][gamePanel.player.playerRow].setTileType(2);
+            gamePanel.map.tileMap[gamePanel.player.playerCol][gamePanel.player.playerRow + 1].setTileType(2);
+            gamePanel.map.tileMap[gamePanel.player.playerCol][gamePanel.player.playerRow - 1].setTileType(2);
+        }
+        gamePanel.repaint();
     }
 }

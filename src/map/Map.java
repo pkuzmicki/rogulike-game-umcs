@@ -12,8 +12,8 @@ public class Map {
     public final int tileWidth = 151;
     public final int tileHeight = 51;
 
-    int maxWorldCol = 10;
-    int maxWorldRow = 10;
+    public int maxWorldCol = 10;
+    public int maxWorldRow = 10;
 
     public Tile[][] tileMap;
 
@@ -35,6 +35,8 @@ public class Map {
         createRoom(1, 1, "/maps/room01.txt");
         createRoom(1, 5, "/maps/room02.txt");
         createRoom(5, 2, "/maps/room03.txt");
+
+
 
         //loadMap(getMap("/maps/map01.txt", maxWorldCol, maxWorldRow));
     }
@@ -101,6 +103,12 @@ public class Map {
 //            }
 //        }
 //    }
+
+
+    public void getTileFromMouse(int x, int y) {
+
+    }
+
 
     public void draw(Graphics2D g2){
         for (int col = 0; col < maxWorldCol; col++) {
