@@ -11,6 +11,7 @@ import java.util.Objects;
 public class Entity extends OBJ{
     GamePanel gamePanel;
     public BufferedImage entityImage;
+    public String entityName;
     public int entityId;
     public int x, y;
     public int col, row;
@@ -21,6 +22,7 @@ public class Entity extends OBJ{
         this.entityId = entityId;
         this.col = col;
         this.row = row;
+        manageEntities();
         setPosition(col, row);
         loadImage();
         setSize();
@@ -44,7 +46,21 @@ public class Entity extends OBJ{
         };
     }
 
+    public void manageEntities() {
+        entityName = switch (entityId) {
+            case 1 -> "keeper_green";
+            case 2 -> "keeper";
+            case 11 -> "sigill_of_despair";
+            case 12 -> "skull_pot";
+            default -> null;
+        };
+    }
+
     public void loadImage(){
+//        String entityPrefix = "/sprites/entities/";
+//        String obstaclePrefix = "/sprites/obstacles/";
+//        String suffix = ".png";
+//        String path = entityName + suffix;
         String path = switch (entityId){
             case 1 -> "/sprites/entities/keeper_green.png";
             case 2 -> "/sprites/entities/keeper.png";

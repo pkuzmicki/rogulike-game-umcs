@@ -46,7 +46,9 @@ public class ObjectManager {
         }
     }
 
+
     public void damageEntity(int col, int row) {
+
     }
 
     public void destroyEntity(int col, int row) {

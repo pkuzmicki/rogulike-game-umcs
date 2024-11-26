@@ -1,5 +1,6 @@
 package main;
 
+import combat.TurnManager;
 import map.ObjectManager;
 import objects.OBJ;
 import objects.Player;
@@ -23,6 +24,8 @@ public class GamePanel extends JPanel {
     public KeyHandler keyHandler;
     public MouseHandler mouseHandler;
 
+    public TurnManager turnManager;
+
     public GamePanel(){
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -35,6 +38,9 @@ public class GamePanel extends JPanel {
 
         mouseHandler = new MouseHandler(this);
         keyHandler = new KeyHandler(this);
+
+        turnManager = new TurnManager(this);
+
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
 

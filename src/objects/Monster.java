@@ -10,6 +10,14 @@ public class Monster extends Entity{
         //checkIfShouldDie(col, row);
     }
 
+    public void setMonsterHP(int monsterHP) {
+        this.monsterHP = monsterHP;
+    }
+
+    public void checkHP() {
+        System.out.println(monsterHP);
+    }
+
     public void checkIfShouldDie(int col, int row) {
         if (monsterHP <= 0) {
             gamePanel.objectManager.destroyEntity(col, row);
