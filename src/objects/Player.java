@@ -16,26 +16,31 @@ public class Player extends OBJ {
     final int playerScreenY;
     public int playerX;
     public int playerY;
-    public int playerCol;
-    public int playerRow;
+    public int col;
+    public int row;
 
-    public int playerTurn;
-    public int playerHitpoints;
+    public int turn;
+    public int hp;
+    public int dmg;
+
 
 
     public Player(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-        playerCol = 0;
-        playerRow = 0;
+        col = 1;
+        row = 1;
         loadImage();
         setPositions();
         playerScreenX = playerX;
         playerScreenY = playerY;
+
+        hp = 100;
+        dmg = 5;
     }
 
     void setPositions() {
-        playerX = gamePanel.map.tileMap[playerCol][playerRow].x + playerImage.getWidth() / 2;
-        playerY = gamePanel.map.tileMap[playerCol][playerRow].y - 65;
+        playerX = gamePanel.map.tileMap[col][row].x + playerImage.getWidth() / 2;
+        playerY = gamePanel.map.tileMap[col][row].y - 65;
         //System.out.println(gamePanel.map.tileMap[playerCol][playerRow].x + " " + gamePanel.map.tileMap[playerCol][playerRow].y);
         //System.out.println(playerX  + " " + playerY);
     }
@@ -49,15 +54,15 @@ public class Player extends OBJ {
     }
 
     public void move(int colMove, int rowMove){
-        int x1 = gamePanel.map.tileMap[playerCol][playerRow].x;
-        int y1 = gamePanel.map.tileMap[playerCol][playerRow].y;
+        int x1 = gamePanel.map.tileMap[col][row].x;
+        int y1 = gamePanel.map.tileMap[col][row].y;
 
-        playerCol += colMove;
-        playerRow += rowMove;
+        col += colMove;
+        row += rowMove;
         setPositions();
 
-        int x2 = gamePanel.map.tileMap[playerCol][playerRow].x;
-        int y2 = gamePanel.map.tileMap[playerCol][playerRow].y;
+        int x2 = gamePanel.map.tileMap[col][row].x;
+        int y2 = gamePanel.map.tileMap[col][row].y;
 
         gamePanel.map.dx = x1 - x2;
         gamePanel.map.dy = y1 - y2;

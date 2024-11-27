@@ -22,7 +22,7 @@ public class Entity extends OBJ{
         this.entityId = entityId;
         this.col = col;
         this.row = row;
-        manageEntities();
+        setEntityName();
         setPosition(col, row);
         loadImage();
         setSize();
@@ -40,38 +40,34 @@ public class Entity extends OBJ{
         }
 
         y -= switch (entityId) {
-            case 1, 2 -> 65;
-            case 11, 12 -> entityImage.getHeight() / 2;
+            case 11, 12 -> 65;
+            case 21, 22 -> entityImage.getHeight() / 2;
             default -> 0;
         };
     }
 
-    public void manageEntities() {
+    public void setEntityName() {
         entityName = switch (entityId) {
-            case 1 -> "keeper_green";
-            case 2 -> "keeper";
-            case 11 -> "sigill_of_despair";
-            case 12 -> "skull_pot";
+            case 11 -> "keeper_green";
+            case 12 -> "keeper";
+            case 21 -> "sigill_of_despair";
+            case 22 -> "skull_pot";
             default -> null;
         };
     }
 
     public void loadImage(){
-//        String entityPrefix = "/sprites/entities/";
-//        String obstaclePrefix = "/sprites/obstacles/";
-//        String suffix = ".png";
-//        String path = entityName + suffix;
         String path = switch (entityId){
-            case 1 -> "/sprites/entities/keeper_green.png";
-            case 2 -> "/sprites/entities/keeper.png";
-            case 11 -> "/sprites/obstacles/sigill_of_despair.png";
-            case 12 -> "/sprites/obstacles/skull_pot.png";
+            case 11 -> "/sprites/entities/keeper_green.png";
+            case 12 -> "/sprites/entities/keeper.png";
+            case 21 -> "/sprites/obstacles/sigill_of_despair.png";
+            case 22 -> "/sprites/obstacles/skull_pot.png";
             default -> null;
         };
 
-        if (path == null){
-            return;
-        }
+//        if (path == null){
+//            return;
+//        }
 
         try {
             entityImage = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));

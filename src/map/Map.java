@@ -1,6 +1,7 @@
 package map;
 
 import main.GamePanel;
+import objects.Entity;
 
 import java.awt.*;
 import java.io.*;
@@ -26,7 +27,6 @@ public class Map {
 
         tileMap = new Tile[maxWorldCol][maxWorldRow];
 
-
         mapStartX = gamePanel.screenWidth / 2 - tileWidth / 2;
         mapStartY = gamePanel.screenHeight / 2 - tileHeight / 2;
 
@@ -35,7 +35,6 @@ public class Map {
         createRoom(1, 1, "/maps/room01.txt");
         createRoom(1, 5, "/maps/room02.txt");
         createRoom(5, 2, "/maps/room03.txt");
-
 
 
         //loadMap(getMap("/maps/map01.txt", maxWorldCol, maxWorldRow));
@@ -103,12 +102,6 @@ public class Map {
 //            }
 //        }
 //    }
-
-
-    public void getTileFromMouse(int x, int y) {
-
-    }
-
 
     public void draw(Graphics2D g2){
         for (int col = 0; col < maxWorldCol; col++) {

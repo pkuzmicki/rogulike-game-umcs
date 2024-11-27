@@ -20,7 +20,7 @@ public class MouseHandler extends MouseAdapter {
             pressed = true;
             x = e.getX();
             y = e.getY();
-            System.out.println(x + " " + y);
+            //System.out.println(x + " " + y);
         }
     }
 }

@@ -1,5 +1,6 @@
 package main;
 
+import combat.CastingManager;
 import combat.TurnManager;
 import map.ObjectManager;
 import objects.OBJ;
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel {
     public MouseHandler mouseHandler;
 
     public TurnManager turnManager;
+    public CastingManager castingManager;
 
     public GamePanel(){
         this.setBackground(Color.BLACK);
@@ -40,11 +42,16 @@ public class GamePanel extends JPanel {
         keyHandler = new KeyHandler(this);
 
         turnManager = new TurnManager(this);
+        castingManager = new CastingManager(this);
 
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
 
 
+    }
+
+    public void update() {
+        castingManager.testicularTorsion.cast(player.dmg, keyHandler.directionOfAction());
     }
 
     public void paintComponent(Graphics g){
