@@ -51,7 +51,12 @@ public class GamePanel extends JPanel {
     }
 
     public void update() {
-        castingManager.testicularTorsion.cast(player.dmg, keyHandler.directionOfAction());
+        if (keyHandler.onePressed) {
+            castingManager.testicularTorsion.cast(keyHandler.directionOfAction());
+        }
+        if (keyHandler.twoPressed) {
+            castingManager.lifebloom.cast(keyHandler.directionOfAction());
+        }
     }
 
     public void paintComponent(Graphics g){

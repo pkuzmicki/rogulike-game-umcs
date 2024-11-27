@@ -5,15 +5,13 @@ import main.GamePanel;
 public class Spell {
     GamePanel gamePanel;
     int damage;
+    String name;
     boolean dealsDamageOvertime;
     boolean isRanged;
     boolean isAOE;
-    int col, row;
 
-    Spell(int dmg, int col, int row, GamePanel gamePanel) {
+    Spell(GamePanel gamePanel, int dmg) {
         this.gamePanel = gamePanel;
         this.damage = dmg;
-        this.col = col;
-        this.row = row;
     }
 }

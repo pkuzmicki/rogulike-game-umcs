@@ -21,7 +21,7 @@ public class ObjectManager {
 
         setPlayerOnMap();
 
-        //setEntitiesFromMap("/maps/room01E.txt", 1, 1);
+        //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
 
 
         createEntity(2, 2, 12);

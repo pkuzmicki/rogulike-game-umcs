@@ -27,28 +27,27 @@ public class KeyHandler extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_W) {
-            if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType != -1 && gp.objectManager.entityMap[gp.player.col][gp.player.row - 1] < 10) {
-                gp.player.move(0, -1);
+            if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType != -1 && gp.objectManager.entityMap[gp.player.col - 1][gp.player.row] < 10) {
+                gp.player.move(-1, 0);
                 gp.turnManager.globalTurn++;
             }
         }
         //MOVEMENT
         if (key == KeyEvent.VK_S) {
-            if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType != -1  && gp.objectManager.entityMap[gp.player.col][gp.player.row + 1] < 10) {
-                gp.player.move(0 ,1);
+            if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType != -1  && gp.objectManager.entityMap[gp.player.col + 1][gp.player.row] < 10) {
+                gp.player.move(1 ,0);
                 gp.turnManager.globalTurn++;
             }
-
         }
         if (key == KeyEvent.VK_A ) {
-            if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType != -1  && gp.objectManager.entityMap[gp.player.col - 1][gp.player.row] < 10) {
-                gp.player.move(-1, 0);
+            if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType != -1  && gp.objectManager.entityMap[gp.player.col][gp.player.row - 1] < 10) {
+                gp.player.move(0, -1);
                 gp.turnManager.globalTurn++;
             }
         }
         if (key == KeyEvent.VK_D) {
-            if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType != -1  && gp.objectManager.entityMap[gp.player.col + 1][gp.player.row] < 10) {
-                gp.player.move(1, 0);
+            if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType != -1  && gp.objectManager.entityMap[gp.player.col][gp.player.row + 1] < 10) {
+                gp.player.move(0, 1);
                 gp.turnManager.globalTurn++;
             }
         }
@@ -81,7 +80,6 @@ public class KeyHandler extends KeyAdapter {
 //            }
 //            leftPressed = false;
         }
-
         if (key == KeyEvent.VK_RIGHT) {
             rightPressed = true;
 //            if (gp.player.col < gp.map.maxWorldCol + 1) {
@@ -90,12 +88,21 @@ public class KeyHandler extends KeyAdapter {
 //            }
 //            rightPressed = false;
         }
-
+        //SPELL SELECTION
         if (key == KeyEvent.VK_1) {
-            gp.map.tileMap[gp.player.col + 1][gp.player.row].setTileType(2);
-            gp.map.tileMap[gp.player.col - 1][gp.player.row].setTileType(2);
-            gp.map.tileMap[gp.player.col][gp.player.row + 1].setTileType(2);
-            gp.map.tileMap[gp.player.col][gp.player.row - 1].setTileType(2);
+//            gp.map.tileMap[gp.player.col + 1][gp.player.row].setTileType(2);
+//            gp.map.tileMap[gp.player.col - 1][gp.player.row].setTileType(2);
+//            gp.map.tileMap[gp.player.col][gp.player.row + 1].setTileType(2);
+//            gp.map.tileMap[gp.player.col][gp.player.row - 1].setTileType(2);
+            onePressed = true;
+            System.out.println("Testicular Torsion!");
+            twoPressed = false;
+        }
+
+        if (key == KeyEvent.VK_2) {
+            twoPressed = true;
+            System.out.println("Lifebloom");
+            onePressed = false;
         }
 
         gp.update();

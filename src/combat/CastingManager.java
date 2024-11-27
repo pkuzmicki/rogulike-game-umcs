@@ -7,14 +7,15 @@ import java.util.ArrayList;
 public class CastingManager {
     GamePanel gamePanel;
 
+    public SingleAttackSpell testicularTorsion;
+    public SingleAttackSpell lifebloom;
+
     public CastingManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-        testicularTorsion = new SingleAttackSpell(gamePanel, 5, gamePanel.player.col + 1, gamePanel.player.row);
+        testicularTorsion = new SingleAttackSpell(gamePanel, gamePanel.player.dmg);
+        lifebloom = new SingleAttackSpell(gamePanel, -3);
     }
 
-    public SingleAttackSpell testicularTorsion;
 
-    //ArrayList<SingleAttackSpell> testicularTorsion = new ArrayList<>();
 
-    //czar ma miec swoja logike w swojej klasie czyli obszar dzialani dmg itp, a wywolywany ma byc tutaj
 }

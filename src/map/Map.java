@@ -14,7 +14,7 @@ public class Map {
     public final int tileHeight = 51;
 
     public int maxWorldCol = 10;
-    public int maxWorldRow = 10;
+    public int maxWorldRow = 12;
 
     public Tile[][] tileMap;
 
@@ -47,12 +47,12 @@ public class Map {
         int startY = tileYPosition;
 
         for (int col = 0; col < maxWorldCol; col++) {
-            for (int rows = 0; rows < maxWorldRow; rows++) {
+            for (int row = 0; row < maxWorldRow; row++) {
 
-                tileMap[rows][col] = new Tile(tileXPosition, tileYPosition);
-                tileMap[rows][col].row = rows;
-                tileMap[rows][col].col = col;
-                tileMap[rows][col].setTileType(-1);
+                tileMap[col][row] = new Tile(tileXPosition, tileYPosition);
+                tileMap[col][row].row = row;
+                tileMap[col][row].col = col;
+                //tileMap[col][row].setTileType(-1);
 
                 tileXPosition += tileWidth/2;
                 tileYPosition += tileHeight/2;

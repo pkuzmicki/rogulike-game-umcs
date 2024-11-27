@@ -5,17 +5,17 @@ import objects.Entity;
 import objects.Monster;
 
 public class SingleAttackSpell extends Spell{
-    SingleAttackSpell(GamePanel gamePanel, int dmg, int col, int row) {
-        super(dmg, col, row, gamePanel);
+    SingleAttackSpell(GamePanel gamePanel, int dmg) {
+        super(gamePanel, dmg);
     }
 
-    public void cast(int dmg, String direction) {
+    public void cast(String direction) {
         int colOffset = 0, rowOffset = 0;
         switch (direction) {
-            case "up" -> rowOffset = -1;
-            case "down" -> rowOffset = 1;
-            case "left" -> colOffset = -1;
-            case "right" -> colOffset = 1;
+            case "up" -> colOffset = -1;
+            case "down" -> colOffset = 1;
+            case "left" -> rowOffset = -1;
+            case "right" -> rowOffset = 1;
             default -> {}
         };
 
@@ -26,16 +26,16 @@ public class SingleAttackSpell extends Spell{
         gamePanel.map.tileMap[gamePanel.player.col + colOffset][gamePanel.player.row + rowOffset].setTileType(2);
         //gamePanel.turnManager.pause();
         //gamePanel.map.tileMap[gamePanel.player.playerCol + 1][gamePanel.player.playerRow].setTileType(tempTileType);
-        System.out.println(gamePanel.player.col  + " " + gamePanel.player.row );
-        System.out.println((gamePanel.player.col + colOffset) + " " + (gamePanel.player.row + colOffset));
-        System.out.println(colOffset +" "+ rowOffset);
+        //System.out.println(gamePanel.player.col  + " " + gamePanel.player.row );
+        //System.out.println((gamePanel.player.col + colOffset) + " " + (gamePanel.player.row + colOffset));
+        //System.out.println(colOffset +" "+ rowOffset);
 
 
         for (Entity entity : gamePanel.objectManager.entities) {
             if (entity.col == gamePanel.player.col + colOffset && entity.row == gamePanel.player.row + rowOffset && entity.entityId > 10 && entity.entityId <= 20) {
                 Monster monster = (Monster) entity;
-                monster.monsterHP -= dmg;
-                //System.out.println(monster.monsterHP);
+                monster.monsterHP -= damage;
+                System.out.println(monster.monsterHP);
                 monster.checkIfShouldDie(gamePanel.player.col + colOffset, gamePanel.player.row + rowOffset);
                 gamePanel.repaint();
             }
