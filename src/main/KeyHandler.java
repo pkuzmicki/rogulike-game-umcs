@@ -54,39 +54,15 @@ public class KeyHandler extends KeyAdapter {
         //ATTACK
         if (key == KeyEvent.VK_UP) {
             upPressed = true;
-//            if (gp.player.row > 0) {
-//                //gamePanel.map.tileMap[gamePanel.player.col][gamePanel.player.row - 1].setTileType(2);
-//                gp.castingManager.testicularTorsion.cast(gp.player.dmg, directionOfAction());
-//                System.out.println(directionOfAction());
-//                gp.turnManager.globalTurn++;
-//            }
-//            upPressed = false;
         }
         if (key == KeyEvent.VK_DOWN) {
             downPressed = true;
-//            if (gp.player.row < gp.map.maxWorldRow - 1) {
-//                //gamePanel.map.tileMap[gamePanel.player.col][gamePanel.player.row + 1].setTileType(2);
-//                gp.castingManager.testicularTorsion.cast(gp.player.dmg, directionOfAction());
-//                gp.turnManager.globalTurn++;
-//            }
-//            downPressed = false;
         }
         if (key == KeyEvent.VK_LEFT) {
             leftPressed = true;
-//            if (gp.player.col > 0) {
-//                //gamePanel.map.tileMap[gamePanel.player.col - 1][gamePanel.player.row].setTileType(2);
-//                gp.castingManager.testicularTorsion.cast(gp.player.dmg, directionOfAction());
-//                gp.turnManager.globalTurn++;
-//            }
-//            leftPressed = false;
         }
         if (key == KeyEvent.VK_RIGHT) {
             rightPressed = true;
-//            if (gp.player.col < gp.map.maxWorldCol + 1) {
-//                gp.castingManager.testicularTorsion.cast(gp.player.dmg, directionOfAction());
-//                gp.turnManager.globalTurn++;
-//            }
-//            rightPressed = false;
         }
         //SPELL SELECTION
         if (key == KeyEvent.VK_1) {

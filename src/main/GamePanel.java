@@ -57,6 +57,7 @@ public class GamePanel extends JPanel {
         if (keyHandler.twoPressed) {
             castingManager.lifebloom.cast(keyHandler.directionOfAction());
         }
+        //System.out.println(turnManager.globalTurn);
     }
 
     public void paintComponent(Graphics g){
@@ -75,6 +76,7 @@ public class GamePanel extends JPanel {
             obj.draw(g2);
         }
 
+        turnManager.draw(g2);
 
         g2.dispose();
     }
