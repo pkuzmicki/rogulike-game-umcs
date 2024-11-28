@@ -25,8 +25,14 @@ public class ObjectManager {
 
 
         createEntity(2, 2, 12);
-        createEntity(3, 0, 11);
-        createEntity(0, 3, 21);
+
+        createEntity(0, 3, 11);
+        createEntity(0, 4, 11);
+        createEntity(0, 5, 11);
+        createEntity(0, 6, 11);
+
+        //createEntity(0, 3, 21);
+
 
         //printEntityMap();
     }

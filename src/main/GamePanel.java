@@ -52,10 +52,14 @@ public class GamePanel extends JPanel {
 
     public void update() {
         if (keyHandler.onePressed) {
-            castingManager.testicularTorsion.cast(keyHandler.directionOfAction());
+            //castingManager.testicularTorsion.cast(keyHandler.directionOfAction());
+            castingManager.
         }
         if (keyHandler.twoPressed) {
             castingManager.lifebloom.cast(keyHandler.directionOfAction());
+        }
+        if (keyHandler.threePressed) {
+            castingManager.rollingMagma.cast();
         }
         //System.out.println(turnManager.globalTurn);
     }

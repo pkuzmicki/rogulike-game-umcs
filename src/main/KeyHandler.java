@@ -73,13 +73,21 @@ public class KeyHandler extends KeyAdapter {
             onePressed = true;
             System.out.println("Testicular Torsion!");
             twoPressed = false;
+            threePressed = false;
         }
-
         if (key == KeyEvent.VK_2) {
             twoPressed = true;
             System.out.println("Lifebloom");
             onePressed = false;
+            threePressed = false;
         }
+        if (key == KeyEvent.VK_3) {
+            threePressed = true;
+            System.out.println("Rolling Magma");
+            onePressed = false;
+            twoPressed = false;
+        }
+
 
         gp.update();
         gp.repaint();
