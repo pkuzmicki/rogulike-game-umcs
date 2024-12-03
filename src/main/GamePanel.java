@@ -60,13 +60,16 @@ public class GamePanel extends JPanel {
 
     public void update() {
 
+        System.out.println(player.col +" "+player.row);
+
         for (Entity entity : objectManager.entities) {
             Monster monster = (Monster) entity;
             monster.checkForOverHeal();
             monster.checkIfShouldDie(monster.col, monster.row);
-//            if (Objects.equals(monster.entityName, "keeper_red")) {
-//                monster.monsterMove();
-//            }
+            if (Objects.equals(monster.entityName, "keeper_red")) {
+                //monster.monsterMove();
+                System.out.println(monster.col+" "+monster.row);
+            }
 
             repaint();
         }
