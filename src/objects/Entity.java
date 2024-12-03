@@ -34,12 +34,13 @@ public class Entity extends OBJ{
 
     public void setSize(){
         this.x += switch (entityID) {
-            case 1 -> entityImage.getWidth() / 2;
+            case 1 -> 0;
             default -> entityImage.getWidth();
         };
 
         this.y -= switch (entityID) {
-            case 1, 11, 12, 13, 14 -> 65;
+            case 1 -> 0;
+            case 11, 12, 13, 14 -> 65;
             case 21, 22 -> entityImage.getHeight() / 2;
             default -> 0;
         };
