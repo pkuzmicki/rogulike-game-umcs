@@ -59,26 +59,30 @@ public class GamePanel extends JPanel {
 
     public void update() {
 
-        System.out.println(player.col +" "+player.row);
+        //System.out.println(player.col +" "+player.row);
 
         for (Entity entity : objectManager.entities) {
             Monster monster = (Monster) entity;
             monster.checkForOverHeal();
             monster.checkIfShouldDie(monster.col, monster.row);
-            if (Objects.equals(monster.entityName, "keeper_red")) {
-                monster.monsterMove();
-                System.out.println(monster.col+" "+monster.row);
-            }
+
 
             repaint();
         }
 
-//        for (Entity entity : objectManager.entities) {
-//            Monster monster = (Monster) entity;
-//            if (monster.col == 3 && monster.row == 0) {
-//                castingManager.testicularTorsion.cast(monster.col, monster.row + 1);
-//            }
-//        }
+        if (turnManager.globalTurn % 2 != 0) {
+            for (Entity entity : objectManager.entities) {
+                Monster monster = (Monster) entity;
+                if (Objects.equals(monster.entityName, "keeper_yellow")) {
+                    castingManager.testicularTorsion.cast(monster.col, monster.row + 1);
+                }
+                if (Objects.equals(monster.entityName, "keeper_red")) {
+                    monster.monsterMove();
+                    //System.out.println(monster.col+" "+monster.row);
+                }
+            }
+        }
+
 
         //CHOOSING SPELLS
         if (keyHandler.onePressed) {

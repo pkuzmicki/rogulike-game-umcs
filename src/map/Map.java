@@ -50,7 +50,7 @@ public class Map {
                 tileMap[col][row] = new Tile(tileXPosition, tileYPosition);
                 tileMap[col][row].row = row;
                 tileMap[col][row].col = col;
-                tileMap[col][row].setTileType(-1);
+                //tileMap[col][row].setTileType(-1);
 
                 tileXPosition += tileWidth/2;
                 tileYPosition += tileHeight/2;

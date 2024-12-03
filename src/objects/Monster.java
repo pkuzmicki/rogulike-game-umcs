@@ -5,9 +5,9 @@ import main.GamePanel;
 import java.util.Random;
 
 public class Monster extends Entity{
-    public int maxHP;
-    public int currentHP;
-    public int dmg;
+    public double maxHP;
+    public double currentHP;
+    public double dmg;
 
     public Monster(GamePanel gamePanel, int col, int row, int monsterId){
         super(gamePanel, col, row, monsterId);
@@ -33,7 +33,7 @@ public class Monster extends Entity{
                 monster.dmg = 15;
             }
             case "keeper_yellow" -> {
-                monster.maxHP = monster.currentHP = 200;
+                monster.maxHP = monster.currentHP = 20;
                 monster.dmg = 40;
             }
         }
