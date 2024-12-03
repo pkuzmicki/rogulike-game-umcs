@@ -8,7 +8,7 @@ public class Spell {
     GamePanel gp;
     int damage;
     String name;
-    boolean canUseOnNonMonsters = false;
+    boolean canUseOnObstacles = false;
 
     Spell(GamePanel gamePanel, int dmg) {
         this.gp = gamePanel;
@@ -29,27 +29,21 @@ public class Spell {
     }
 
     //efekt czaru np zadanie obrazenia, uleczenie, nadanie jakiegos statusu itp
-    public void effect() {
-
-    }
-
-    //wywolanie czaru w podanym miejscu
-    public void cast(int col, int row) {
+    public void effect(int col, int row) {
         for (Entity entity : gp.objectManager.entities) {
-            if (entity.col == col && entity.row == row && entity.entityId > 10 && entity.entityId <= 20) {
+            if (entity.col == col && entity.row == row && entity.entityID <= 20) {
                 Monster monster = (Monster) entity;
                 monster.currentHP -= damage;
                 System.out.println(monster.currentHP);
-                //monster.checkIfShouldDie(gp.player.col + colOffset, gp.player.row + rowOffset);
-                gp.turnManager.globalTurn++;
-                gp.repaint();
             }
         }
     }
 
-    //czy mozna uzyc czaru na czyms innym niz przeciwnik
-    void checkIfCanUseOnNonMonsters() {
-
+    //wywolanie czaru w podanym miejscu
+    public void cast(int col, int row) {
+        effect(col, row);
+        gp.map.tileMap[col][row].setTileType(2);
+        gp.turnManager.globalTurn++;
+        gp.repaint();
     }
-
 }

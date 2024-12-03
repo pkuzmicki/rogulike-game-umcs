@@ -8,7 +8,7 @@ public class KeyHandler extends KeyAdapter {
 
     public boolean wPressed, aPressed, sPressed, dPressed;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
-    boolean onePressed, twoPressed, threePressed, fourPressed;
+    public boolean onePressed, twoPressed, threePressed, fourPressed;
 
     public KeyHandler(GamePanel gamePanel){
         this.gp = gamePanel;
@@ -26,76 +26,97 @@ public class KeyHandler extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_W) {
-            if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType != -1 && gp.objectManager.entityMap[gp.player.col - 1][gp.player.row] < 10) {
-                gp.player.move(-1, 0);
-                gp.turnManager.globalTurn++;
-            }
-        }
-        //MOVEMENT
-        if (key == KeyEvent.VK_S) {
-            if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType != -1  && gp.objectManager.entityMap[gp.player.col + 1][gp.player.row] < 10) {
-                gp.player.move(1 ,0);
-                gp.turnManager.globalTurn++;
-            }
-        }
-        if (key == KeyEvent.VK_A ) {
-            if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType != -1  && gp.objectManager.entityMap[gp.player.col][gp.player.row - 1] < 10) {
-                gp.player.move(0, -1);
-                gp.turnManager.globalTurn++;
-            }
-        }
-        if (key == KeyEvent.VK_D) {
-            if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType != -1  && gp.objectManager.entityMap[gp.player.col][gp.player.row + 1] < 10) {
-                gp.player.move(0, 1);
-                gp.turnManager.globalTurn++;
-            }
-        }
-        //ATTACK
-        if (key == KeyEvent.VK_UP) {
-            upPressed = true;
-        }
-        if (key == KeyEvent.VK_DOWN) {
-            downPressed = true;
-        }
-        if (key == KeyEvent.VK_LEFT) {
-            leftPressed = true;
-        }
-        if (key == KeyEvent.VK_RIGHT) {
-            rightPressed = true;
-        }
-        //SPELL SELECTION
-        if (key == KeyEvent.VK_1) {
-//            gp.map.tileMap[gp.player.col + 1][gp.player.row].setTileType(2);
-//            gp.map.tileMap[gp.player.col - 1][gp.player.row].setTileType(2);
-//            gp.map.tileMap[gp.player.col][gp.player.row + 1].setTileType(2);
-//            gp.map.tileMap[gp.player.col][gp.player.row - 1].setTileType(2);
-            onePressed = true;
-            System.out.println("Testicular Torsion!");
-            twoPressed = false;
-            threePressed = false;
-        }
-        if (key == KeyEvent.VK_2) {
-            twoPressed = true;
-            System.out.println("Lifebloom");
-            onePressed = false;
-            threePressed = false;
-        }
-        if (key == KeyEvent.VK_3) {
-            threePressed = true;
-            System.out.println("Rolling Magma");
-            onePressed = false;
-            twoPressed = false;
-        }
+        if (!gp.ui.isGameOver) {
+            //MOVEMENT
+            if (key == KeyEvent.VK_W) {
+                wPressed = true;
+                if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType != -1) {
+                    gp.player.move(-1, 0);
+                    gp.turnManager.globalTurn++;
 
+                    gp.map.createMap(gp.map.dx -= gp.map.tileWidth/2, gp.map.dy += gp.map.tileHeight/2);
+                }
+            }
+            if (key == KeyEvent.VK_S) {
+                sPressed = true;
+                if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType != -1) {
+                    gp.player.move(1, 0);
+                    gp.turnManager.globalTurn++;
 
-        gp.update();
-        gp.repaint();
+                    gp.map.createMap(gp.map.dx += gp.map.tileWidth/2, gp.map.dy -= gp.map.tileHeight/2);
+                }
+            }
+            if (key == KeyEvent.VK_A) {
+                aPressed = true;
+                if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType != -1) {
+                    gp.player.move(0, -1);
+                    gp.turnManager.globalTurn++;
+
+                    gp.map.createMap(gp.map.dx += gp.map.tileWidth/2, gp.map.dy += gp.map.tileHeight/2);
+                }
+            }
+            if (key == KeyEvent.VK_D) {
+                dPressed = true;
+                if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType != -1) {
+                    gp.player.move(0, 1);
+                    gp.turnManager.globalTurn++;
+
+                    gp.map.createMap(gp.map.dx -= gp.map.tileWidth/2, gp.map.dy -= gp.map.tileHeight/2);
+                }
+            }
+            //ATTACK
+            if (key == KeyEvent.VK_UP) {
+                upPressed = true;
+            }
+            if (key == KeyEvent.VK_DOWN) {
+                downPressed = true;
+            }
+            if (key == KeyEvent.VK_LEFT) {
+                leftPressed = true;
+            }
+            if (key == KeyEvent.VK_RIGHT) {
+                rightPressed = true;
+            }
+            //SPELL SELECTION
+            if (key == KeyEvent.VK_1) {
+                onePressed = true;
+                System.out.println("Testicular Torsion!");
+                twoPressed = false;
+                threePressed = false;
+            }
+            if (key == KeyEvent.VK_2) {
+                twoPressed = true;
+                System.out.println("Lifebloom");
+                onePressed = false;
+                threePressed = false;
+            }
+            if (key == KeyEvent.VK_3) {
+                threePressed = true;
+                System.out.println("Rolling Magma");
+                onePressed = false;
+                twoPressed = false;
+            }
+
+            gp.update();
+            gp.repaint();
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
+        if (key == KeyEvent.VK_W) {
+            wPressed = false;
+        }
+        if (key == KeyEvent.VK_S) {
+            sPressed = false;
+        }
+        if (key == KeyEvent.VK_A) {
+            aPressed = false;
+        }
+        if (key == KeyEvent.VK_D) {
+            dPressed = false;
+        }
         if (key == KeyEvent.VK_UP) {
             upPressed = false;
         }

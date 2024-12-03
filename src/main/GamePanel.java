@@ -3,6 +3,8 @@ package main;
 import combat.CastingManager;
 import combat.TurnManager;
 import map.ObjectManager;
+import objects.Entity;
+import objects.Monster;
 import objects.OBJ;
 import objects.Player;
 import map.Map;
@@ -12,6 +14,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class GamePanel extends JPanel {
     public int screenWidth = 640;
@@ -19,6 +22,7 @@ public class GamePanel extends JPanel {
 
     public Map map;
 
+    public Camera camera;
     public Player player;
     public ObjectManager objectManager;
 
@@ -28,6 +32,8 @@ public class GamePanel extends JPanel {
     public TurnManager turnManager;
     public CastingManager castingManager;
 
+    public UI ui;
+
     public GamePanel(){
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -35,7 +41,8 @@ public class GamePanel extends JPanel {
 
         map = new Map(this);
 
-        player = new Player(this);
+        camera = new Camera(this);
+        player = new Player(this, 1, 1, 1);
         objectManager = new ObjectManager(this);
 
         mouseHandler = new MouseHandler(this);
@@ -44,24 +51,43 @@ public class GamePanel extends JPanel {
         turnManager = new TurnManager(this);
         castingManager = new CastingManager(this);
 
+        ui = new UI(this);
+
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
-
 
     }
 
     public void update() {
-        if (keyHandler.onePressed) {
-            //castingManager.testicularTorsion.cast(keyHandler.directionOfAction());
 
+        for (Entity entity : objectManager.entities) {
+            Monster monster = (Monster) entity;
+            monster.checkForOverHeal();
+            monster.checkIfShouldDie(monster.col, monster.row);
+//            if (Objects.equals(monster.entityName, "keeper_red")) {
+//                monster.monsterMove();
+//            }
+
+            repaint();
+        }
+
+//        for (Entity entity : objectManager.entities) {
+//            Monster monster = (Monster) entity;
+//            if (monster.col == 3 && monster.row == 0) {
+//                castingManager.testicularTorsion.cast(monster.col, monster.row + 1);
+//            }
+//        }
+
+        //CHOOSING SPELLS
+        if (keyHandler.onePressed) {
+            castingManager.playerCast(castingManager.testicularTorsion);
         }
         if (keyHandler.twoPressed) {
-            castingManager.lifebloom.cast(keyHandler.directionOfAction());
+            castingManager.playerCast(castingManager.lifebloom);
         }
         if (keyHandler.threePressed) {
-            castingManager.rollingMagma.cast();
+            //castingManager.rollingMagma.cast();
         }
-        //System.out.println(turnManager.globalTurn);
     }
 
     public void paintComponent(Graphics g){
@@ -81,6 +107,10 @@ public class GamePanel extends JPanel {
         }
 
         turnManager.draw(g2);
+
+        if (ui.isGameOver) {
+            ui.draw(g2);
+        }
 
         g2.dispose();
     }

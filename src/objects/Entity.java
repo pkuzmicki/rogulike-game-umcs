@@ -9,47 +9,49 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Entity extends OBJ{
-    GamePanel gamePanel;
+    GamePanel gp;
     public BufferedImage entityImage;
     public String entityName;
-    public int entityId;
+    public int entityID;
     public int x, y;
     public int col, row;
 
-
-    public Entity(GamePanel gamePanel, int col, int row, int entityId){
-        this.gamePanel = gamePanel;
-        this.entityId = entityId;
+    public Entity(GamePanel gamePanel, int col, int row, int entityID){
+        this.gp = gamePanel;
+        this.entityID = entityID;
         this.col = col;
         this.row = row;
-        setEntityName();
-        setPosition(col, row);
         loadImage();
+        setEntityName();
+        setPositions();
         setSize();
     }
 
-    public void setPosition(int col, int row){
-        this.x = gamePanel.map.tileMap[col][row].x;
-        this.y = gamePanel.map.tileMap[col][row].y;
-        //System.out.println(gamePanel.map.tileMap[col][row].x);
+    public void setPositions(){
+        this.x = gp.map.tileMap[col][row].x;
+        this.y = gp.map.tileMap[col][row].y;
     }
 
     public void setSize(){
-        if (entityId != 0) {
-            x += entityImage.getWidth();
-        }
+        this.x += switch (entityID) {
+            case 1 -> entityImage.getWidth() / 2;
+            default -> entityImage.getWidth();
+        };
 
-        y -= switch (entityId) {
-            case 11, 12 -> 65;
+        this.y -= switch (entityID) {
+            case 1, 11, 12, 13, 14 -> 65;
             case 21, 22 -> entityImage.getHeight() / 2;
             default -> 0;
         };
     }
 
     public void setEntityName() {
-        entityName = switch (entityId) {
+        entityName = switch (entityID) {
+            case 1 -> "player";
             case 11 -> "keeper_green";
-            case 12 -> "keeper";
+            case 12 -> "keeper_red";
+            case 13 -> "keeper_blue";
+            case 14 -> "keeper_yellow";
             case 21 -> "sigill_of_despair";
             case 22 -> "skull_pot";
             default -> null;
@@ -57,17 +59,16 @@ public class Entity extends OBJ{
     }
 
     public void loadImage(){
-        String path = switch (entityId){
+        String path = switch (entityID){
+            case 1 -> "/sprites/entities/crazy_wizard.png";
             case 11 -> "/sprites/entities/keeper_green.png";
             case 12 -> "/sprites/entities/keeper.png";
+            case 13 -> "/sprites/entities/keeper_blue.png";
+            case 14 -> "/sprites/entities/keeper_yellow.png";
             case 21 -> "/sprites/obstacles/sigill_of_despair.png";
             case 22 -> "/sprites/obstacles/skull_pot.png";
             default -> null;
         };
-
-//        if (path == null){
-//            return;
-//        }
 
         try {
             entityImage = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
@@ -79,6 +80,21 @@ public class Entity extends OBJ{
     @Override
     public int getY() {
         return this.y;
+    }
+
+    //przeniesc sprawdzanie kolizji i mape postaci tutaj albo gdzies do nowej klasy moze
+    public void move(int colMove, int rowMove){
+        if (gp.objectManager.entityMap[col + colMove][row + rowMove] == 0) {
+            int prevCol = col;
+            int prevRow = row;
+            col += colMove;
+            row += rowMove;
+            setPositions();
+            setSize();
+            gp.objectManager.entityMap[col][row] = entityID;
+            gp.objectManager.entityMap[prevCol][prevRow] = 0;
+            gp.repaint();
+        }
     }
 
     @Override

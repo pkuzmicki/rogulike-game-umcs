@@ -20,19 +20,20 @@ public class ObjectManager {
         entityMap = new int[gamePanel.map.maxWorldCol][gamePanel.map.maxWorldRow];
 
         setPlayerOnMap();
-
+        entities.add(gamePanel.player);
         //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
 
 
-        createEntity(2, 2, 12);
+        createEntity(4, 4, 12);
+        //createEntity(2, 1, 11);
 
         createEntity(0, 3, 11);
         createEntity(0, 4, 11);
         createEntity(0, 5, 11);
         createEntity(0, 6, 11);
+        createEntity(3, 0, 14);
 
         //createEntity(0, 3, 21);
-
 
         //printEntityMap();
     }

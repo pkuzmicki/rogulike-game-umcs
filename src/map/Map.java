@@ -1,7 +1,6 @@
 package map;
 
 import main.GamePanel;
-import objects.Entity;
 
 import java.awt.*;
 import java.io.*;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Map {
-    GamePanel gamePanel;
+    GamePanel gp;
     public final int tileWidth = 151;
     public final int tileHeight = 51;
 
@@ -20,17 +19,22 @@ public class Map {
 
     public final int mapStartX, mapStartY;
 
+    //public int mapDX, mapDY;
     public int dx, dy;
 
     public Map(GamePanel gamePanel){
-        this.gamePanel = gamePanel;
+        this.gp = gamePanel;
 
         tileMap = new Tile[maxWorldCol][maxWorldRow];
 
         mapStartX = gamePanel.screenWidth / 2 - tileWidth / 2;
         mapStartY = gamePanel.screenHeight / 2 - tileHeight / 2;
+//        mapDX = mapStartX + dx;
+//        mapDY = mapStartY + dy;
+        dx = mapStartX;
+        dy = mapStartY;
 
-        createMap(mapStartX - dx, mapStartY - dy);
+        createMap(dx, dy);
 
         createRoom(1, 1, "/maps/room01.txt");
         createRoom(1, 5, "/maps/room02.txt");
@@ -52,7 +56,7 @@ public class Map {
                 tileMap[col][row] = new Tile(tileXPosition, tileYPosition);
                 tileMap[col][row].row = row;
                 tileMap[col][row].col = col;
-                //tileMap[col][row].setTileType(-1);
+                tileMap[col][row].setTileType(-1);
 
                 tileXPosition += tileWidth/2;
                 tileYPosition += tileHeight/2;
