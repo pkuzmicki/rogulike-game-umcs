@@ -5,7 +5,6 @@ import combat.TurnManager;
 import map.ObjectManager;
 import objects.Entity;
 import objects.Monster;
-import objects.OBJ;
 import objects.Player;
 import map.Map;
 
@@ -67,7 +66,7 @@ public class GamePanel extends JPanel {
             monster.checkForOverHeal();
             monster.checkIfShouldDie(monster.col, monster.row);
             if (Objects.equals(monster.entityName, "keeper_red")) {
-                //monster.monsterMove();
+                monster.monsterMove();
                 System.out.println(monster.col+" "+monster.row);
             }
 
@@ -100,13 +99,13 @@ public class GamePanel extends JPanel {
 
         map.draw(g2);
 
-        List<OBJ> objectsToDraw = new ArrayList<>();
+        List<Entity> objectsToDraw = new ArrayList<>();
         objectsToDraw.add(player);
         objectsToDraw.addAll(objectManager.entities);
-        objectsToDraw.sort(Comparator.comparing(OBJ::getY));
+        objectsToDraw.sort(Comparator.comparing(Entity::getY));
 
-        for (OBJ obj : objectsToDraw) {
-            obj.draw(g2);
+        for (Entity entity : objectsToDraw) {
+            entity.draw(g2);
         }
 
         turnManager.draw(g2);

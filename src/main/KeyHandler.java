@@ -32,73 +32,57 @@ public class KeyHandler extends KeyAdapter {
             //MOVEMENT
             if (key == KeyEvent.VK_W) {
                 wPressed = true;
-//                if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType != -1) {
+                //if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType != -1) {
 //                    gp.player.move(-1, 0);
 //                    gp.turnManager.globalTurn++;
 //
 //                    //gp.map.createMap(gp.map.dx -= gp.map.tileWidth/2, gp.map.dy += gp.map.tileHeight/2);
-//                }
-//                for (Entity entity : gp.objectManager.entities) {
-//                    entity.row -= 1;
-//                    entity.setPositions();
-//                    entity.setSize();
-//                }
-                gp.player.row += 1;
-                gp.map.dx -= gp.map.tileWidth/2;
-                gp.map.dy += gp.map.tileHeight/2;
+
+
+                    gp.player.col -= 1;
+                    gp.map.dx -= gp.map.tileWidth/2;
+                    gp.map.dy += gp.map.tileHeight/2;
+
+                //}
             }
             if (key == KeyEvent.VK_S) {
                 sPressed = true;
-//                if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType != -1) {
+                //if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType != -1) {
 //                    gp.player.move(1, 0);
 //                    gp.turnManager.globalTurn++;
 //
 //                    //gp.map.createMap(gp.map.dx += gp.map.tileWidth/2, gp.map.dy -= gp.map.tileHeight/2);
-//                }
 
-//                for (Entity entity : gp.objectManager.entities) {
-//                    entity.row += 1;
-//                    entity.setPositions();
-//                    entity.setSize();
-//                }
-                gp.player.row -= 1;
-                gp.map.dx += gp.map.tileWidth/2;
-                gp.map.dy -= gp.map.tileHeight/2;
+                    gp.player.col += 1;
+                    gp.map.dx += gp.map.tileWidth/2;
+                    gp.map.dy -= gp.map.tileHeight/2;
+                //}
             }
             if (key == KeyEvent.VK_A) {
                 aPressed = true;
-//                if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType != -1) {
+                //if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType != -1) {
 //                    gp.player.move(0, -1);
 //                    gp.turnManager.globalTurn++;
 //
 //                    //gp.map.createMap(gp.map.dx += gp.map.tileWidth/2, gp.map.dy += gp.map.tileHeight/2);
-//                }
 
-//                for (Entity entity : gp.objectManager.entities) {
-//                    entity.col += 1;
-//                    entity.setPositions();
-//                    entity.setSize();
-//                }
-                gp.player.col -= 1;
-                gp.map.dx += gp.map.tileWidth/2;
-                gp.map.dy += gp.map.tileHeight/2;
+                    gp.player.row -= 1;
+                    gp.map.dx += gp.map.tileWidth/2;
+                    gp.map.dy += gp.map.tileHeight/2;
+                //}
             }
             if (key == KeyEvent.VK_D) {
                 dPressed = true;
-                if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType != -1) {
-                    gp.player.move(0, 1);
-                    gp.turnManager.globalTurn++;
+                //if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType != -1) {
+//                    gp.player.move(0, 1);
+//                    gp.turnManager.globalTurn++;
 
                     //gp.map.createMap(gp.map.dx -= gp.map.tileWidth/2, gp.map.dy -= gp.map.tileHeight/2);
-                }
-//                for (Entity entity : gp.objectManager.entities) {
-//                    entity.col -= 1;
-//                    entity.setPositions();
-//                    entity.setSize();
-//                }
-                gp.player.col += 1;
-                gp.map.dx -= gp.map.tileWidth/2;
-                gp.map.dy -= gp.map.tileHeight/2;
+
+                    gp.player.row += 1;
+                    gp.map.dx -= gp.map.tileWidth/2;
+                    gp.map.dy -= gp.map.tileHeight/2;
+                //}
             }
             //ATTACK
             if (key == KeyEvent.VK_UP) {

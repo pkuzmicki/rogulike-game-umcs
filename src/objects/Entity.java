@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Entity extends OBJ{
+public class Entity {
     GamePanel gp;
     public BufferedImage entityImage;
     public String entityName;
@@ -39,7 +39,6 @@ public class Entity extends OBJ{
         };
 
         this.y -= switch (entityID) {
-            case 1 -> 0;
             case 11, 12, 13, 14 -> 65;
             case 21, 22 -> entityImage.getHeight() / 2;
             default -> 0;
@@ -78,7 +77,6 @@ public class Entity extends OBJ{
         }
     }
 
-    @Override
     public int getY() {
         return this.y;
     }
@@ -98,8 +96,7 @@ public class Entity extends OBJ{
         }
     }
 
-    @Override
     public void draw(Graphics2D g2) {
-        g2.drawImage(entityImage, x, y, null);
+        g2.drawImage(entityImage, x + gp.map.dx, y + gp.map.dy, null);
     }
 }

@@ -3,6 +3,8 @@ package objects;
 
 import main.GamePanel;
 
+import java.awt.*;
+
 public class Player extends Monster {
     public int screenX = gp.screenWidth/2 - entityImage.getWidth()/2;
     public int screenY = gp.screenHeight/2 - entityImage.getHeight()/2;
@@ -18,5 +20,13 @@ public class Player extends Monster {
     public void setPositions() {
         x = screenX;
         y = screenY;
+    }
+
+    public int getY() {
+        return this.screenY;
+    }
+
+    public void draw(Graphics2D g2) {
+        g2.drawImage(entityImage, screenX, screenY, null);
     }
 }
