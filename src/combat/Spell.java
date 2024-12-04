@@ -10,10 +10,9 @@ public class Spell {
     GamePanel gp;
     Random random;
     int damage;
-    //String name;
     //boolean canUseOnObstacles = false;
 
-    Spell(GamePanel gamePanel, int dmg) {
+    public Spell(GamePanel gamePanel, int dmg) {
         this.gp = gamePanel;
         this.damage = dmg;
         random = new Random();
@@ -35,10 +34,11 @@ public class Spell {
     //efekt czaru np zadanie obrazenia, uleczenie, nadanie jakiegos statusu itp
     public void effect(int col, int row) {
         for (Entity entity : gp.objectManager.entities) {
-            if (entity.col == col && entity.row == row && entity.entityID <= 20) {
+            if (entity.col == col && entity.row == row && entity.id <= 20) {
                 Monster monster = (Monster) entity;
                 monster.currentHP -= damage * multiplier();
-                System.out.println(monster.entityName + monster.currentHP);
+                System.out.println(monster.name + monster.currentHP);
+                monster.checkIfShouldDie(monster.col, monster.row);
             }
         }
     }

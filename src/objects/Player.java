@@ -6,8 +6,8 @@ import main.GamePanel;
 import java.awt.*;
 
 public class Player extends Monster {
-    public int screenX = gp.screenWidth/2 - entityImage.getWidth()/2;
-    public int screenY = gp.screenHeight/2 - entityImage.getHeight()/2;
+    public int screenX = gp.screenWidth/2 - image.getWidth()/2;
+    public int screenY = gp.screenHeight/2 - image.getHeight()/2;
     //public int col;
     //public int row;
 
@@ -34,13 +34,13 @@ public class Player extends Monster {
             row += rowMove;
             //setPositions();
             //setSize();
-            gp.objectManager.entityMap[col][row] = entityID;
+            gp.objectManager.entityMap[col][row] = id;
             gp.objectManager.entityMap[prevCol][prevRow] = 0;
             gp.repaint();
         }
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(entityImage, screenX, screenY, null);
+        g2.drawImage(image, screenX, screenY, null);
     }
 }

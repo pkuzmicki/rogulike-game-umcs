@@ -10,15 +10,15 @@ import java.util.Objects;
 
 public class Entity {
     GamePanel gp;
-    public BufferedImage entityImage;
-    public String entityName;
-    public int entityID;
+    public BufferedImage image;
+    public String name;
+    public int id;
     public int x, y;
     public int col, row;
 
     public Entity(GamePanel gamePanel, int col, int row, int entityID){
         this.gp = gamePanel;
-        this.entityID = entityID;
+        this.id = entityID;
         this.col = col;
         this.row = row;
         loadImage();
@@ -33,20 +33,20 @@ public class Entity {
     }
 
     public void setSize(){
-        this.x += switch (entityID) {
+        this.x += switch (id) {
             case 1 -> 0;
-            default -> entityImage.getWidth();
+            default -> image.getWidth();
         };
 
-        this.y -= switch (entityID) {
+        this.y -= switch (id) {
             case 11, 12, 13, 14 -> 65;
-            case 21, 22 -> entityImage.getHeight() / 2;
+            case 21, 22 -> image.getHeight() / 2;
             default -> 0;
         };
     }
 
     public void setEntityName() {
-        entityName = switch (entityID) {
+        name = switch (id) {
             case 1 -> "player";
             case 11 -> "keeper_green";
             case 12 -> "keeper_red";
@@ -59,7 +59,7 @@ public class Entity {
     }
 
     public void loadImage(){
-        String path = switch (entityID){
+        String path = switch (id){
             case 1 -> "/sprites/entities/crazy_wizard.png";
             case 11 -> "/sprites/entities/keeper_green.png";
             case 12 -> "/sprites/entities/keeper.png";
@@ -71,7 +71,7 @@ public class Entity {
         };
 
         try {
-            entityImage = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
+            image = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -90,13 +90,13 @@ public class Entity {
             row += rowMove;
             setPositions();
             setSize();
-            gp.objectManager.entityMap[col][row] = entityID;
+            gp.objectManager.entityMap[col][row] = id;
             gp.objectManager.entityMap[prevCol][prevRow] = 0;
             gp.repaint();
         }
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(entityImage, x + gp.map.dx, y + gp.map.dy, null);
+        g2.drawImage(image, x + gp.map.dx, y + gp.map.dy, null);
     }
 }

@@ -3,9 +3,9 @@ package combat;
 import main.GamePanel;
 
 public class RangeSpell extends Spell{
-    int range;
+    public int range;
 
-    RangeSpell(GamePanel gamePanel, int dmg, int range) {
+    public RangeSpell(GamePanel gamePanel, int dmg, int range) {
         super(gamePanel, dmg);
         this.range = range;
     }
@@ -16,8 +16,9 @@ public class RangeSpell extends Spell{
             gp.map.tileMap[col][row].setTileType(2);
             col += colOffset;
             row += rowOffset;
-            gp.repaint();
         }
+        gp.turnManager.globalTurn++;
+        gp.repaint();
     }
 
 }

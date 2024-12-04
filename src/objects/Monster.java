@@ -2,8 +2,6 @@ package objects;
 
 import main.GamePanel;
 
-import java.util.Random;
-
 public class Monster extends Entity{
     public double maxHP;
     public double currentHP;
@@ -11,7 +9,7 @@ public class Monster extends Entity{
 
     public Monster(GamePanel gamePanel, int col, int row, int monsterId){
         super(gamePanel, col, row, monsterId);
-        setMonsterStats(this, entityName);
+        setMonsterStats(this, name);
     }
 
     private static void setMonsterStats(Monster monster, String monsterName) {
@@ -47,7 +45,7 @@ public class Monster extends Entity{
 
     public void checkIfShouldDie(int col, int row) {
         if (currentHP <= 0) {
-            if (entityID == 1) {
+            if (id == 1) {
                 System.out.println("YOU DIED!");
                 gp.ui.isGameOver = true;
             } else {

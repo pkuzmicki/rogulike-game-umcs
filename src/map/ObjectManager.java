@@ -34,10 +34,13 @@ public class ObjectManager {
         createEntity(1, 0, 14);
         createEntity(4, 1, 13);
 
+        //createEntity(2, 0, 14);
+        //createEntity(2, 1, 13);
+
 
         //createEntity(0, 3, 21);
 
-        //printEntityMap();
+
     }
 
     void setPlayerOnMap() {

@@ -58,7 +58,8 @@ public class GamePanel extends JPanel {
     }
 
     public void update() {
-
+        objectManager.printEntityMap();
+        System.out.println();
         //System.out.println(player.col +" "+player.row);
 
         for (Entity entity : objectManager.entities) {
@@ -73,10 +74,10 @@ public class GamePanel extends JPanel {
         if (turnManager.globalTurn % 2 != 0) {
             for (Entity entity : objectManager.entities) {
                 Monster monster = (Monster) entity;
-                if (Objects.equals(monster.entityName, "keeper_yellow")) {
+                if (Objects.equals(monster.name, "keeper_yellow")) {
                     castingManager.testicularTorsion.cast(monster.col, monster.row + 1);
                 }
-                if (Objects.equals(monster.entityName, "keeper_red")) {
+                if (Objects.equals(monster.name, "keeper_red")) {
                     monster.monsterMove();
                     //System.out.println(monster.col+" "+monster.row);
                 }
