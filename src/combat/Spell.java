@@ -44,7 +44,7 @@ public class Spell {
     }
 
     public double multiplier() {
-        double[] multipliers = {0.5, 0.7, 0.9, 1.0, 1.5};
+        double[] multipliers = {0.5, 0.7, 0.9, 1.0, 2};
         double[] probabilities = {0.04, 0.10, 0.25, 0.6, 0.01};
 
         double randomNumber = random.nextDouble();

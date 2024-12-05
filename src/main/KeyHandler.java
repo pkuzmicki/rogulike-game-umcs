@@ -105,6 +105,9 @@ public class KeyHandler extends KeyAdapter {
                 onePressed = false;
                 twoPressed = false;
             }
+            if (key == KeyEvent.VK_X) {
+                gp.turnManager.globalTurn++;
+            }
 
             gp.update();
             gp.repaint();

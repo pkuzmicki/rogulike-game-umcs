@@ -36,7 +36,7 @@ public class Player extends Monster {
             //setSize();
             gp.objectManager.entityMap[col][row] = id;
             gp.objectManager.entityMap[prevCol][prevRow] = 0;
-            gp.repaint();
+            //gp.repaint();
         }
     }
 
