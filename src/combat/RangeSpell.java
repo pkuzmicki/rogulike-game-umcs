@@ -17,7 +17,6 @@ public class RangeSpell extends Spell{
             col += colOffset;
             row += rowOffset;
         }
-        gp.turnManager.globalTurn++;
         gp.repaint();
     }
 

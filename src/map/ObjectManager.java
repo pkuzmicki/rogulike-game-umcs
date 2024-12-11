@@ -39,15 +39,13 @@ public class ObjectManager {
 
 
         //createEntity(0, 3, 21);
-
-
     }
 
     void setPlayerOnMap() {
         entityMap[gamePanel.player.col][gamePanel.player.row] = 1;
     }
 
-    void createEntity(int col, int row, int entityId){
+    public void createEntity(int col, int row, int entityId){
         if (entityId > 10 && entityId <= 20) {
             Monster monster = new Monster(gamePanel, col, row, entityId);
             entities.add(monster);

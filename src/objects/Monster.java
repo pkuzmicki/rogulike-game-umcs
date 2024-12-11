@@ -1,5 +1,6 @@
 package objects;
 
+import combat.Spell;
 import main.GamePanel;
 
 public class Monster extends Entity{
@@ -53,6 +54,13 @@ public class Monster extends Entity{
                 gp.objectManager.entityMap[col][row] = 0;
             }
         }
+    }
+
+    public void attack(Spell spell) {
+        spell.cast(col - 1, row);
+        spell.cast(col + 1, row);
+        spell.cast(col - 1, row);
+        spell.cast(col + 1, row);
     }
 
     int moveCounter = 0;

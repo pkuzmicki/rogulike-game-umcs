@@ -12,8 +12,8 @@ public class Map {
     public final int tileWidth = 151;
     public final int tileHeight = 51;
 
-    public int maxWorldCol = 10;
-    public int maxWorldRow = 12;
+    public int maxWorldCol = 20;
+    public int maxWorldRow = 20;
 
     public Tile[][] tileMap;
 
@@ -104,7 +104,9 @@ public class Map {
     public void draw(Graphics2D g2){
         for (int col = 0; col < maxWorldCol; col++) {
             for (int row = 0; row < maxWorldRow; row++) {
-                g2.drawImage(tileMap[col][row].tileImage, tileMap[col][row].x + dx, tileMap[col][row].y + dy, null);
+                if (tileMap[col][row].x + dx > -tileWidth && tileMap[col][row].x + dx < gp.screenWidth & tileMap[col][row].y + dy > -tileHeight && tileMap[col][row].y + dy < gp.screenHeight) {
+                    g2.drawImage(tileMap[col][row].tileImage, tileMap[col][row].x + dx, tileMap[col][row].y + dy, null);
+                }
             }
         }
     }

@@ -8,15 +8,12 @@ public class CastingManager {
     public Spell testicularTorsion;
     public RangeSpell lifebloom;
     //public RangeSpell rollingMagma;
-    //public Spell testSpell;
 
     public CastingManager(GamePanel gamePanel) {
         this.gp = gamePanel;
         testicularTorsion = new Spell(gamePanel, 5);
         lifebloom = new RangeSpell(gamePanel, 3, 3);
-
         //rollingMagma = new RangeSpell(gamePanel, 5, 3 );
-        //testSpell = new Spell(gamePanel, 5);
     }
 
     public void playerCast(Spell spell) {

@@ -77,8 +77,8 @@ public class Entity {
         }
     }
 
-    public int getY() {
-        return this.y;
+    public int getHeight() {
+        return col + row;
     }
 
     //przeniesc sprawdzanie kolizji i mape postaci tutaj albo gdzies do nowej klasy moze
@@ -97,6 +97,8 @@ public class Entity {
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(image, x + gp.map.dx, y + gp.map.dy, null);
+        if (x + gp.map.dx > -gp.map.tileWidth && x + gp.map.dx < gp.screenWidth & y + gp.map.dy > -gp.map.tileHeight && y + gp.map.dy < gp.screenHeight) {
+            g2.drawImage(image, x + gp.map.dx, y + gp.map.dy, null);
+        }
     }
 }

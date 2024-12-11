@@ -31,6 +31,7 @@ public class GamePanel extends JPanel {
     public TurnManager turnManager;
     public CastingManager castingManager;
 
+    public Commands commands;
     public UI ui;
 
     public GamePanel(){
@@ -50,36 +51,33 @@ public class GamePanel extends JPanel {
         turnManager = new TurnManager(this);
         castingManager = new CastingManager(this);
 
+        commands = new Commands(this);
         ui = new UI(this);
 
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
-
     }
 
     public void update() {
-        objectManager.printEntityMap();
-        System.out.println();
+        //commands.getCommand();
+        //objectManager.printEntityMap();
+        //System.out.println();
         //System.out.println(player.col +" "+player.row);
 
         for (Entity entity : objectManager.entities) {
             Monster monster = (Monster) entity;
             monster.checkForOverHeal();
             monster.checkIfShouldDie(monster.col, monster.row);
-
-
             repaint();
+
         }
 
         if (turnManager.globalTurn % 2 != 0) {
             for (Entity entity : objectManager.entities) {
                 Monster monster = (Monster) entity;
-                if (Objects.equals(monster.name, "keeper_yellow")) {
-                    castingManager.testicularTorsion.cast(monster.col, monster.row + 1);
-                }
-                if (Objects.equals(monster.name, "keeper_red")) {
-                    monster.monsterMove();
-                    //System.out.println(monster.col+" "+monster.row);
+                if (monster.id != 1){
+                    monster.attack(castingManager.testicularTorsion);
+                    //System.out.println(monster.name);
                 }
             }
         }
@@ -104,10 +102,8 @@ public class GamePanel extends JPanel {
 
         map.draw(g2);
 
-        List<Entity> objectsToDraw = new ArrayList<>();
-        objectsToDraw.add(player);
-        objectsToDraw.addAll(objectManager.entities);
-        objectsToDraw.sort(Comparator.comparing(Entity::getY));
+        List<Entity> objectsToDraw = new ArrayList<>(objectManager.entities);
+        objectsToDraw.sort(Comparator.comparing(Entity::getHeight));
 
         for (Entity entity : objectsToDraw) {
             entity.draw(g2);

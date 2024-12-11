@@ -43,6 +43,15 @@ public class Spell {
         }
     }
 
+//    //wywolanie czaru w podanym miejscu
+    public void cast(int col, int row) {
+        effect(col, row);
+        if (col > 0 && col < gp.map.maxWorldCol && row > 0 && col < gp.map.maxWorldRow) {
+            gp.map.tileMap[col][row].setTileType(2);
+        }
+        gp.repaint();
+    }
+
     public double multiplier() {
         double[] multipliers = {0.5, 0.7, 0.9, 1.0, 2};
         double[] probabilities = {0.04, 0.10, 0.25, 0.6, 0.01};
@@ -58,11 +67,5 @@ public class Spell {
         return 1;
     }
 
-    //wywolanie czaru w podanym miejscu
-    public void cast(int col, int row) {
-        effect(col, row);
-        gp.map.tileMap[col][row].setTileType(2);
-        gp.turnManager.globalTurn++;
-        gp.repaint();
-    }
+
 }

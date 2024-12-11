@@ -8,13 +8,10 @@ import java.awt.*;
 public class Player extends Monster {
     public int screenX = gp.screenWidth/2 - image.getWidth()/2;
     public int screenY = gp.screenHeight/2 - image.getHeight()/2;
-    //public int col;
-    //public int row;
 
     public Player(GamePanel gamePanel, int col, int row, int entityID) {
         super(gamePanel, col, row, entityID);
-//        this.col = col;
-//        this.row = row;
+        //setPositions();
     }
 
     public void setPositions() {
@@ -32,11 +29,8 @@ public class Player extends Monster {
             int prevRow = row;
             col += colMove;
             row += rowMove;
-            //setPositions();
-            //setSize();
             gp.objectManager.entityMap[col][row] = id;
             gp.objectManager.entityMap[prevCol][prevRow] = 0;
-            //gp.repaint();
         }
     }
 
