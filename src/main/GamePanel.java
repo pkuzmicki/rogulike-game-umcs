@@ -13,7 +13,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class GamePanel extends JPanel {
     public int screenWidth = 640;
