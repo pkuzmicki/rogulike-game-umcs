@@ -57,10 +57,23 @@ public class Monster extends Entity{
     }
 
     public void attack(Spell spell) {
-        spell.cast(col - 1, row);
-        spell.cast(col + 1, row);
-        spell.cast(col - 1, row);
-        spell.cast(col + 1, row);
+        for (Entity entity : gp.objectManager.entities){
+            Monster monster = (Monster) entity;
+            if (monster.id < 20){
+                if (monster.col == col - 1 && monster.row == row){
+                    spell.cast(col - 1, row);
+                }
+                if (monster.col == col + 1 && monster.row == row){
+                    spell.cast(col + 1, row);
+                }
+                if (monster.col == col && monster.row == row - 1){
+                    spell.cast(col, row - 1);
+                }
+                if (monster.col == col && monster.row == row + 1){
+                    spell.cast(col, row + 1);
+                }
+            }
+        }
     }
 
     int moveCounter = 0;

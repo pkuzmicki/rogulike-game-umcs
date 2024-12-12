@@ -68,15 +68,14 @@ public class GamePanel extends JPanel {
             monster.checkForOverHeal();
             monster.checkIfShouldDie(monster.col, monster.row);
             repaint();
-
         }
 
         if (turnManager.globalTurn % 2 != 0) {
             for (Entity entity : objectManager.entities) {
                 Monster monster = (Monster) entity;
                 if (monster.id != 1){
+
                     monster.attack(castingManager.testicularTorsion);
-                    //System.out.println(monster.name);
                 }
             }
         }

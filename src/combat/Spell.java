@@ -45,11 +45,11 @@ public class Spell {
 
 //    //wywolanie czaru w podanym miejscu
     public void cast(int col, int row) {
-        effect(col, row);
-        if (col > 0 && col < gp.map.maxWorldCol && row > 0 && col < gp.map.maxWorldRow) {
+        if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow) {
+            effect(col, row);
             gp.map.tileMap[col][row].setTileType(2);
+            gp.repaint();
         }
-        gp.repaint();
     }
 
     public double multiplier() {
