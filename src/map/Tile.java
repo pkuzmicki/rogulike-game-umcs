@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Tile {
     public BufferedImage tileImage;
-    public boolean collision = false;
+    //public boolean collision = false;
     public int tileType;
     public int x, y;
     public int col, row;

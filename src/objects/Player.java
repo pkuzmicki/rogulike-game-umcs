@@ -2,25 +2,25 @@
 package objects;
 
 import main.GamePanel;
+import objects.items.Rune;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends Monster {
     public int screenX = gp.screenWidth/2 - image.getWidth()/2;
     public int screenY = gp.screenHeight/2 - image.getHeight()/2;
 
+    ArrayList<Rune> playerRunes = new ArrayList<>(4);
+
     public Player(GamePanel gamePanel, int col, int row, int entityID) {
         super(gamePanel, col, row, entityID);
-        //setPositions();
+
     }
 
     public void setPositions() {
         x = screenX;
         y = screenY;
-    }
-
-    public int getY() {
-        return this.screenY;
     }
 
     public void move(int colMove, int rowMove){

@@ -28,6 +28,10 @@ public class CastingManager {
             };
         }
 
+        if (gp.keyHandler.xPressed) {
+            spell.cast(gp.player.col, gp.player.row);
+        }
+
         if (colOffset != 0 || rowOffset != 0 && gp.keyHandler.onePressed){
             spell.cast(gp.player.col + colOffset, gp.player.row + rowOffset);
         }

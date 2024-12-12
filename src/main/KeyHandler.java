@@ -11,6 +11,7 @@ public class KeyHandler extends KeyAdapter {
     public boolean wPressed, aPressed, sPressed, dPressed;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean onePressed = true, twoPressed, threePressed, fourPressed;
+    public boolean xPressed;
 
     public KeyHandler(GamePanel gamePanel){
         this.gp = gamePanel;
@@ -85,6 +86,10 @@ public class KeyHandler extends KeyAdapter {
                 if (key == KeyEvent.VK_RIGHT) {
                     rightPressed = true;
                 }
+
+                if (key == KeyEvent.VK_X) {
+                    xPressed = true;
+                }
             }
             //SPELL SELECTION
             if (key == KeyEvent.VK_1) {
@@ -140,6 +145,10 @@ public class KeyHandler extends KeyAdapter {
         }
         if (key == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+        }
+
+        if (key == KeyEvent.VK_X) {
+            xPressed = false;
         }
     }
 }

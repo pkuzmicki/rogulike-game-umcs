@@ -28,8 +28,8 @@ public class ObjectManager {
         //createEntity(2, 1, 11);
 
         createEntity(0, 3, 11);
-        createEntity(0, 4, 11);
-        createEntity(0, 5, 11);
+        //createEntity(0, 4, 11);
+        //createEntity(0, 5, 11);
         createEntity(0, 6, 11);
         createEntity(1, 0, 14);
         createEntity(4, 1, 13);
