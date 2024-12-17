@@ -150,5 +150,12 @@ public class KeyHandler extends KeyAdapter {
         if (key == KeyEvent.VK_X) {
             xPressed = false;
         }
+        if (key == KeyEvent.VK_M) {
+            gp.map.maxWorldCol = 20;
+            gp.map.maxWorldRow = 20;
+            gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY);
+            gp.objectManager.initializeMap();
+            //gp.generation.generator1();
+        }
     }
 }

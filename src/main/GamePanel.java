@@ -2,6 +2,7 @@ package main;
 
 import combat.CastingManager;
 import combat.TurnManager;
+import map.DungeonGeneration;
 import map.ObjectManager;
 import objects.Entity;
 import objects.Monster;
@@ -19,6 +20,7 @@ public class GamePanel extends JPanel {
     public int screenHeight = 480;
 
     public Map map;
+    public DungeonGeneration generation;
 
     public Camera camera;
     public Player player;
@@ -39,6 +41,7 @@ public class GamePanel extends JPanel {
         setFocusable(true);
 
         map = new Map(this);
+        generation = new DungeonGeneration(this);
 
         camera = new Camera(this);
         player = new Player(this, 1, 1, 1);

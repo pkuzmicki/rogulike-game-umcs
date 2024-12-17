@@ -17,28 +17,33 @@ public class ObjectManager {
     public ObjectManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
 
-        entityMap = new int[gamePanel.map.maxWorldCol][gamePanel.map.maxWorldRow];
+        initializeMap();
 
-        setPlayerOnMap();
-        entities.add(gamePanel.player);
         //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
 
 
-        createEntity(4, 4, 12);
-        //createEntity(2, 1, 11);
-
-        createEntity(0, 3, 11);
-        //createEntity(0, 4, 11);
-        //createEntity(0, 5, 11);
-        createEntity(0, 6, 11);
-        createEntity(1, 0, 14);
-        createEntity(4, 1, 13);
+//        createEntity(4, 4, 12);
+//        //createEntity(2, 1, 11);
+//
+//        createEntity(0, 3, 11);
+//        //createEntity(0, 4, 11);
+//        //createEntity(0, 5, 11);
+//        createEntity(0, 6, 11);
+//        createEntity(1, 0, 14);
+//        createEntity(4, 1, 13);
 
         //createEntity(2, 0, 14);
         //createEntity(2, 1, 13);
 
 
         //createEntity(0, 3, 21);
+    }
+
+    public void initializeMap() {
+        entityMap = new int[gamePanel.map.maxWorldCol][gamePanel.map.maxWorldRow];
+
+        setPlayerOnMap();
+        entities.add(gamePanel.player);
     }
 
     void setPlayerOnMap() {
