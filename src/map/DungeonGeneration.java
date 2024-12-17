@@ -107,8 +107,8 @@ public class DungeonGeneration {
     public void generator3() {
         int startCol = 1;
         int startRow = 1;
-        int endCol = gp.map.maxWorldCol;
-        int endRow = gp.map.maxWorldRow;
+        int endCol = gp.map.maxWorldCol - 1;
+        int endRow = gp.map.maxWorldRow - 1;
 
         int nextCol = startCol;
         int nextRow = startRow;
@@ -117,26 +117,42 @@ public class DungeonGeneration {
         //for (int i = 0; i < 100; i++) {
         while (gp.map.tileMap[endCol][endRow].tileType != 1) {
             nextSide = random.nextInt(0, 4);
-            if (nextCol > 0 && nextCol < gp.map.maxWorldCol && nextRow > 0 && nextRow < gp.map.maxWorldRow) {
+            //if (nextCol > 0 && nextCol < gp.map.maxWorldCol && nextRow > 0 && nextRow < gp.map.maxWorldRow) {
                 switch (nextSide) {
                     case 0:
                         nextRow--;
-                        gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        if (nextRow >= 0) {
+                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        } else {
+                            nextRow++;
+                        }
                         break;
                     case 1:
                         nextRow++;
-                        gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        if (nextRow < gp.map.maxWorldRow) {
+                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        } else {
+                            nextRow--;
+                        }
                         break;
                     case 2:
                         nextCol--;
-                        gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        if (nextCol >= 0) {
+                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        } else {
+                            nextCol++;
+                        }
                         break;
                     case 3:
                         nextCol++;
-                        gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        if (nextCol < gp.map.maxWorldCol) {
+                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
+                        } else {
+                            nextCol--;
+                        }
                         break;
                 }
-            }
+            //}
         }
     }
 
