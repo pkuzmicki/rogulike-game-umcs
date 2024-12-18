@@ -16,7 +16,8 @@ public class DungeonGeneration {
         random = new Random();
         //generator1();
         //generator2();
-        generator3();
+        //generator3();
+        generator4();
     }
 
     //POKOJE Z DLUGIMI KORYTARZAMI
@@ -154,6 +155,100 @@ public class DungeonGeneration {
                 }
             //}
         }
+    }
+
+    public void generator4() {
+        int startCol = 1;
+        int startRow = 1;
+        int endCol = gp.map.maxWorldCol - 1;
+        int endRow = gp.map.maxWorldRow - 1;
+
+        int lowCol = startCol;
+        int lowRow = startRow;
+        int highCol = endCol;
+        int highRow = endRow;
+
+        int nextSideForLow;
+        int nextSideForHigh;
+
+        for (int i = 0; i < 300; i++) {
+            nextSideForLow = random.nextInt(0, 4);
+            switch (nextSideForLow) {
+                case 0:
+                    lowRow--;
+                    if (lowRow >= 0) {
+                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
+                    } else {
+                        lowRow++;
+                    }
+                    break;
+                case 1:
+                    lowRow++;
+                    if (lowRow < gp.map.maxWorldRow) {
+                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
+                    } else {
+                        lowRow--;
+                    }
+                    break;
+                case 2:
+                    lowCol--;
+                    if (lowCol >= 0) {
+                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
+                    } else {
+                        lowCol++;
+                    }
+                    break;
+                case 3:
+                    lowCol++;
+                    if (lowCol < gp.map.maxWorldCol) {
+                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
+                    } else {
+                        lowCol--;
+                    }
+                    break;
+            }
+            nextSideForHigh = random.nextInt(0, 4);
+            switch (nextSideForHigh) {
+                case 0:
+                    highRow--;
+                    if (highRow >= 0) {
+                        gp.map.tileMap[highCol][highRow].setTileType(1);
+                    } else {
+                        highRow++;
+                    }
+                    break;
+                case 1:
+                    highRow++;
+                    if (highRow < gp.map.maxWorldRow) {
+                        gp.map.tileMap[highCol][highRow].setTileType(1);
+                    } else {
+                        highRow--;
+                    }
+                    break;
+                case 2:
+                    highCol--;
+                    if (highCol >= 0) {
+                        gp.map.tileMap[highCol][highRow].setTileType(1);
+                    } else {
+                        highCol++;
+                    }
+                    break;
+                case 3:
+                    highCol++;
+                    if (highCol < gp.map.maxWorldCol) {
+                        gp.map.tileMap[highCol][highRow].setTileType(1);
+                    } else {
+                        highCol--;
+                    }
+                    break;
+            }
+
+        }
+        gp.map.printMap();
+    }
+
+    void floodFill(int[][] tileMap, int x, int y, int newType){
+
     }
 
 
