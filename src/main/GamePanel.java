@@ -16,8 +16,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GamePanel extends JPanel {
-    public int screenWidth = 640;
-    public int screenHeight = 480;
+    //public int screenWidth = 640;
+    //public int screenHeight = 480;
+
+    public int screenWidth = 1920;
+    public int screenHeight = 1080;
 
     public Map map;
     public DungeonGeneration generation;
@@ -65,6 +68,8 @@ public class GamePanel extends JPanel {
         //objectManager.printEntityMap();
         //System.out.println();
         //System.out.println(player.col +" "+player.row);
+
+        //map.tileMap[player.col][player.row].setTileType(0);
 
         for (Entity entity : objectManager.entities) {
             Monster monster = (Monster) entity;

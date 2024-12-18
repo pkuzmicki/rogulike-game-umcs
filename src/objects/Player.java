@@ -15,7 +15,6 @@ public class Player extends Monster {
 
     public Player(GamePanel gamePanel, int col, int row, int entityID) {
         super(gamePanel, col, row, entityID);
-
     }
 
     public void setPositions() {

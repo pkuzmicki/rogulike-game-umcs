@@ -13,7 +13,7 @@ public class RangeSpell extends Spell{
     public void cast(int col, int row, int colOffset, int rowOffset) {
         for (int i = 0; i < range; i++) {
             effect(col, row);
-            gp.map.tileMap[col][row].setTileType(2);
+            gp.map.tileMap[col][row].setTileType(3);
             col += colOffset;
             row += rowOffset;
         }

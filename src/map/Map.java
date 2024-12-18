@@ -104,6 +104,7 @@ public class Map {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     public void draw(Graphics2D g2){

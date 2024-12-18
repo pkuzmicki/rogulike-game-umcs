@@ -1,6 +1,5 @@
 package map;
 
-import combat.RangeSpell;
 import main.GamePanel;
 
 import java.util.ArrayList;
@@ -14,44 +13,53 @@ public class DungeonGeneration {
     public DungeonGeneration(GamePanel gamePanel) {
         this.gp = gamePanel;
         random = new Random();
-        //generator1();
+        generator1();
         //generator2();
         //generator3();
-        generator4();
+        //generator4();
     }
 
-    //POKOJE Z DLUGIMI KORYTARZAMI
     public void generator1() {
-        int[] roomX = new int[20];
-        int[] roomY = new int[20];
+        int nextRoomID = random.nextInt(1, 4);
+        gp.map.createRoom(0, 0, "/maps/rooms/room0" + nextRoomID + ".txt");
 
-        for (int i = 0; i < 10; i++) {
-            roomX[i] = random.nextInt(0, gp.map.maxWorldCol - 3);
-            roomY[i] = random.nextInt(0, gp.map.maxWorldRow - 3);
-            gp.map.createRoom(roomX[i], roomY[i], "/maps/room01.txt");
+        int nextCol = 0;
+        int nextRow = 0;
 
-
-            int pathX = Math.abs(roomX[i+1] - roomX[i]);
-            int pathY = Math.abs(roomY[i+1] - roomY[i]);
-            System.out.println(pathX +" "+pathY);
-
-            for(int x = roomX[i]; x < pathX; x++){
-                gp.map.tileMap[x][roomY[i]].setTileType(1);
-            }
-            for(int y = roomX[i]; y < pathY; y++){
-                gp.map.tileMap[roomX[i]][y].setTileType(1);
-            }
-
-
+        switch(nextRoomID) {
+            case 1:
+                nextCol++;
+                nextRow++;
+                break;
+            case 2:
+                nextCol+=2;
+                nextRow++;
+                break;
+            case 3:
+                nextCol+=2;
+                nextRow+=2;
+                break;
         }
+
+        int direction = random.nextInt(0, 4);
+        int nextCorridorLength = random.nextInt(3, 11);
+        for (int i = 0; i < nextCorridorLength; i++) {
+            gp.map.tileMap[nextCol][nextRow].setTileType(1);
+            switch (direction){
+                case 0 -> nextRow++;
+                case 1 -> nextRow--;
+                case 2 -> nextCol++;
+                case 3 -> nextCol--;
+            }
+        }
+
+
         gp.map.printMap();
     }
 
     //POKOJE POLACZONE ZE SOBA JAK W ISAACU TYLKO BEZ DRZWI
     //MOZNA ZMODIFIKOWAC TAK ZE SIE Z ODSTEPEM POMIEDZY KAZDY POKOJ RESPI I DODAC DRZWI POMIEDZT NIMI
     public void generator2(){
-        int maxRooms = 20;
-        int minRooms;
         int mapCenterCol = gp.map.maxWorldCol/2 - 1;
         int mapCenterRow = gp.map.maxWorldRow/2 - 1;
 
@@ -60,7 +68,7 @@ public class DungeonGeneration {
 
         int howManyNeighbouringRooms = random.nextInt(2, 5);
 
-        gp.map.createRoom(mapCenterCol, mapCenterRow, "/maps/room01.txt");
+        gp.map.createRoom(mapCenterCol, mapCenterRow, "/maps/rooms/room01.txt");
 
         int nextSide;
         List<Integer> possibleNeighbours = new ArrayList<>();
@@ -79,19 +87,19 @@ public class DungeonGeneration {
                     switch (nextSide) {
                         case 1:
                             roomRow -= 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/room01.txt");
+                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
                             break;
                         case 2:
                             roomRow += 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/room01.txt");
+                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
                             break;
                         case 3:
                             roomCol -= 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/room01.txt");
+                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
                             break;
                         case 4:
                             roomCol += 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/room01.txt");
+                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
                             break;
                     }
                 }
@@ -207,6 +215,8 @@ public class DungeonGeneration {
                     }
                     break;
             }
+            gp.map.tileMap[0][0].setTileType(2);
+
             nextSideForHigh = random.nextInt(0, 4);
             switch (nextSideForHigh) {
                 case 0:
@@ -242,7 +252,7 @@ public class DungeonGeneration {
                     }
                     break;
             }
-
+            gp.map.tileMap[gp.map.maxWorldCol-1][gp.map.maxWorldRow-1].setTileType(2);
         }
         gp.map.printMap();
     }

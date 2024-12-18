@@ -33,7 +33,7 @@ public class KeyHandler extends KeyAdapter {
             //MOVEMENT
             if (key == KeyEvent.VK_W) {
                 wPressed = true;
-                if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType != -1 && gp.objectManager.entityMap[gp.player.col - 1][gp.player.row] == 0) {
+                if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType >= 1 && gp.objectManager.entityMap[gp.player.col - 1][gp.player.row] == 0) {
                     gp.player.move(-1, 0);
                     //to sie powinno w move wykonac
                     gp.map.dx -= gp.map.tileWidth/2;
@@ -44,7 +44,7 @@ public class KeyHandler extends KeyAdapter {
             }
             if (key == KeyEvent.VK_S) {
                 sPressed = true;
-                if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType != -1 && gp.objectManager.entityMap[gp.player.col + 1][gp.player.row] == 0) {
+                if (gp.player.col < gp.map.maxWorldCol - 1 && gp.map.tileMap[gp.player.col + 1][gp.player.row].tileType >= 1 && gp.objectManager.entityMap[gp.player.col + 1][gp.player.row] == 0) {
                     gp.player.move(1, 0);
                     gp.map.dx += gp.map.tileWidth/2;
                     gp.map.dy -= gp.map.tileHeight/2;
@@ -54,7 +54,7 @@ public class KeyHandler extends KeyAdapter {
             }
             if (key == KeyEvent.VK_A) {
                 aPressed = true;
-                if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType != -1 && gp.objectManager.entityMap[gp.player.col][gp.player.row - 1] == 0) {
+                if (gp.player.row > 0 && gp.map.tileMap[gp.player.col][gp.player.row - 1].tileType >= 1 && gp.objectManager.entityMap[gp.player.col][gp.player.row - 1] == 0) {
                     gp.player.move(0, -1);
                     gp.map.dx += gp.map.tileWidth/2;
                     gp.map.dy += gp.map.tileHeight/2;
@@ -64,7 +64,7 @@ public class KeyHandler extends KeyAdapter {
             }
             if (key == KeyEvent.VK_D) {
                 dPressed = true;
-                if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType != -1 && gp.objectManager.entityMap[gp.player.col][gp.player.row + 1] == 0) {
+                if (gp.player.row < gp.map.maxWorldRow - 1 && gp.map.tileMap[gp.player.col][gp.player.row + 1].tileType >= 1 && gp.objectManager.entityMap[gp.player.col][gp.player.row + 1] == 0) {
                     gp.player.move(0, 1);
                     gp.map.dx -= gp.map.tileWidth/2;
                     gp.map.dy -= gp.map.tileHeight/2;
@@ -155,7 +155,7 @@ public class KeyHandler extends KeyAdapter {
             gp.map.maxWorldRow = 20;
             gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY);
             gp.objectManager.initializeMap();
-            gp.generation.generator4();
+            gp.generation.generator1();
             gp.repaint();
         }
     }

@@ -47,7 +47,7 @@ public class Spell {
     public void cast(int col, int row) {
         if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow) {
             effect(col, row);
-            gp.map.tileMap[col][row].setTileType(2);
+            gp.map.tileMap[col][row].setTileType(3);
             gp.repaint();
         }
     }
