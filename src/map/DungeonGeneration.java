@@ -41,6 +41,7 @@ public class DungeonGeneration {
                 break;
         }
 
+
         int direction = random.nextInt(0, 4);
         int nextCorridorLength = random.nextInt(3, 11);
         for (int i = 0; i < nextCorridorLength; i++) {
