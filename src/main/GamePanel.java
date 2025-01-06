@@ -44,11 +44,13 @@ public class GamePanel extends JPanel {
         setFocusable(true);
 
         map = new Map(this);
-        generation = new DungeonGeneration(this);
+
 
         camera = new Camera(this);
         player = new Player(this, 1, 1, 1);
         objectManager = new ObjectManager(this);
+
+        generation = new DungeonGeneration(this);
 
         mouseHandler = new MouseHandler(this);
         keyHandler = new KeyHandler(this);

@@ -155,7 +155,9 @@ public class KeyHandler extends KeyAdapter {
             gp.map.maxWorldRow = 20;
             gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY);
             gp.objectManager.initializeMap();
-            gp.generation.generator1();
+            gp.generation.generatorForest();
+            gp.generation.generateEntities(10);
+
             gp.repaint();
         }
     }

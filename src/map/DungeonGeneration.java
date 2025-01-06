@@ -2,119 +2,63 @@ package map;
 
 import main.GamePanel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DungeonGeneration {
     GamePanel gp;
     Random random;
+    boolean isMapValid;
     public DungeonGeneration(GamePanel gamePanel) {
         this.gp = gamePanel;
         random = new Random();
-        generator1();
-        //generator2();
-        //generator3();
-        //generator4();
+
+        //generatorRooms();
+        generatorForest();
+        //generatorCaves();
+        //generatorCavesSinglePath();
+
+        generateEntities(10);
     }
 
-    public void generator1() {
-        int nextRoomID = random.nextInt(1, 4);
-        gp.map.createRoom(0, 0, "/maps/rooms/room0" + nextRoomID + ".txt");
+    public void generatorRooms() {
+        int roomCount = 5;
 
-        int nextCol = 0;
-        int nextRow = 0;
+        int nextRoom;
+        int col, row;
 
-        switch(nextRoomID) {
-            case 1:
-                nextCol++;
-                nextRow++;
-                break;
-            case 2:
-                nextCol+=2;
-                nextRow++;
-                break;
-            case 3:
-                nextCol+=2;
-                nextRow+=2;
-                break;
-        }
+        nextRoom = random.nextInt(1, 4);
+        gp.map.createRoom(0, 0, "/maps/rooms/room0" + nextRoom + ".txt");
 
-
-        int direction = random.nextInt(0, 4);
-        int nextCorridorLength = random.nextInt(3, 11);
-        for (int i = 0; i < nextCorridorLength; i++) {
-            gp.map.tileMap[nextCol][nextRow].setTileType(1);
-            switch (direction){
-                case 0 -> nextRow++;
-                case 1 -> nextRow--;
-                case 2 -> nextCol++;
-                case 3 -> nextCol--;
+        while (roomCount > 0) {
+            nextRoom = random.nextInt(1, 4);
+            col = random.nextInt( 4, gp.map.maxWorldCol - 4);
+            row = random.nextInt( 4, gp.map.maxWorldRow - 4);
+            if (gp.map.tileMap[col][row].tileType == 0) {
+                gp.map.createRoom(col, row, "/maps/rooms/room0" + nextRoom + ".txt");
+                roomCount--;
             }
         }
-
-
         gp.map.printMap();
     }
 
-    //POKOJE POLACZONE ZE SOBA JAK W ISAACU TYLKO BEZ DRZWI
-    //MOZNA ZMODIFIKOWAC TAK ZE SIE Z ODSTEPEM POMIEDZY KAZDY POKOJ RESPI I DODAC DRZWI POMIEDZT NIMI
-    public void generator2(){
-        int mapCenterCol = gp.map.maxWorldCol/2 - 1;
-        int mapCenterRow = gp.map.maxWorldRow/2 - 1;
-
-        int roomCol;
-        int roomRow;
-
-        int howManyNeighbouringRooms = random.nextInt(2, 5);
-
-        gp.map.createRoom(mapCenterCol, mapCenterRow, "/maps/rooms/room01.txt");
-
-        int nextSide;
-        List<Integer> possibleNeighbours = new ArrayList<>();
-        Collections.addAll(possibleNeighbours, 1, 2, 3, 4);
-        //List<Integer> chosenNeighbours = new ArrayList<>();
-
-        roomCol = mapCenterCol;
-        roomRow = mapCenterRow;
-
-        for (int j = 0; j < 10; j++) {
-            for (int i = 0; i < howManyNeighbouringRooms; i++) {
-                nextSide = random.nextInt(possibleNeighbours.size());
-                possibleNeighbours.remove(nextSide);
-                //chosenNeighbours.add(nextSide);
-                if (roomCol > 0 && roomCol < gp.map.maxWorldCol && roomRow > 0 && roomCol < gp.map.maxWorldRow) {
-                    switch (nextSide) {
-                        case 1:
-                            roomRow -= 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
-                            break;
-                        case 2:
-                            roomRow += 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
-                            break;
-                        case 3:
-                            roomCol -= 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
-                            break;
-                        case 4:
-                            roomCol += 3;
-                            gp.map.createRoom(roomCol, roomRow, "/maps/rooms/room01.txt");
-                            break;
-                    }
+    public void generatorForest(){
+        int nextState;
+        for (int i = 0; i < gp.map.maxWorldCol; i++) {
+            for (int j = 0; j < gp.map.maxWorldRow; j++) {
+                nextState = random.nextInt(0, 4);
+                if (nextState == 1 || nextState == 2 || nextState == 3) {
+                    gp.map.tileMap[i][j].setTileType(1);
+                } else {
+                    gp.map.tileMap[i][j].setTileType(0);
                 }
 
             }
-            possibleNeighbours.clear();
-            Collections.addAll(possibleNeighbours,1, 2, 3, 4);
         }
-
+        gp.map.createRoom(0,0, "/maps/rooms/room01.txt");
         gp.map.printMap();
     }
 
-    //JASKINIE / SLEPE BLADZENIE
-    public void generator3() {
+    public void generatorCavesSinglePath() {
         int startCol = 1;
         int startRow = 1;
         int endCol = gp.map.maxWorldCol - 1;
@@ -166,7 +110,7 @@ public class DungeonGeneration {
         }
     }
 
-    public void generator4() {
+    public void generatorCaves() {
         int startCol = 1;
         int startRow = 1;
         int endCol = gp.map.maxWorldCol - 1;
@@ -258,9 +202,39 @@ public class DungeonGeneration {
         gp.map.printMap();
     }
 
-    void floodFill(int[][] tileMap, int x, int y, int newType){
+    public void generateEntities(int entityCount) {
+        int col, row;
+
+        while (entityCount > 0) {
+            col = random.nextInt(0, gp.map.maxWorldCol);
+            row = random.nextInt(0, gp.map.maxWorldRow);
+            if (gp.map.tileMap[col][row].tileType != 0 && col > 5 && row > 5) {
+                gp.objectManager.createEntity(col, row, 11);
+                entityCount--;
+            }
+        }
 
     }
+
+    boolean checkForStability(Tile[][] map, int startRow, int startCol, int endRow, int endCol) {
+        Tile[][] tmpMap = map;
+
+        if (startCol < 0 || startRow < 0 || startRow >= gp.map.maxWorldRow || startCol < gp.map.maxWorldCol) {
+            return false;
+        }
+
+        if (startRow == endRow && startCol == endCol) {
+            return true;
+        }
+
+        tmpMap[startRow][startCol].setTileType(0);
+
+        return  checkForStability(tmpMap, startRow + 1, startCol, endRow, endCol) ||
+                checkForStability(tmpMap, startRow - 1, startCol, endRow, endCol) ||
+                checkForStability(tmpMap, startRow, startCol, endRow + 1, endCol) ||
+                checkForStability(tmpMap, startRow, startCol - 1, endRow, endCol);
+    }
+
 
 
 }
