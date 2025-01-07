@@ -23,12 +23,17 @@ public class Tile {
     }
 
     public void loadImage(){
-        String path = switch (tileType){
-            case 0 -> "/sprites/tiles/tile00.png";
-            case 1 -> "/sprites/tiles/tile01.png";
-            case 2 -> "/sprites/tiles/tile02.png";
-            case 3 -> "/sprites/tiles/tile03.png";
-            default -> "/sprites/tiles/missing_tile.png";
+        String path = "";
+
+         switch (tileType){
+            //case 0 -> "/sprites/tiles/tile00.png";
+            case 0 -> {
+                tileImage = new BufferedImage(151,51, BufferedImage.TYPE_INT_ARGB) ;
+            }
+            case 1 -> path = "/sprites/tiles/tile01H.png";
+            case 2 -> path = "/sprites/tiles/tile02.png";
+            case 3 -> path = "/sprites/tiles/tile03.png";
+            default -> path = "/sprites/tiles/missing_tile.png";
         };
 
         try {

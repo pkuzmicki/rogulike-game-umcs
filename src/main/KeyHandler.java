@@ -39,6 +39,9 @@ public class KeyHandler extends KeyAdapter {
                     gp.map.dx -= gp.map.tileWidth/2;
                     gp.map.dy += gp.map.tileHeight/2;
 
+                    gp.y += 1;
+                    gp.x += 1;
+
                     //gp.turnManager.globalTurn++;
                 }
             }
@@ -48,6 +51,9 @@ public class KeyHandler extends KeyAdapter {
                     gp.player.move(1, 0);
                     gp.map.dx += gp.map.tileWidth/2;
                     gp.map.dy -= gp.map.tileHeight/2;
+
+                    gp.y -= 1;
+                    gp.x -= 1;
 
                     //gp.turnManager.globalTurn++;
                 }
@@ -59,6 +65,9 @@ public class KeyHandler extends KeyAdapter {
                     gp.map.dx += gp.map.tileWidth/2;
                     gp.map.dy += gp.map.tileHeight/2;
 
+                    gp.x += 1;
+                    gp.y += 1;
+
                     //gp.turnManager.globalTurn++;
                 }
             }
@@ -68,6 +77,9 @@ public class KeyHandler extends KeyAdapter {
                     gp.player.move(0, 1);
                     gp.map.dx -= gp.map.tileWidth/2;
                     gp.map.dy -= gp.map.tileHeight/2;
+
+                    gp.x -= 1;
+                    gp.y -= 1;
 
                     //gp.turnManager.globalTurn++;
                 }
@@ -155,7 +167,7 @@ public class KeyHandler extends KeyAdapter {
             gp.map.maxWorldRow = 20;
             gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY);
             gp.objectManager.initializeMap();
-            gp.generation.generatorForest();
+            //gp.generation.generatorForest();
             gp.generation.generateEntities(10);
 
             gp.repaint();

@@ -60,9 +60,9 @@ public class Entity {
 
     public void loadImage(){
         String path = switch (id){
-            case 1 -> "/sprites/entities/crazy_wizard.png";
+            case 1 -> "/sprites/entities/silly_wizard.png";
             case 11 -> "/sprites/entities/keeper_green.png";
-            case 12 -> "/sprites/entities/keeper.png";
+            case 12 -> "/sprites/entities/keeper_red.png";
             case 13 -> "/sprites/entities/keeper_blue.png";
             case 14 -> "/sprites/entities/keeper_yellow.png";
 

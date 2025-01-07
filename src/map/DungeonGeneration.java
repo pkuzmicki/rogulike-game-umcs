@@ -12,15 +12,15 @@ public class DungeonGeneration {
         this.gp = gamePanel;
         random = new Random();
 
-        //generatorRooms();
-        generatorForest();
+        //generatorFortress();
+        generatorForest(15, 100);
         //generatorCaves();
         //generatorCavesSinglePath();
 
-        generateEntities(10);
+        //generateEntities(10);
     }
 
-    public void generatorRooms() {
+    public void generatorFortress() {
         int roomCount = 5;
 
         int nextRoom;
@@ -41,7 +41,11 @@ public class DungeonGeneration {
         gp.map.printMap();
     }
 
-    public void generatorForest(){
+    public void generatorForest(int cols, int rows){
+        //gp.map.maxWorldCol = cols;
+        //gp.map.maxWorldRow = rows;
+        //gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY);
+
         int nextState;
         for (int i = 0; i < gp.map.maxWorldCol; i++) {
             for (int j = 0; j < gp.map.maxWorldRow; j++) {

@@ -9,11 +9,15 @@ import objects.Monster;
 import objects.Player;
 import map.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class GamePanel extends JPanel {
     //public int screenWidth = 640;
@@ -21,6 +25,8 @@ public class GamePanel extends JPanel {
 
     public int screenWidth = 1920;
     public int screenHeight = 1080;
+
+    public BufferedImage background;
 
     public Map map;
     public DungeonGeneration generation;
@@ -103,10 +109,20 @@ public class GamePanel extends JPanel {
         }
     }
 
+    public int x = -330, y = -200;
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
+
+        try {
+            background = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/background.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        g2.drawImage(background, x, y, null);
 
         map.draw(g2);
 
@@ -122,6 +138,8 @@ public class GamePanel extends JPanel {
         if (ui.isGameOver) {
             ui.draw(g2);
         }
+
+
 
         g2.dispose();
     }
