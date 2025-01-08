@@ -21,19 +21,19 @@ public class Monster extends Entity{
             }
             case "keeper_blue" -> {
                 monster.maxHP = monster.currentHP = 10;
-                monster.dmg = 4;
+                monster.dmg = 3;
             }
             case "keeper_green" -> {
                 monster.maxHP = monster.currentHP = 80;
                 monster.dmg = 2;
             }
-            case "keeper_red" -> {
-                monster.maxHP = monster.currentHP = 25;
-                monster.dmg = 15;
-            }
             case "keeper_yellow" -> {
-                monster.maxHP = monster.currentHP = 20;
+                monster.maxHP = monster.currentHP = 15;
                 monster.dmg = 40;
+            }
+            case "keeper_red" -> {
+                monster.maxHP = monster.currentHP = 40;
+                monster.dmg = 15;
             }
         }
     }

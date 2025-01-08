@@ -35,7 +35,6 @@ public class KeyHandler extends KeyAdapter {
                 wPressed = true;
                 if (gp.player.col > 0 && gp.map.tileMap[gp.player.col - 1][gp.player.row].tileType >= 1 && gp.objectManager.entityMap[gp.player.col - 1][gp.player.row] == 0) {
                     gp.player.move(-1, 0);
-                    //to sie powinno w move wykonac
                     gp.map.dx -= gp.map.tileWidth/2;
                     gp.map.dy += gp.map.tileHeight/2;
 
@@ -167,8 +166,13 @@ public class KeyHandler extends KeyAdapter {
             gp.map.maxWorldRow = 20;
             gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY);
             gp.objectManager.initializeMap();
-            //gp.generation.generatorForest();
-            gp.generation.generateEntities(10);
+
+            if (!gp.objectManager.entities.isEmpty()) {
+                gp.objectManager.entities.subList(1, gp.objectManager.entities.size()).clear();
+            }
+
+            gp.generation.generatorForest();
+            gp.generation.generateEntities();
 
             gp.repaint();
         }

@@ -1,6 +1,7 @@
 package main;
 
 import combat.CastingManager;
+import combat.Spell;
 import combat.TurnManager;
 import map.DungeonGeneration;
 import map.ObjectManager;
@@ -40,6 +41,7 @@ public class GamePanel extends JPanel {
 
     public TurnManager turnManager;
     public CastingManager castingManager;
+    public Spell spell;
 
     public Commands commands;
     public UI ui;
@@ -63,6 +65,7 @@ public class GamePanel extends JPanel {
 
         turnManager = new TurnManager(this);
         castingManager = new CastingManager(this);
+        spell = new Spell(this, 0);
 
         commands = new Commands(this);
         ui = new UI(this);
@@ -110,7 +113,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public int x = -330, y = -200;
+    public int x = -800, y = -450;
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -133,6 +136,8 @@ public class GamePanel extends JPanel {
         for (Entity entity : objectsToDraw) {
             entity.draw(g2);
         }
+
+        spell.draw(g2);
 
         turnManager.draw(g2);
 

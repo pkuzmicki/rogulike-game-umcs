@@ -4,18 +4,25 @@ import main.GamePanel;
 import objects.Entity;
 import objects.Monster;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Random;
 
 public class Spell {
     GamePanel gp;
     Random random;
     int damage;
-    //boolean canUseOnObstacles = false;
+    BufferedImage image;
+    int x, y;
 
     public Spell(GamePanel gamePanel, int dmg) {
         this.gp = gamePanel;
         this.damage = dmg;
         random = new Random();
+        getImage();
     }
 
 //    public void checkDirection(int[] colOffset, int[] rowOffset) {
@@ -43,12 +50,14 @@ public class Spell {
         }
     }
 
-//    //wywolanie czaru w podanym miejscu
+    //wywolanie czaru w podanym miejscu
     public void cast(int col, int row) {
         if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow) {
             effect(col, row);
-            gp.map.tileMap[col][row].setTileType(3);
-            gp.repaint();
+
+            x = gp.map.tileMap[col][row].x;
+            y = gp.map.tileMap[col][row].y;
+
         }
     }
 
@@ -67,5 +76,16 @@ public class Spell {
         return 1;
     }
 
+    public void getImage() {
+        try {
+            image = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/spells/spell_black_hole.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void draw(Graphics2D g2) {
+        g2.drawImage(image, x, y, null);
+    }
 
 }

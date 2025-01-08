@@ -12,34 +12,127 @@ public class DungeonGeneration {
         this.gp = gamePanel;
         random = new Random();
 
-        generatorMansion();
+        //generatorMansion();
+        generatorBridges();
         //generatorForest(15, 100);
         //generatorCaves();
         //generatorCavesSinglePath();
 
-        //generateEntities(10);
+        //generateEntities();
     }
 
     public void generatorMansion() {
         for (int col = 0; col < gp.map.maxWorldCol; col++) {
             for (int row = 0; row < gp.map.maxWorldRow; row++) {
-                gp.map.tileMap[col][row].setTileType(5);
+                gp.map.tileMap[col][row].setTileType(1);
             }
         }
 
+        splitArea(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 3, 0, 2, 2, 0.4, 0.6);
 
-
-
-
-
+        //gp.map.createRoom(0, 0 , "/maps/rooms/room01.txt");
         gp.map.printMap();
     }
 
-    public void generatorForest(int cols, int rows){
-        //gp.map.maxWorldCol = cols;
-        //gp.map.maxWorldRow = rows;
-        //gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY);
 
+    public void generatorBridges() {
+        for (int col = 0; col < gp.map.maxWorldCol; col++) {
+            for (int row = 0; row < gp.map.maxWorldRow; row++) {
+                gp.map.tileMap[col][row].setTileType(0);
+            }
+        }
+
+        splitArea1(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 5, 1, 1, 1, 0.3, 0.7);
+
+        gp.map.createRoom(0, 0 , "/maps/rooms/room01.txt");
+        gp.map.printMap();
+    }
+
+    private void splitArea(int startCol, int startRow, int width, int height, int maxSplits, int tileType, int minHeight, int minWidth, double minRatio, double maxRatio) {
+        if (maxSplits == 0 || width <= minWidth || height <= minHeight) {
+            return;
+        }
+
+        boolean divideHorizontally = random.nextBoolean();
+        int splitLine;
+        int passage;
+
+        if (divideHorizontally) {
+            int minLine = (int) (height * minRatio);
+            int maxLine = (int) (height * maxRatio);
+
+            if (maxLine <= minLine || minLine <= 0 || maxLine >= height) {
+                return;
+            }
+
+            splitLine = startRow + random.nextInt(minLine, maxLine);
+
+            for (int col = startCol; col < startCol + width; col++) {
+                gp.map.tileMap[col][splitLine].setTileType(tileType);
+            }
+
+            passage = startCol + random.nextInt(width);
+            gp.map.tileMap[passage][splitLine].setTileType(1);
+
+            splitArea(startCol, startRow, width, splitLine - startRow, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitArea(startCol, splitLine + 1, width, startRow + height - splitLine - 1, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+        } else {
+
+            int minLine = (int) (width * minRatio);
+            int maxLine = (int) (width * maxRatio);
+
+            if (maxLine <= minLine || minLine <= 0 || maxLine >= width) {
+                return;
+            }
+
+            splitLine = startCol + random.nextInt(minLine, maxLine);
+
+            for (int row = startRow; row < startRow + height; row++) {
+                gp.map.tileMap[splitLine][row].setTileType(tileType);
+            }
+
+            passage = startRow + random.nextInt(height);
+            gp.map.tileMap[splitLine][passage].setTileType(0);
+
+            splitArea(startCol, startRow, splitLine - startCol, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitArea(splitLine + 1, startRow, startCol + width - splitLine - 1, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+        }
+    }
+
+
+    private void splitArea1(int startCol, int startRow, int width, int height, int maxSplits, int tileType, int minHeight, int minWidth, double minRatio, double maxRatio) {
+        if (maxSplits == 0 || width <= minWidth || height <= minHeight) {
+            return;
+        }
+
+        boolean divideHorizontally = random.nextBoolean();
+        int splitLine;
+        int passage;
+
+        if (divideHorizontally) {
+            splitLine = startRow + random.nextInt((int) (height * minRatio), (int) (height * maxRatio));
+
+            for (int col = startCol; col < startCol + width; col++) {
+                gp.map.tileMap[col][splitLine].setTileType(tileType);
+            }
+
+            passage = startCol + random.nextInt(width);
+            gp.map.tileMap[passage][splitLine].setTileType(1);
+
+            splitArea1(startCol, startRow, width, splitLine - startRow, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitArea1(startCol, splitLine + 1, width, startRow + height - splitLine - 1, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+        } else {
+            splitLine = startCol + random.nextInt((int) (width * minRatio), (int) (width * maxRatio));
+            for (int row = startRow; row < startRow + height; row++) {
+                gp.map.tileMap[splitLine][row].setTileType(tileType);
+            }
+
+            splitArea1(startCol, startRow, splitLine - startCol, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitArea1(splitLine + 1, startRow, startCol + width - splitLine - 1, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+        }
+    }
+
+    public void generatorForest(){
         int nextState;
         for (int i = 0; i < gp.map.maxWorldCol; i++) {
             for (int j = 0; j < gp.map.maxWorldRow; j++) {
@@ -200,39 +293,29 @@ public class DungeonGeneration {
         gp.map.printMap();
     }
 
-    public void generateEntities(int entityCount) {
-        int col, row;
+    public void generateEntities() {
+        int weakEntities = random.nextInt(7, 13);
+        int mediumEntities = random.nextInt(3, 7);
+        int roughEntities = random.nextInt(1, 3);
+        int strongEntities = random.nextInt(0, 3);
 
-        while (entityCount > 0) {
+        spawnEntities(weakEntities, 13, 5, 5);
+        spawnEntities(mediumEntities, 11, 5, 5);
+        spawnEntities(roughEntities, 14, 8, 8);
+        spawnEntities(strongEntities, 12, 11, 11);
+    }
+
+    private void spawnEntities(int entityType, int entityId, int colsFormPlayer, int rowsFromPlayer) {
+        int col, row;
+        while (entityType > 0) {
             col = random.nextInt(0, gp.map.maxWorldCol);
             row = random.nextInt(0, gp.map.maxWorldRow);
-            if (gp.map.tileMap[col][row].tileType != 0 && col > 5 && row > 5) {
-                gp.objectManager.createEntity(col, row, 11);
-                entityCount--;
+
+            if (gp.map.tileMap[col][row].tileType != 0 && col > colsFormPlayer && row > rowsFromPlayer) {
+                gp.objectManager.createEntity(col, row, entityId);
+                entityType--;
             }
         }
-
     }
-
-    boolean checkForStability(Tile[][] map, int startRow, int startCol, int endRow, int endCol) {
-        Tile[][] tmpMap = map;
-
-        if (startCol < 0 || startRow < 0 || startRow >= gp.map.maxWorldRow || startCol < gp.map.maxWorldCol) {
-            return false;
-        }
-
-        if (startRow == endRow && startCol == endCol) {
-            return true;
-        }
-
-        tmpMap[startRow][startCol].setTileType(0);
-
-        return  checkForStability(tmpMap, startRow + 1, startCol, endRow, endCol) ||
-                checkForStability(tmpMap, startRow - 1, startCol, endRow, endCol) ||
-                checkForStability(tmpMap, startRow, startCol, endRow + 1, endCol) ||
-                checkForStability(tmpMap, startRow, startCol - 1, endRow, endCol);
-    }
-
-
 
 }
