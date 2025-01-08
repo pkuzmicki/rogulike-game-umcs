@@ -12,32 +12,26 @@ public class DungeonGeneration {
         this.gp = gamePanel;
         random = new Random();
 
-        //generatorFortress();
-        generatorForest(15, 100);
+        generatorMansion();
+        //generatorForest(15, 100);
         //generatorCaves();
         //generatorCavesSinglePath();
 
         //generateEntities(10);
     }
 
-    public void generatorFortress() {
-        int roomCount = 5;
-
-        int nextRoom;
-        int col, row;
-
-        nextRoom = random.nextInt(1, 4);
-        gp.map.createRoom(0, 0, "/maps/rooms/room0" + nextRoom + ".txt");
-
-        while (roomCount > 0) {
-            nextRoom = random.nextInt(1, 4);
-            col = random.nextInt( 4, gp.map.maxWorldCol - 4);
-            row = random.nextInt( 4, gp.map.maxWorldRow - 4);
-            if (gp.map.tileMap[col][row].tileType == 0) {
-                gp.map.createRoom(col, row, "/maps/rooms/room0" + nextRoom + ".txt");
-                roomCount--;
+    public void generatorMansion() {
+        for (int col = 0; col < gp.map.maxWorldCol; col++) {
+            for (int row = 0; row < gp.map.maxWorldRow; row++) {
+                gp.map.tileMap[col][row].setTileType(5);
             }
         }
+
+
+
+
+
+
         gp.map.printMap();
     }
 

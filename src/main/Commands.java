@@ -12,12 +12,12 @@ public class Commands {
     }
 
     public void getCommand(){
-        if (scanner.hasNextLine()){
+        //if (scanner.hasNextLine()){
             nextCommand = scanner.nextLine();
             String[] commandParts = nextCommand.split(" ");
             switch (commandParts[0]) {
                 case "add" -> gp.objectManager.createEntity(Integer.getInteger(commandParts[1]), Integer.getInteger(commandParts[2]), Integer.getInteger(commandParts[3]));
             }
-        }
+        //}
     }
 }

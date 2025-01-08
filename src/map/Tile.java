@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public class Tile {
     public BufferedImage tileImage;
-    //public boolean collision = false;
     public int tileType;
     public int x, y;
     public int col, row;
@@ -33,6 +32,7 @@ public class Tile {
             case 1 -> path = "/sprites/tiles/tile01H.png";
             case 2 -> path = "/sprites/tiles/tile02.png";
             case 3 -> path = "/sprites/tiles/tile03.png";
+            case 4 -> path = "/sprites/tiles/tile00.png";
             default -> path = "/sprites/tiles/missing_tile.png";
         };
 

@@ -23,8 +23,8 @@ public class GamePanel extends JPanel {
     //public int screenWidth = 640;
     //public int screenHeight = 480;
 
-    public int screenWidth = 1920;
-    public int screenHeight = 1080;
+    public int screenWidth = 960;
+    public int screenHeight = 540;
 
     public BufferedImage background;
 
@@ -73,6 +73,7 @@ public class GamePanel extends JPanel {
 
     public void update() {
         //commands.getCommand();
+
         //objectManager.printEntityMap();
         //System.out.println();
         //System.out.println(player.col +" "+player.row);
