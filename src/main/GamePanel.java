@@ -115,6 +115,8 @@ public class GamePanel extends JPanel {
 
     public int x = -800, y = -450;
 
+    public BufferedImage blackHole;
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
@@ -122,11 +124,13 @@ public class GamePanel extends JPanel {
 
         try {
             background = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/background.png"))));
+            blackHole = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/spells/spell_black_hole.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         g2.drawImage(background, x, y, null);
+        g2.drawImage(blackHole, x + 800, y + 450, 960, 500, null);
 
         map.draw(g2);
 
@@ -137,7 +141,7 @@ public class GamePanel extends JPanel {
             entity.draw(g2);
         }
 
-        spell.draw(g2);
+        //spell.draw(g2);
 
         turnManager.draw(g2);
 

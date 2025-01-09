@@ -58,6 +58,8 @@ public class Spell {
             x = gp.map.tileMap[col][row].x;
             y = gp.map.tileMap[col][row].y;
 
+            gp.map.tileMap[col][row].setTileType(2);
+
         }
     }
 
