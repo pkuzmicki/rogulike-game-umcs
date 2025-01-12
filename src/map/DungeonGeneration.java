@@ -13,12 +13,14 @@ public class DungeonGeneration {
         random = new Random();
 
         //generatorMansion();
-        generatorBridges();
-        //generatorForest(15, 100);
+        //generatorBridges();
+        generatorForest();
         //generatorCaves();
         //generatorCavesSinglePath();
 
-        //generateEntities();
+        generateEntities();
+
+        //gp.map.printMap();
     }
 
     public void generatorMansion() {
@@ -31,7 +33,7 @@ public class DungeonGeneration {
         splitArea(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 3, 0, 2, 2, 0.4, 0.6);
 
         //gp.map.createRoom(0, 0 , "/maps/rooms/room01.txt");
-        gp.map.printMap();
+        //gp.map.printMap();
     }
 
 
@@ -44,8 +46,8 @@ public class DungeonGeneration {
 
         splitArea1(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 5, 1, 1, 1, 0.3, 0.7);
 
-        gp.map.createRoom(0, 0 , "/maps/rooms/room01.txt");
-        gp.map.printMap();
+        gp.map.createRoom(0, 0 , "/maps/rooms/room01.txt", gp.map.tileMap);
+        //gp.map.printMap();
     }
 
     private void splitArea(int startCol, int startRow, int width, int height, int maxSplits, int tileType, int minHeight, int minWidth, double minRatio, double maxRatio) {
@@ -145,8 +147,8 @@ public class DungeonGeneration {
 
             }
         }
-        gp.map.createRoom(0,0, "/maps/rooms/room01.txt");
-        gp.map.printMap();
+        gp.map.createRoom(0,0, "/maps/rooms/room01.txt", gp.map.tileMap);
+        //gp.map.printMap();
     }
 
     public void generatorCavesSinglePath() {
@@ -290,7 +292,7 @@ public class DungeonGeneration {
             }
             gp.map.tileMap[gp.map.maxWorldCol-1][gp.map.maxWorldRow-1].setTileType(2);
         }
-        gp.map.printMap();
+        //gp.map.printMap();
     }
 
     public void generateEntities() {

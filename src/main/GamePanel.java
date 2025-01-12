@@ -1,10 +1,10 @@
 package main;
 
 import combat.CastingManager;
-import combat.Spell;
 import combat.TurnManager;
 import map.DungeonGeneration;
-import map.ObjectManager;
+import map.Hideout;
+import objects.ObjectManager;
 import objects.Entity;
 import objects.Monster;
 import objects.Player;
@@ -27,12 +27,10 @@ public class GamePanel extends JPanel {
     public int screenWidth = 960;
     public int screenHeight = 540;
 
-    public BufferedImage background;
-
     public Map map;
     public DungeonGeneration generation;
+    public Hideout hideout;
 
-    public Camera camera;
     public Player player;
     public ObjectManager objectManager;
 
@@ -41,9 +39,10 @@ public class GamePanel extends JPanel {
 
     public TurnManager turnManager;
     public CastingManager castingManager;
-    public Spell spell;
+    //public Spell spell;
 
     public Commands commands;
+    public Backgrounds backgrounds;
     public UI ui;
 
     public GamePanel(){
@@ -52,9 +51,8 @@ public class GamePanel extends JPanel {
         setFocusable(true);
 
         map = new Map(this);
+        hideout = new Hideout(this);
 
-
-        camera = new Camera(this);
         player = new Player(this, 1, 1, 1);
         objectManager = new ObjectManager(this);
 
@@ -65,70 +63,64 @@ public class GamePanel extends JPanel {
 
         turnManager = new TurnManager(this);
         castingManager = new CastingManager(this);
-        spell = new Spell(this, 0);
+        //spell = new Spell(this, 0);
 
         commands = new Commands(this);
+        backgrounds = new Backgrounds(this);
         ui = new UI(this);
 
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
+
     }
 
     public void update() {
+        player.move();
         //commands.getCommand();
-
-        //objectManager.printEntityMap();
-        //System.out.println();
-        //System.out.println(player.col +" "+player.row);
-
-        //map.tileMap[player.col][player.row].setTileType(0);
 
         for (Entity entity : objectManager.entities) {
             Monster monster = (Monster) entity;
             monster.checkForOverHeal();
             monster.checkIfShouldDie(monster.col, monster.row);
-            repaint();
+            //repaint();
         }
 
         if (turnManager.globalTurn % 2 != 0) {
             for (Entity entity : objectManager.entities) {
                 Monster monster = (Monster) entity;
-                if (monster.id != 1){
+                if (monster.id != 1) {
 
-                    monster.attack(castingManager.testicularTorsion);
+                    //monster.attack(castingManager.testicularTorsion);
                 }
             }
         }
 
+//        if (keyHandler.xPressed) {
+//            player.currentHP -= player.maxHP/10;
+//            player.currentMana -= player.maxMana/10;
+//        }
 
-        //CHOOSING SPELLS
-        if (keyHandler.onePressed) {
-            castingManager.playerCast(castingManager.testicularTorsion);
+        if (keyHandler.onePressed || keyHandler.twoPressed || keyHandler.threePressed) {
+            castingManager.chooseSpell();
         }
-        if (keyHandler.twoPressed) {
-            castingManager.playerCast(castingManager.lifebloom);
+
+        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.rightPressed || keyHandler.leftPressed || keyHandler.xPressed){
+            castingManager.setSpellPosition(player);
         }
-        if (keyHandler.threePressed) {
-            //castingManager.rollingMagma.cast();
+
+        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.rightPressed || keyHandler.leftPressed || keyHandler.xPressed){
+            castingManager.applyEffect();
         }
+
+
+        turnManager.updateTurn();
+        repaint();
     }
 
-    public int x = -800, y = -450;
-
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        Graphics2D g2 = (Graphics2D)g;
-
-        try {
-            background = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/background.png"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        g2.drawImage(background, x, y, null);
-
+    public void drawScene(Graphics2D g2) {
+        backgrounds.draw(g2);
         map.draw(g2);
+        hideout.draw(g2);
 
         List<Entity> objectsToDraw = new ArrayList<>(objectManager.entities);
         objectsToDraw.sort(Comparator.comparing(Entity::getHeight));
@@ -137,16 +129,40 @@ public class GamePanel extends JPanel {
             entity.draw(g2);
         }
 
-        spell.draw(g2);
+        castingManager.draw(g2);
 
         turnManager.draw(g2);
 
-        if (ui.isGameOver) {
-            ui.draw(g2);
-        }
+        ui.draw(g2);
+    }
 
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
 
+        Graphics2D g2 = (Graphics2D)g;
+
+        double scaleX = (double) getWidth() / screenWidth;
+        double scaleY = (double) getHeight() / screenHeight;
+
+        g2.scale(scaleX, scaleY);
+
+        drawScene(g2);
 
         g2.dispose();
     }
+
+    void setFullScreen() {
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        gd.setFullScreenWindow(Game.window);
+    }
+
+    public BufferedImage getImage(String path) {
+        BufferedImage image;
+        try {
+            return image = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

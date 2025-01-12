@@ -24,14 +24,12 @@ public class Map {
     public Map(GamePanel gamePanel){
         this.gp = gamePanel;
 
-
-
         mapStartX = gamePanel.screenWidth / 2 - tileWidth / 2;
         mapStartY = gamePanel.screenHeight / 2 - tileHeight / 2;
 
-        createMap(mapStartX, mapStartY);
+        tileMap = new Tile[maxWorldCol][maxWorldRow];
 
-
+        createMap(mapStartX, mapStartY, maxWorldCol, maxWorldRow, tileMap);
 
         //createRoom(1, 1, "/maps/room01.txt");
         //createRoom(1, 5, "/maps/room02.txt");
@@ -40,16 +38,14 @@ public class Map {
         //printMap();
     }
 
-    public void createMap(int beginX, int beginY){
-        tileMap = new Tile[maxWorldCol][maxWorldRow];
-
+    public void createMap(int beginX, int beginY, int maxCol, int maxRow, Tile[][] tileMap){
         int tileXPosition = beginX;
         int tileYPosition = beginY;
         int startX = tileXPosition;
         int startY = tileYPosition;
 
-        for (int col = 0; col < maxWorldCol; col++) {
-            for (int row = 0; row < maxWorldRow; row++) {
+        for (int col = 0; col < maxCol; col++) {
+            for (int row = 0; row < maxRow; row++) {
 
                 tileMap[col][row] = new Tile(tileXPosition, tileYPosition);
                 tileMap[col][row].row = row;
@@ -67,7 +63,7 @@ public class Map {
         }
     }
 
-    public void createRoom(int startCol, int startRow, String roomPath){
+    public void createRoom(int startCol, int startRow, String roomPath, Tile[][] tileMap){
         int[][] roomMap = getMap(roomPath);
 
         for (int col = 0; col < roomMap.length; col++){
@@ -110,9 +106,9 @@ public class Map {
     public void draw(Graphics2D g2){
         for (int col = 0; col < maxWorldCol; col++) {
             for (int row = 0; row < maxWorldRow; row++) {
-                //if (tileMap[col][row].x + dx > -tileWidth && tileMap[col][row].x + dx < gp.screenWidth & tileMap[col][row].y + dy > -tileHeight && tileMap[col][row].y + dy < gp.screenHeight) {
+                if (tileMap[col][row].x + dx > -tileWidth && tileMap[col][row].x + dx < gp.screenWidth & tileMap[col][row].y + dy > -tileHeight && tileMap[col][row].y + dy < gp.screenHeight) {
                     g2.drawImage(tileMap[col][row].tileImage, tileMap[col][row].x + dx, tileMap[col][row].y + dy, null);
-                //}
+                }
             }
         }
     }

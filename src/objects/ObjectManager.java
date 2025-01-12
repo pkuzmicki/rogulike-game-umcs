@@ -1,10 +1,6 @@
-package map;
+package objects;
 
 import main.GamePanel;
-import objects.Entity;
-import objects.Item;
-import objects.Monster;
-import objects.Obstacle;
 
 import java.util.ArrayList;
 

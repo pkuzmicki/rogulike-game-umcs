@@ -1,6 +1,7 @@
 package objects;
 
 import main.GamePanel;
+import map.Tile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,9 +28,16 @@ public class Entity {
         setSize();
     }
 
+//    public void setInHideout(){
+//        this.x = gp.hideout.hideoutMap[col][row].x;
+//        this.y = gp.hideout.hideoutMap[col][row].y;
+//    }
+
     public void setPositions(){
         this.x = gp.map.tileMap[col][row].x;
         this.y = gp.map.tileMap[col][row].y;
+//        this.x = gp.map.tileMap[col][row].x;
+//        this.y = gp.map.tileMap[col][row].y;
     }
 
     public void setSize(){
@@ -91,7 +99,6 @@ public class Entity {
         return col + row;
     }
 
-    //przeniesc sprawdzanie kolizji i mape postaci tutaj albo gdzies do nowej klasy moze
     public void move(int colMove, int rowMove){
         if (gp.objectManager.entityMap[col + colMove][row + rowMove] == 0) {
             int prevCol = col;

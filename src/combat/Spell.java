@@ -5,7 +5,6 @@ import objects.Entity;
 import objects.Monster;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -14,52 +13,85 @@ import java.util.Random;
 public class Spell {
     GamePanel gp;
     Random random;
-    int damage;
-    BufferedImage image;
-    int x, y;
 
-    public Spell(GamePanel gamePanel, int dmg) {
+    BufferedImage image;
+    String name;
+
+    int x, y;
+    public int col, row;
+
+    int damage;
+    int manaCost;
+
+    public Spell(GamePanel gamePanel, String name) {
         this.gp = gamePanel;
-        this.damage = dmg;
+        this.name = name;
         random = new Random();
-        getImage();
+
+        getImages();
+        setSpellValues();
     }
 
-//    public void checkDirection(int[] colOffset, int[] rowOffset) {
-//        String direction = gp.keyHandler.directionOfAction();
-//        if (direction != null) {
-//            switch (direction) {
-//                case "up" -> colOffset[0] = -1;
-//                case "down" -> colOffset[0] = 1;
-//                case "left" -> rowOffset[0] = -1;
-//                case "right" -> rowOffset[0] = 1;
-//                default -> {}
-//            };
-//        }
-//    }
+    private void getImages() {
+        switch (name) {
+            case "1" -> image = gp.getImage("/sprites/spells/spell_black_hole.png");
+            case "3" -> image = gp.getImage("/sprites/spells/spell_heal.png");
+        }
+    }
 
-    //efekt czaru np zadanie obrazenia, uleczenie, nadanie jakiegos statusu itp
-    public void effect(int col, int row) {
+    public void setSpellValues() {
+        switch (name) {
+            case "1" -> {
+                damage = 5;
+                manaCost = 3;
+            }
+            case "2" -> {
+                manaCost = 5;
+            }
+            case "3" -> {
+                damage = -3;
+                manaCost = 5;
+            }
+        }
+    }
+
+    public void effect() {
         for (Entity entity : gp.objectManager.entities) {
             if (entity.col == col && entity.row == row && entity.id <= 20) {
                 Monster monster = (Monster) entity;
+
                 monster.currentHP -= damage * multiplier();
+                gp.player.currentMana -= manaCost;
                 System.out.println(monster.name + monster.currentHP);
+
                 monster.checkIfShouldDie(monster.col, monster.row);
             }
         }
     }
 
-    //wywolanie czaru w podanym miejscu
-    public void cast(int col, int row) {
-        if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow) {
-            effect(col, row);
-
-            x = gp.map.tileMap[col][row].x;
-            y = gp.map.tileMap[col][row].y;
-
-        }
-    }
+//    public void cast(int col, int row) {
+//        if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow) {
+//            effect(col, row);
+//
+//            x = gp.map.tileMap[col][row].x;
+//            y = gp.map.tileMap[col][row].y;
+//            System.out.println(x + " " + y);
+//            System.out.println(col + " " + row);
+//        }
+//    }
+//
+////    public void cast1(int col, int row, int range, int spellID) {
+////        for (int i = 0; i < range; i++) {
+////            if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow && !gp.player.isInHideout) {
+////                for (Entity entity : gp.objectManager.entities) {
+////                    if (entity.col == col && entity.row == row && entity.id <= 20) {
+////                        Monster monster = (Monster) entity;
+////                        monster.currentHP -= damage;
+////                    }
+////                }
+////            }
+////        }
+////    }
 
     public double multiplier() {
         double[] multipliers = {0.5, 0.7, 0.9, 1.0, 2};
@@ -74,18 +106,6 @@ public class Spell {
             }
         }
         return 1;
-    }
-
-    public void getImage() {
-        try {
-            image = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/spells/spell_black_hole.png"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void draw(Graphics2D g2) {
-        g2.drawImage(image, x, y, null);
     }
 
 }

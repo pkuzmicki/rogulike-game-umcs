@@ -21,6 +21,9 @@ public class Tile {
         loadImage();
     }
 
+    String pre = "/sprites/tiles/";
+    String suf = ".png";
+
     public void loadImage(){
         String path = "";
 
@@ -29,11 +32,15 @@ public class Tile {
             case 0 -> {
                 tileImage = new BufferedImage(151,51, BufferedImage.TYPE_INT_ARGB) ;
             }
-            case 1 -> path = "/sprites/tiles/tile01H.png";
-            case 2 -> path = "/sprites/tiles/tile02.png";
-            case 3 -> path = "/sprites/tiles/tile03.png";
-            case 4 -> path = "/sprites/tiles/tile00.png";
-            default -> path = "/sprites/tiles/missing_tile.png";
+            case 1 -> path = pre + "stone_brick_tile2" + suf;
+            case 2 -> path = pre + "tile02" + suf;
+            case 3 -> path = pre + "tile03" + suf;
+            case 4 -> path = pre + "tile00" + suf;
+            case 5 -> path = pre + "brick_tile" + suf;
+            case 6 -> path = pre + "blood_tile" + suf;
+            case 7 -> path = pre + "rainbow_bridge_tile" + suf;
+            case 8 -> path = pre + "rainbow_bridge_tile2" + suf;
+            default -> path = pre + "missing_tile" + suf;
         };
 
         try {

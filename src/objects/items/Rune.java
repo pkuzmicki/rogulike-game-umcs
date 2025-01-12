@@ -8,4 +8,6 @@ public class Rune extends Item {
         super(gamePanel, col, row, itemId);
     }
 
+
+
 }

@@ -1,6 +1,5 @@
-package combat.spells;
+package combat;
 
-import combat.Spell;
 import objects.items.Rune;
 
 import java.util.ArrayList;
