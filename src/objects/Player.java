@@ -26,11 +26,11 @@ public class Player extends Monster {
         addSpells();
     }
 
-    public void checkManaValue() {
-         if (currentMana < 0) {
-             currentMana = 0;
-         }
-    }
+//    public void checkManaValue() {
+//         if (currentMana < 0) {
+//             currentMana = 0;
+//         }
+//    }
 
     public void setPositions() {
         x = screenX;
