@@ -13,11 +13,13 @@ public class Player extends Monster {
     public int screenY = gp.screenHeight/2 - image.getHeight()/2;
     public boolean isInHideout = false;
 
-    //ArrayList<Rune> playerRunes = new ArrayList<>(4);
+    public ArrayList<Rune> playerRunes = new ArrayList<>(4);
     public ArrayList<Spell> playerSpells = new ArrayList<>();
 
     public int currentMana;
     public int maxMana;
+
+    public int dmg;
 
     public Player(GamePanel gamePanel, int col, int row, int entityID) {
         super(gamePanel, col, row, entityID);
@@ -26,11 +28,14 @@ public class Player extends Monster {
         addSpells();
     }
 
-//    public void checkManaValue() {
-//         if (currentMana < 0) {
-//             currentMana = 0;
-//         }
-//    }
+    public void checkManaValue() {
+         if (currentMana < 0) {
+             currentMana = 0;
+         }
+         if (currentMana > maxMana) {
+             currentMana = maxMana;
+         }
+    }
 
     public void setPositions() {
         x = screenX;
@@ -47,7 +52,7 @@ public class Player extends Monster {
                         gp.map.dy += gp.map.tileHeight/2;
                     }
                 } else {
-                    if (col > 0 && gp.map.tileMap[col - 1][row].tileType >= 1 && gp.objectManager.entityMap[col - 1][row] == 0) {
+                    if (col > 0 && gp.map.tileMap[col - 1][row].tileType >= 1 && gp.objectManager.entityMap[col - 1][row] == 0 || gp.objectManager.entityMap[col - 1][row] > 30) {
                         col -= 1;
                         gp.map.dx -= gp.map.tileWidth/2;
                         gp.map.dy += gp.map.tileHeight/2;
@@ -65,7 +70,7 @@ public class Player extends Monster {
                         gp.map.dy -= gp.map.tileHeight/2;
                     }
                 } else {
-                    if (col < gp.map.maxWorldCol - 1 && gp.map.tileMap[col + 1][row].tileType >= 1 && gp.objectManager.entityMap[col + 1][row] == 0) {
+                    if (col < gp.map.maxWorldCol - 1 && gp.map.tileMap[col + 1][row].tileType >= 1 && gp.objectManager.entityMap[col + 1][row] == 0 || gp.objectManager.entityMap[col + 1][row] > 30) {
                         col += 1;
                         gp.map.dx += gp.map.tileWidth/2;
                         gp.map.dy -= gp.map.tileHeight/2;
@@ -83,7 +88,7 @@ public class Player extends Monster {
                         gp.map.dy += gp.map.tileHeight/2;
                     }
                 } else {
-                    if (row > 0 && gp.map.tileMap[col][row - 1].tileType >= 1 && gp.objectManager.entityMap[col][row - 1] == 0) {
+                    if (row > 0 && gp.map.tileMap[col][row - 1].tileType >= 1 && gp.objectManager.entityMap[col][row - 1] == 0 || gp.objectManager.entityMap[col][row - 1] > 30) {
                         row -= 1;
                         gp.map.dx += gp.map.tileWidth/2;
                         gp.map.dy += gp.map.tileHeight/2;
@@ -101,7 +106,7 @@ public class Player extends Monster {
                         gp.map.dy -= gp.map.tileHeight/2;
                     }
                 } else {
-                    if (row < gp.map.maxWorldRow - 1 && gp.map.tileMap[col][row + 1].tileType >= 1 && gp.objectManager.entityMap[col][ row + 1] == 0) {
+                    if (row < gp.map.maxWorldRow - 1 && gp.map.tileMap[col][row + 1].tileType >= 1 && gp.objectManager.entityMap[col][ row + 1] == 0 || gp.objectManager.entityMap[col][row + 1] > 30) {
                         row += 1;
                         gp.map.dx -= gp.map.tileWidth/2;
                         gp.map.dy -= gp.map.tileHeight/2;

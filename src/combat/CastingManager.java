@@ -63,17 +63,16 @@ public class CastingManager {
         }
     }
 
+    public void updateCasting() {
+        if (gp.keyHandler.onePressed || gp.keyHandler.twoPressed || gp.keyHandler.threePressed) {
+            chooseSpell();
+        }
 
-//        if (colOffset != 0 || rowOffset != 0 && gp.keyHandler.onePressed){
-//            spell.cast(gp.player.col + colOffset, gp.player.row + rowOffset);
-//        }
-//
-//        if (colOffset != 0 || rowOffset != 0 && gp.keyHandler.twoPressed){
-//            if (spell instanceof RangeSpell rangeSpell) {
-//                rangeSpell.cast(gp.player.col + colOffset, gp.player.row + rowOffset, colOffset, rowOffset);
-//            }
-//        }
-
+        if (gp.keyHandler.upPressed || gp.keyHandler.downPressed || gp.keyHandler.rightPressed || gp.keyHandler.leftPressed || gp.keyHandler.xPressed){
+            setSpellPosition(gp.player);
+            applyEffect();
+        }
+    }
 
     public void draw(Graphics2D g2) {
         if (gp.player.currentMana > currentSpell.manaCost) {

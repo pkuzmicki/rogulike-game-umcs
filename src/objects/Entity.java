@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Entity {
-    GamePanel gp;
+    public GamePanel gp;
     public BufferedImage image;
     public String name;
     public int id;
@@ -77,10 +77,14 @@ public class Entity {
             case 21 -> "/sprites/obstacles/sigill_of_despair.png";
             case 22 -> "/sprites/obstacles/skull_pot.png";
 
-            case 31 -> "/sprites/items/rune_of_speed.png"; //dodaje +1 ruchu w kazdej turze
-            case 32 -> "/sprites/items/rune_of_healing.png"; //czar pozwala na leczenie
-            case 33 -> "/sprites/items/rune_of_protection.png"; //czar daje ochrne przed atakami na 1 ture
-            case 34 -> "/sprites/items/rune_of_damage.png"; //dodaje +1 obrażeń do czaru
+            case 31 -> "/sprites/items/rune01.png";
+
+//            case 31 -> "/sprites/items/rune_of_speed.png"; //dodaje +1 ruchu w kazdej turze
+//            case 32 -> "/sprites/items/rune_of_healing.png"; //czar pozwala na leczenie
+//            case 33 -> "/sprites/items/rune_of_protection.png"; //czar daje ochrne przed atakami na 1 ture
+//            case 34 -> "/sprites/items/rune_of_damage.png"; //dodaje +1 obrażeń do czaru
+
+
 
             //case 35 -> "/sprites/items/rune_of_range.png"; //dodaje +1 dystansu na jaki mozebyc rzucony czar
             //case 36 -> "/sprites/items/rune_of_distance.png"; //zostaje rzocany na wszystkie pola wokół atakujacego

@@ -3,6 +3,7 @@ package main;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -10,16 +11,30 @@ public class UI {
     GamePanel gp;
     public boolean isGameOver = false;
 
+    BufferedImage deathScreen;
+    BufferedImage hp;
+    BufferedImage mana;
+    BufferedImage[] hpBar = new BufferedImage[10];
+    BufferedImage[] manaBar = new BufferedImage[10];
+
+    Font wizardFont;
+
     public UI(GamePanel gamePanel) {
         this.gp = gamePanel;
         loadImage();
+        wizardFont = loadFont();
         cutSheet(10, hpBar, hp);
         cutSheet(10, manaBar, mana);
     }
 
-    BufferedImage deathScreen;
-    BufferedImage hp;
-    BufferedImage mana;
+    public Font loadFont( ) {
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/WizardOfTheMoon-YG5y.ttf"));
+            return font.deriveFont(30f);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void loadImage() {
         try {
@@ -31,8 +46,7 @@ public class UI {
         }
     }
 
-    BufferedImage[] hpBar = new BufferedImage[10];
-    BufferedImage[] manaBar = new BufferedImage[10];
+
 
     public void cutSheet(int sprites, BufferedImage[] cutImages, BufferedImage spriteSheet) {
         int w = 66;
@@ -46,6 +60,23 @@ public class UI {
     }
 
     public void draw(Graphics2D g2) {
+
+//        g2.setFont(wizardFont);
+//        if (gp.turnManager.globalTurn < 8) {
+//            g2.drawString("W", gp.map.tileMap[0][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[0][1].y + gp.map.tileHeight/2 + gp.map.dy);
+//            g2.drawString("A", gp.map.tileMap[1][0].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][0].y + gp.map.tileHeight/2 + gp.map.dy);
+//            g2.drawString("S", gp.map.tileMap[2][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[2][1].y + gp.map.tileHeight/2 + gp.map.dy);
+//            g2.drawString("D", gp.map.tileMap[1][2].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][2].y + gp.map.tileHeight/2 + gp.map.dy);
+//        }
+//        if (gp.turnManager.globalTurn > 8 && gp.turnManager.globalTurn < 16 ) {
+//            g2.drawString("->", gp.map.tileMap[0][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[0][1].y + gp.map.tileHeight/2 + gp.map.dy);
+//            g2.drawString("<-", gp.map.tileMap[1][0].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][0].y + gp.map.tileHeight/2 + gp.map.dy);
+//            g2.drawString("<-", gp.map.tileMap[2][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[2][1].y + gp.map.tileHeight/2 + gp.map.dy);
+//            g2.drawString("->", gp.map.tileMap[1][2].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][2].y + gp.map.tileHeight/2 + gp.map.dy);
+//        }
+
+
+
         double scale = 2.2;
         int width = (int) (hpBar[0].getWidth() * scale);
         int height = (int) (hpBar[0].getHeight() * scale);

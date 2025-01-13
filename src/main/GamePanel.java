@@ -75,42 +75,33 @@ public class GamePanel extends JPanel {
     }
 
     public void update() {
-        player.move();
         //commands.getCommand();
 
+        player.move();
+        player.checkManaValue();
+
+        //objectManager.checkForItems();
+
         for (Entity entity : objectManager.entities) {
-            Monster monster = (Monster) entity;
-            monster.checkForOverHeal();
-            monster.checkIfShouldDie(monster.col, monster.row);
-            //repaint();
-        }
-
-        if (turnManager.globalTurn % 2 != 0) {
-            for (Entity entity : objectManager.entities) {
+            if (entity.id < 30) {
                 Monster monster = (Monster) entity;
-                if (monster.id != 1) {
-
-                    //monster.attack(castingManager.testicularTorsion);
-                }
+                monster.checkForOverHeal();
+                monster.checkIfShouldDie(monster.col, monster.row);
+                repaint();
             }
         }
 
-//        if (keyHandler.xPressed) {
-//            player.currentHP -= player.maxHP/10;
-//            player.currentMana -= player.maxMana/10;
+//        if (turnManager.globalTurn % 2 != 0) {
+//            for (Entity entity : objectManager.entities) {
+//                Monster monster = (Monster) entity;
+//                if (monster.id != 1) {
+//
+//                    //monster.attack(castingManager.testicularTorsion);
+//                }
+//            }
 //        }
 
-        if (keyHandler.onePressed || keyHandler.twoPressed || keyHandler.threePressed) {
-            castingManager.chooseSpell();
-        }
-
-        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.rightPressed || keyHandler.leftPressed || keyHandler.xPressed){
-            castingManager.setSpellPosition(player);
-        }
-
-        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.rightPressed || keyHandler.leftPressed || keyHandler.xPressed){
-            castingManager.applyEffect();
-        }
+        castingManager.updateCasting();
 
 
         turnManager.updateTurn();

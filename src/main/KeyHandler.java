@@ -97,6 +97,7 @@ public class KeyHandler extends KeyAdapter {
 
             if (key == KeyEvent.VK_F) {
                 fPressed = true;
+                gp.player.currentMana += 10;
             }
 
             //DEBUG
