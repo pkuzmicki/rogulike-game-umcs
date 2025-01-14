@@ -1,0 +1,130 @@
+package objects;
+
+import main.GamePanel;
+import objects.items.Item;
+import objects.items.Rune;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Equipment {
+    GamePanel gp;
+    public int itemSelected;
+    public Equipment(GamePanel gamePanel) {
+        this.gp = gamePanel;
+        itemSelected = 0;
+    }
+
+    public void closeEq() {
+        if (gp.keyHandler.wPressed || gp.keyHandler.aPressed || gp.keyHandler.sPressed || gp.keyHandler.dPressed) {
+            gp.keyHandler.tabPressed = false;
+            gp.player.isEquipmentOpen = false;
+            itemSelected = 0;
+        }
+    }
+
+    private List<Entity> entitiesToRemove = new ArrayList<>();
+
+    public void pickUpItems() {
+        if (!gp.player.isInHideout) {
+            for (Entity entity : gp.objectManager.entities) {
+                if (gp.player.col == entity.col && gp.player.row == entity.row) {
+                    if (entity.id > 30) {
+                        checkItem(entity);
+                    }
+                }
+            }
+        } else {
+            for (Entity entity : gp.hideout.entities) {
+                if (gp.player.col == entity.col && gp.player.row == entity.row) {
+                    if (entity.id > 30) {
+                       checkItem(entity);
+                    }
+                }
+            }
+        }
+        gp.objectManager.entities.removeAll(entitiesToRemove);
+        gp.hideout.entities.removeAll(entitiesToRemove);
+    }
+
+    private void checkItem(Entity entity) {
+        Rune rune = (Rune) entity;
+        Rune tempRune = new Rune(gp, rune.col, rune.row, rune.id);
+        tempRune.dmg = rune.dmg;
+        gp.player.playerRunes.add(rune);
+        entitiesToRemove.add(entity);
+        gp.player.playerRunes.getLast().dmg = tempRune.dmg;
+        gp.repaint();
+    }
+
+    public void dropItems() {
+        if (gp.keyHandler.enterPressed && !gp.player.playerRunes.isEmpty()) {
+            Rune tempRune = new Rune(gp, gp.player.playerRunes.get(itemSelected).col, gp.player.playerRunes.get(itemSelected).row, gp.player.playerRunes.get(itemSelected).id);
+            tempRune.dmg = gp.player.playerRunes.get(itemSelected).dmg;
+            gp.objectManager.createEntity(gp.player.row, gp.player.col, gp.player.playerRunes.get(itemSelected).id);
+            Rune rune;
+            if (!gp.player.isInHideout) {
+                rune = (Rune) gp.objectManager.entities.getLast();
+            } else {
+                rune = (Rune) gp.hideout.entities.getLast();
+            }
+            rune.dmg = tempRune.dmg;
+            gp.player.playerRunes.remove(itemSelected);
+            gp.keyHandler.tabPressed = false;
+            gp.player.isEquipmentOpen = false;
+            gp.repaint();
+        }
+    }
+
+    public void draw(Graphics2D g2) {
+        g2.setFont(gp.ui.wizardFont);
+        g2.setColor(Color.WHITE);
+
+        int slotsOffset = 150;
+
+
+        if (!gp.player.playerRunes.isEmpty() && gp.keyHandler.tabPressed) {
+            int eqWidth = gp.screenWidth/2 - gp.player.playerRunes.getFirst().image.getWidth();
+            int eqHeight = gp.screenHeight/4 - gp.player.playerRunes.getFirst().image.getHeight();
+
+            if (!gp.keyHandler.leftPressed && !gp.keyHandler.rightPressed) {
+                g2.drawImage(gp.player.playerRunes.get(itemSelected).image,eqWidth, eqHeight,80, 80,  null);
+
+                if (itemSelected < gp.player.playerRunes.size() - 1) {
+                    g2.drawImage(gp.player.playerRunes.get(itemSelected + 1).image, eqWidth + slotsOffset, eqHeight, 50, 50, null);
+                }
+            }
+
+            if (gp.keyHandler.leftPressed) {
+                if (itemSelected == 0) {
+                    itemSelected = 0;
+                } else {
+                    itemSelected--;
+                }
+
+                g2.drawImage(gp.player.playerRunes.get(itemSelected).image,eqWidth, eqHeight,80, 80,  null);
+
+                if (itemSelected != 0) {
+                    g2.drawImage(gp.player.playerRunes.get(itemSelected - 1).image,eqWidth - slotsOffset, eqHeight,50, 50,  null);
+                }
+                g2.drawImage(gp.player.playerRunes.get(itemSelected + 1).image,eqWidth + slotsOffset, eqHeight,50, 50,  null);
+            }
+            if (gp.keyHandler.rightPressed) {
+                if (itemSelected < gp.player.playerRunes.size() - 1) {
+                    itemSelected++;
+                }
+
+                g2.drawImage(gp.player.playerRunes.get(itemSelected).image,eqWidth, eqHeight,80, 80,  null);
+
+                g2.drawImage(gp.player.playerRunes.get(itemSelected - 1).image,eqWidth - slotsOffset, eqHeight,50, 50,  null);
+                if (itemSelected < gp.player.playerRunes.size() - 1) {
+                    g2.drawImage(gp.player.playerRunes.get(itemSelected + 1).image, eqWidth + slotsOffset, eqHeight, 50, 50, null);
+                }
+            }
+            g2.drawString(String.valueOf(itemSelected), gp.screenWidth/2, gp.screenHeight/2 + 100);
+            g2.drawString(String.valueOf(gp.player.playerRunes.get(itemSelected).dmg), gp.screenWidth/2, gp.screenHeight/2 + 130);
+        }
+
+    }
+}

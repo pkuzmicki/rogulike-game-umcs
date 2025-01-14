@@ -4,10 +4,7 @@ import combat.CastingManager;
 import combat.TurnManager;
 import map.DungeonGeneration;
 import map.Hideout;
-import objects.ObjectManager;
-import objects.Entity;
-import objects.Monster;
-import objects.Player;
+import objects.*;
 import map.Map;
 
 import javax.imageio.ImageIO;
@@ -15,9 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 public class GamePanel extends JPanel {
@@ -32,6 +26,7 @@ public class GamePanel extends JPanel {
     public Hideout hideout;
 
     public Player player;
+    public Equipment eq;
     public ObjectManager objectManager;
 
     public KeyHandler keyHandler;
@@ -39,7 +34,6 @@ public class GamePanel extends JPanel {
 
     public TurnManager turnManager;
     public CastingManager castingManager;
-    //public Spell spell;
 
     public Commands commands;
     public Backgrounds backgrounds;
@@ -48,12 +42,14 @@ public class GamePanel extends JPanel {
     public GamePanel(){
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        setFocusable(true);
+        this.setFocusable(true);
+        this.setFocusTraversalKeysEnabled(false);
 
         map = new Map(this);
         hideout = new Hideout(this);
 
         player = new Player(this, 1, 1, 1);
+        eq = new Equipment(this);
         objectManager = new ObjectManager(this);
 
         generation = new DungeonGeneration(this);
@@ -63,7 +59,6 @@ public class GamePanel extends JPanel {
 
         turnManager = new TurnManager(this);
         castingManager = new CastingManager(this);
-        //spell = new Spell(this, 0);
 
         commands = new Commands(this);
         backgrounds = new Backgrounds(this);
@@ -75,21 +70,30 @@ public class GamePanel extends JPanel {
     }
 
     public void update() {
-        //commands.getCommand();
+        //System.out.println(player.isEquipmentOpen);
+        //System.out.println(player.col + " " + player.row);
 
         player.move();
         player.checkManaValue();
 
-        //objectManager.checkForItems();
+        eq.pickUpItems();
+        eq.closeEq();
+        eq.dropItems();
+
+        hideout.checkAltar();
+
+
 
         for (Entity entity : objectManager.entities) {
             if (entity.id < 30) {
                 Monster monster = (Monster) entity;
                 monster.checkForOverHeal();
                 monster.checkIfShouldDie(monster.col, monster.row);
+                //monster.monsterMove();
                 repaint();
             }
         }
+        objectManager.killAll();
 
 //        if (turnManager.globalTurn % 2 != 0) {
 //            for (Entity entity : objectManager.entities) {
@@ -101,8 +105,9 @@ public class GamePanel extends JPanel {
 //            }
 //        }
 
-        castingManager.updateCasting();
-
+        if (!player.isEquipmentOpen) {
+            castingManager.updateCasting();
+        }
 
         turnManager.updateTurn();
         repaint();
@@ -113,14 +118,11 @@ public class GamePanel extends JPanel {
         map.draw(g2);
         hideout.draw(g2);
 
-        List<Entity> objectsToDraw = new ArrayList<>(objectManager.entities);
-        objectsToDraw.sort(Comparator.comparing(Entity::getHeight));
-
-        for (Entity entity : objectsToDraw) {
-            entity.draw(g2);
-        }
+        objectManager.draw(g2);
 
         castingManager.draw(g2);
+
+        eq.draw(g2);
 
         turnManager.draw(g2);
 

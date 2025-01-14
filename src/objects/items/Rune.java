@@ -7,24 +7,21 @@ import java.util.Random;
 public class Rune extends Item {
     Random random;
 
-    int level;
-    int numberOfMods;
+    public int level;
+    public int numberOfMods;
 
-    double dmg;
-    int crit;
-    int range;
-    double hp;
-    int mana;
-    int runeSpace;
+    public int dmg;
+    public double critical;
+    public int range;
+    public double hp;
+    public int mana;
+    public int runeSpace;
 
     public Rune(GamePanel gamePanel, int col, int row, int itemId) {
         super(gamePanel, col, row, itemId);
-
         random = new Random();
-    }
 
-    public void createRune(int dmg, int crit, int range, int hp, int mana, int runeSpace) {
-
+        dmg = random.nextInt(0, 20);
     }
 
     public void generateRune() {
@@ -58,7 +55,7 @@ public class Rune extends Item {
                 }
             }
             case 2 -> {
-                crit += random.nextInt(1, 10);
+                critical += random.nextInt(1, 10);
             }
             case 3 -> {
                 range += random.nextInt(1, 3);

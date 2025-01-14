@@ -3,10 +3,12 @@ package objects;
 import combat.Spell;
 import main.GamePanel;
 
+import java.util.Random;
+
 public class Monster extends Entity{
     public double maxHP;
     public double currentHP;
-    public double dmg;
+    public int dmg;
     public int manaDrop;
 
     public Monster(GamePanel gamePanel, int col, int row, int monsterId){
@@ -84,8 +86,8 @@ public class Monster extends Entity{
 
     int moveCounter = 0;
     public void monsterMove() {
-//        Random random = new Random();
-//        int nextMove = random.nextInt(4) + 1;
+        Random random = new Random();
+        int nextMove = random.nextInt(4) + 1;
         if (col > 0 && col < gp.map.maxWorldCol - 1 && row > 0 && row < gp.map.maxWorldRow - 1) {
             switch (moveCounter) {
                 case 1 -> move(-1, 0);

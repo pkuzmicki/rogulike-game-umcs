@@ -9,6 +9,8 @@ public class KeyHandler extends KeyAdapter {
     public boolean wPressed, aPressed, sPressed, dPressed;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean onePressed, twoPressed, threePressed;
+    public boolean tabPressed = false;
+    public boolean enterPressed;
     public boolean xPressed;
     public boolean fPressed;
 
@@ -55,39 +57,47 @@ public class KeyHandler extends KeyAdapter {
 
             //ATTACK
             //if (gp.turnManager.globalTurn%2 == 0) {
-                if (key == KeyEvent.VK_UP) {
-                    upPressed = true;
-                }
-                if (key == KeyEvent.VK_DOWN) {
-                    downPressed = true;
-                }
-                if (key == KeyEvent.VK_LEFT) {
-                    leftPressed = true;
-                }
-                if (key == KeyEvent.VK_RIGHT) {
-                    rightPressed = true;
-                }
+            if (key == KeyEvent.VK_UP) {
+                upPressed = true;
+            }
+            if (key == KeyEvent.VK_DOWN) {
+                downPressed = true;
+            }
+            if (key == KeyEvent.VK_LEFT) {
+                leftPressed = true;
+            }
+            if (key == KeyEvent.VK_RIGHT) {
+                rightPressed = true;
+            }
 
-                if (key == KeyEvent.VK_X) {
-                    xPressed = true;
-                }
+            if (key == KeyEvent.VK_X) {
+                xPressed = true;
+            }
             //}
 
             //SPELL SELECTION
             if (key == KeyEvent.VK_1) {
                 onePressed = true;
-                //twoPressed = false;
-                //threePressed = false;
             }
             if (key == KeyEvent.VK_2) {
                 twoPressed = true;
-                //onePressed = false;
-                //threePressed = false;
             }
             if (key == KeyEvent.VK_3) {
                 threePressed = true;
-                //onePressed = false;
-                //twoPressed = false;
+            }
+
+            //OPEN EQ
+            if (key == KeyEvent.VK_TAB) {
+                if (!gp.player.playerRunes.isEmpty()){
+                    tabPressed = !tabPressed;
+                    gp.eq.itemSelected = 0;
+                    gp.player.isEquipmentOpen = !gp.player.isEquipmentOpen;
+                }
+            }
+
+            //DROP ITEM
+            if (key == KeyEvent.VK_ENTER) {
+                enterPressed = true;
             }
 
             //SELF CAST
@@ -167,15 +177,12 @@ public class KeyHandler extends KeyAdapter {
             threePressed = false;
         }
 
+        if (key == KeyEvent.VK_ENTER) {
+            enterPressed = false;
+        }
 
         if (key == KeyEvent.VK_X) {
             xPressed = false;
-        }
-
-
-
-        if (key == KeyEvent.VK_F) {
-            fPressed = false;
         }
     }
 }

@@ -4,7 +4,9 @@ import main.GamePanel;
 import objects.items.Item;
 import objects.items.Rune;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class ObjectManager {
         initializeMap();
 
         createEntity(2, 2, 31);
+        createEntity(3, 2, 32);
+        createEntity(4, 2, 33);
+        createEntity(5, 2, 34);
 
         //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
 
@@ -49,9 +54,13 @@ public class ObjectManager {
             entityMap[col][row] = entityId;
         }
         if (entityId > 30 && entityId <= 40) {
-            Item item = new Item(gp, col, row, entityId);
-            entities.add(item);
-            entityMap[col][row] = entityId;
+            Rune rune = new Rune(gp, col, row, entityId);
+            if (gp.player.isInHideout) {
+                gp.hideout.entities.add(rune);
+            } else {
+                entities.add(rune);
+                entityMap[col][row] = entityId;
+            }
         }
     }
 
@@ -65,8 +74,30 @@ public class ObjectManager {
         }
     }
 
+    public List<Entity> entitiesToKill = new ArrayList<>();
+
     public void destroyEntity(int col, int row) {
-        entities.removeIf(entity -> entity.col == col && entity.row == row);
+        //.removeIf(entity -> entity.col == col && entity.row == row);
+        if (!gp.player.isInHideout) {
+            for (Entity entity : entities) {
+                if (entity.col == col && entity.row == row) {
+                    entitiesToKill.add(entity);
+                }
+            }
+        } else {
+            for (Entity entity : gp.hideout.entities) {
+                if (entity.col == col && entity.row == row) {
+                    entitiesToKill.add(entity);
+                }
+            }
+
+        }
+
+    }
+
+    public void killAll() {
+        entities.removeAll(entitiesToKill);
+        gp.hideout.entities.removeAll(entitiesToKill);
     }
 
     public void printEntityMap() {
@@ -78,31 +109,25 @@ public class ObjectManager {
         }
     }
 
-    public void checkForItems() {
-        //List<Entity> entitiesToRemove = new ArrayList<>();
+    public void draw(Graphics2D g2) {
+        if (!gp.player.isInHideout) {
+            List<Entity> objectsToDraw = new ArrayList<>(entities);
+            objectsToDraw.sort(Comparator.comparing(Entity::getHeight));
 
-        for (Entity entity : gp.objectManager.entities) {
-            if (entity.id > 30) {
-                if (gp.player.col == entity.col && gp.player.row == entity.row) {
-                    if (entity instanceof Item) {
-                        Item item = (Item) entity;
-                        if (item instanceof Rune) {
-                            Rune rune = (Rune) item;
+            for (Entity entity : objectsToDraw) {
+                entity.draw(g2);
+            }
+        } else {
+            List<Entity> objectsToDraw = new ArrayList<>(gp.hideout.entities);
+            objectsToDraw.add(gp.player);
+            objectsToDraw.add(gp.hideout.dummy);
+            objectsToDraw.sort(Comparator.comparing(Entity::getHeight));
 
-                            //entitiesToRemove.add(entity);
-                            gp.player.playerRunes.add(rune);
-                        }
-
-                        gp.objectManager.entityMap[entity.col][entity.row] = 0;
-                        gp.objectManager.entities.remove(entity);
-                        gp.repaint();
-
-                        System.out.println(gp.player.playerRunes);
-                    }
-                }
+            for (Entity entity : objectsToDraw) {
+                entity.draw(g2);
             }
         }
-        //gp.objectManager.entities.removeAll(entitiesToRemove);
+
     }
 
 }

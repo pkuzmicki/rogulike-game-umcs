@@ -40,6 +40,7 @@ public class Tile {
             case 6 -> path = pre + "blood_tile" + suf;
             case 7 -> path = pre + "rainbow_bridge_tile" + suf;
             case 8 -> path = pre + "rainbow_bridge_tile2" + suf;
+            case 9 -> path = pre + "rune_place" + suf;
             default -> path = pre + "missing_tile" + suf;
         };
 

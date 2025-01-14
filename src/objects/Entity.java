@@ -16,6 +16,7 @@ public class Entity {
     public int id;
     public int x, y;
     public int col, row;
+    public boolean setInHideOut = false;
 
     public Entity(GamePanel gamePanel, int col, int row, int entityID){
         this.gp = gamePanel;
@@ -28,26 +29,25 @@ public class Entity {
         setSize();
     }
 
-//    public void setInHideout(){
-//        this.x = gp.hideout.hideoutMap[col][row].x;
-//        this.y = gp.hideout.hideoutMap[col][row].y;
-//    }
-
     public void setPositions(){
-        this.x = gp.map.tileMap[col][row].x;
-        this.y = gp.map.tileMap[col][row].y;
-//        this.x = gp.map.tileMap[col][row].x;
-//        this.y = gp.map.tileMap[col][row].y;
+        if (!setInHideOut) {
+            this.x = gp.map.tileMap[col][row].x;
+            this.y = gp.map.tileMap[col][row].y;
+        } else {
+            this.x = gp.hideout.hideoutMap[col][row].x;
+            this.y = gp.hideout.hideoutMap[col][row].y;
+        }
     }
 
     public void setSize(){
-        this.x += switch (id) {
+        this.x += (int) switch (id) {
             case 1 -> 0;
+            case 31, 32, 33, 34 -> image.getWidth() * 1.5;
             default -> image.getWidth();
         };
 
         this.y -= switch (id) {
-            case 11, 12, 13, 14 -> 65;
+            case 11, 12, 13, 14, 15 -> 65;
             case 21, 22 -> image.getHeight() / 2;
             default -> 0;
         };
@@ -73,21 +73,15 @@ public class Entity {
             case 12 -> "/sprites/entities/keeper_red.png";
             case 13 -> "/sprites/entities/keeper_blue.png";
             case 14 -> "/sprites/entities/keeper_yellow.png";
+            case 15 -> "/sprites/entities/crazy_wizard.png";
 
             case 21 -> "/sprites/obstacles/sigill_of_despair.png";
             case 22 -> "/sprites/obstacles/skull_pot.png";
 
             case 31 -> "/sprites/items/rune01.png";
-
-//            case 31 -> "/sprites/items/rune_of_speed.png"; //dodaje +1 ruchu w kazdej turze
-//            case 32 -> "/sprites/items/rune_of_healing.png"; //czar pozwala na leczenie
-//            case 33 -> "/sprites/items/rune_of_protection.png"; //czar daje ochrne przed atakami na 1 ture
-//            case 34 -> "/sprites/items/rune_of_damage.png"; //dodaje +1 obrażeń do czaru
-
-
-
-            //case 35 -> "/sprites/items/rune_of_range.png"; //dodaje +1 dystansu na jaki mozebyc rzucony czar
-            //case 36 -> "/sprites/items/rune_of_distance.png"; //zostaje rzocany na wszystkie pola wokół atakujacego
+            case 32 -> "/sprites/items/rune02.png";
+            case 33 -> "/sprites/items/rune03.png";
+            case 34 -> "/sprites/items/rune04.png";
 
             default -> null;
         };

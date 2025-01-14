@@ -3,11 +3,11 @@ package combat;
 import main.GamePanel;
 import objects.Entity;
 import objects.Monster;
+import objects.Player;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Spell {
@@ -29,7 +29,7 @@ public class Spell {
         random = new Random();
 
         getImages();
-        setSpellValues();
+        //setSpellValues();
     }
 
     private void getImages() {
@@ -39,10 +39,10 @@ public class Spell {
         }
     }
 
-    public void setSpellValues() {
+    public void setSpellValues(Player player) {
         switch (name) {
             case "1" -> {
-                damage = 5;
+                damage = player.dmg;
                 manaCost = 3;
             }
             case "2" -> {
@@ -56,15 +56,33 @@ public class Spell {
     }
 
     public void effect() {
-        for (Entity entity : gp.objectManager.entities) {
-            if (entity.col == col && entity.row == row && entity.id <= 20) {
-                Monster monster = (Monster) entity;
+        if (!gp.player.isInHideout) {
+            for (Entity entity : gp.objectManager.entities) {
+                if (entity.col == col && entity.row == row && entity.id <= 20) {
+                    Monster monster = (Monster) entity;
 
-                monster.currentHP -= damage * multiplier();
-                gp.player.currentMana -= manaCost;
-                System.out.println(monster.name + monster.currentHP);
+                    //monster.currentHP -= damage * multiplier();
+                    System.out.println(damage + gp.hideout.dmgBonus);
+                    monster.currentHP -= damage + gp.hideout.dmgBonus;
+                    gp.player.currentMana -= manaCost;
+                    System.out.println(monster.name + monster.currentHP);
 
-                monster.checkIfShouldDie(monster.col, monster.row);
+                    monster.checkIfShouldDie(monster.col, monster.row);
+                }
+            }
+        } else {
+            for (Entity entity : gp.hideout.entities) {
+                if (entity.col == col && entity.row == row && entity.id <= 20) {
+                    Monster monster = (Monster) entity;
+
+                    //monster.currentHP -= damage * multiplier();
+                    System.out.println(damage + gp.hideout.dmgBonus);
+                    monster.currentHP -= damage + gp.hideout.dmgBonus;
+                    gp.player.currentMana -= manaCost;
+                    System.out.println(monster.name + monster.currentHP);
+
+                    monster.checkIfShouldDie(monster.col, monster.row);
+                }
             }
         }
     }
@@ -79,19 +97,19 @@ public class Spell {
 //            System.out.println(col + " " + row);
 //        }
 //    }
-//
-////    public void cast1(int col, int row, int range, int spellID) {
-////        for (int i = 0; i < range; i++) {
-////            if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow && !gp.player.isInHideout) {
-////                for (Entity entity : gp.objectManager.entities) {
-////                    if (entity.col == col && entity.row == row && entity.id <= 20) {
-////                        Monster monster = (Monster) entity;
-////                        monster.currentHP -= damage;
-////                    }
-////                }
-////            }
-////        }
-////    }
+
+//    public void cast1(int col, int row, int range, int spellID) {
+//        for (int i = 0; i < range; i++) {
+//            if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow && !gp.player.isInHideout) {
+//                for (Entity entity : gp.objectManager.entities) {
+//                    if (entity.col == col && entity.row == row && entity.id <= 20) {
+//                        Monster monster = (Monster) entity;
+//                        monster.currentHP -= damage;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     public double multiplier() {
         double[] multipliers = {0.5, 0.7, 0.9, 1.0, 2};

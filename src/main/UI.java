@@ -17,7 +17,7 @@ public class UI {
     BufferedImage[] hpBar = new BufferedImage[10];
     BufferedImage[] manaBar = new BufferedImage[10];
 
-    Font wizardFont;
+    public Font wizardFont;
 
     public UI(GamePanel gamePanel) {
         this.gp = gamePanel;

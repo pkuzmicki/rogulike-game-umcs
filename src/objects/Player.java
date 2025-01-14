@@ -13,16 +13,17 @@ public class Player extends Monster {
     public int screenY = gp.screenHeight/2 - image.getHeight()/2;
     public boolean isInHideout = false;
 
-    public ArrayList<Rune> playerRunes = new ArrayList<>(4);
+    public boolean isEquipmentOpen = false;
+
+    public ArrayList<Rune> playerRunes = new ArrayList<>();
     public ArrayList<Spell> playerSpells = new ArrayList<>();
 
     public int currentMana;
     public int maxMana;
 
-    public int dmg;
-
     public Player(GamePanel gamePanel, int col, int row, int entityID) {
         super(gamePanel, col, row, entityID);
+
         maxMana = currentMana = 100;
 
         addSpells();
@@ -138,10 +139,13 @@ public class Player extends Monster {
 
     public void addSpells() {
         Spell attackSpell1 = new Spell(gp,"1");
-        Spell attackSpell2 = new Spell(gp,"2");
-        Spell healingSpell = new Spell(gp,"3");
+        attackSpell1.setSpellValues(this);
         playerSpells.add(attackSpell1);
+        Spell attackSpell2 = new Spell(gp,"2");
+        attackSpell2.setSpellValues(this);
         playerSpells.add(attackSpell2);
+        Spell healingSpell = new Spell(gp,"3");
+        healingSpell.setSpellValues(this);
         playerSpells.add(healingSpell);
     }
 
