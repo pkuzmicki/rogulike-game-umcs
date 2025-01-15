@@ -72,6 +72,8 @@ public class GamePanel extends JPanel {
     public void update() {
         //System.out.println(player.isEquipmentOpen);
         //System.out.println(player.col + " " + player.row);
+        //System.out.println(player.isInHideout);
+        objectManager.printEntityMap();
 
         player.move();
         player.checkManaValue();

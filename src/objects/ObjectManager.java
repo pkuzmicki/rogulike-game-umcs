@@ -120,7 +120,7 @@ public class ObjectManager {
         } else {
             List<Entity> objectsToDraw = new ArrayList<>(gp.hideout.entities);
             objectsToDraw.add(gp.player);
-            objectsToDraw.add(gp.hideout.dummy);
+            //objectsToDraw.add(gp.hideout.dummy);
             objectsToDraw.sort(Comparator.comparing(Entity::getHeight));
 
             for (Entity entity : objectsToDraw) {

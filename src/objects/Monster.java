@@ -64,6 +64,23 @@ public class Monster extends Entity{
         }
     }
 
+    public void generateDrop() {
+        switch (name) {
+            case "keeper_red" -> {
+
+            }
+            case "keeper_blue" -> {
+
+            }
+            case "keeper_green" -> {
+
+            }
+            case "keeper_yellow" -> {
+
+            }
+        }
+    }
+
 //    public void attack(Spell spell) {
 //        for (Entity entity : gp.objectManager.entities){
 //            Monster monster = (Monster) entity;

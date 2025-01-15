@@ -10,7 +10,7 @@ public class Rune extends Item {
     public int level;
     public int numberOfMods;
 
-    public int dmg;
+    public double dmg;
     public double critical;
     public int range;
     public double hp;

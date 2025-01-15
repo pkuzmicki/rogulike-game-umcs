@@ -18,7 +18,7 @@ public class Hideout {
 
     public Monster dummy;
 
-    public int dmgBonus;
+    public double dmgBonus;
 
     public Hideout(GamePanel gamePanel){
         this.gp = gamePanel;
@@ -44,10 +44,10 @@ public class Hideout {
     }
 
     public void checkAltar() {
-        int firstAltar = 0;
-        int secondAltar = 0;
-        int thirdAltar = 0;
-        int forthAltar = 0;
+        double firstAltar = 0;
+        double secondAltar = 0;
+        double thirdAltar = 0;
+        double forthAltar = 0;
         for (Entity entity : entities) {
             if (entity.col == 7 && entity.row == 8) {
                 Rune rune = (Rune) entity;

@@ -13,6 +13,9 @@ public class Player extends Monster {
     public int screenY = gp.screenHeight/2 - image.getHeight()/2;
     public boolean isInHideout = false;
 
+    public boolean isPoisoned; //drains hp every turn
+    public boolean isCursed; //drains mana evrry turn
+
     public boolean isEquipmentOpen = false;
 
     public ArrayList<Rune> playerRunes = new ArrayList<>();
@@ -43,7 +46,20 @@ public class Player extends Monster {
         y = screenY;
     }
 
+    public void checkStatusEffects(double hpDrain, int manaDrain, int duration) {
+        if (isPoisoned) {
+            int counter = gp.turnManager.globalTurn;
+
+
+        }
+        if (isCursed) {
+
+        }
+    }
+
     public void move(){
+        int prevCol = col;
+        int prevRow = row;
         switch (gp.keyHandler.directionOfMove()) {
             case "up" -> {
                 if (isInHideout) {
@@ -117,6 +133,10 @@ public class Player extends Monster {
                     }
                 }
             }
+        }
+        if (col - 1 > 0  && col + 1 < gp.map.maxWorldCol && row - 1 > 0 && row + 1 < gp.map.maxWorldRow) {
+            gp.objectManager.entityMap[col][row] = id;
+            gp.objectManager.entityMap[prevCol][prevRow] = 0;
         }
 
     }
