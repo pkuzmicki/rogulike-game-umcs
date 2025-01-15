@@ -2,7 +2,7 @@ package objects.items;
 
 import main.GamePanel;
 
-import java.util.Random;
+import java.util.*;
 
 public class Rune extends Item {
     Random random;
@@ -17,68 +17,103 @@ public class Rune extends Item {
     public int mana;
     public int runeSpace;
 
+    public List<String> listOfMods;
+
     public Rune(GamePanel gamePanel, int col, int row, int itemId) {
         super(gamePanel, col, row, itemId);
         random = new Random();
+        listOfMods = new ArrayList<>();
 
-        dmg = random.nextInt(0, 20);
+        drawMods();
     }
 
-    public void generateRune() {
-        //dodac szanse krora sie zwieksza z progresja
-        level = random.nextInt(0, 5);
+    public Set<String> selectedMods = new HashSet<>();
+
+    public void drawMods() {
+        level = drawWeight(4);
 
         switch (level) {
-            case 1 -> {
-                numberOfMods = random.nextInt(1, 3);
+            case 0 -> numberOfMods = 1;
+            case 1 -> numberOfMods = random.nextInt(1, 3);
+            case 2 -> numberOfMods = random.nextInt(1, 4);
+            case 3 -> numberOfMods = random.nextInt(2, 4);
+            case 4 -> numberOfMods = random.nextInt(2, 5);
+        }
+
+        List<String> availableMods = new ArrayList<>();
+
+        availableMods.add("dmg");
+        availableMods.add("hp");
+        availableMods.add("mana");
+        if (level >= 2) availableMods.add("critical");
+        if (level >= 3) availableMods.add("runeSpace");
+        if (level >= 4) availableMods.add("range");
+
+
+        for (int i = 0; i < numberOfMods; i++) {
+            selectedMods.add(availableMods.get(random.nextInt(availableMods.size())));
+        }
+
+        for (String mod : selectedMods) {
+            listOfMods.add(mod);
+            switch (mod) {
+                case "dmg" -> dmg = drawDmg();
+                case "critical" -> critical = drawWeight(10);
+                case "range" -> range = drawWeight(3);
+                case "hp" -> hp = drawHp();
+                case "mana" -> mana = (int) drawMana();
+                case "runeSpace" -> runeSpace = 1;
             }
-            case 2 -> {
-                numberOfMods = random.nextInt(1, 4);
-            }
-            case 3 -> {
-                numberOfMods = random.nextInt(2, 3);
-            }
-            case 4 -> {
-                numberOfMods = random.nextInt(2, 4);
-            }
+        }
+
+    }
+
+    private double drawDmg() {
+        boolean isNegative = random.nextInt(100) > 90;
+        if (isNegative) {
+            return random.nextInt(-5, -1);
+        } else {
+            return drawWeight(40);
         }
     }
 
-    private void getStats() {
-        int statId = random.nextInt(1, 7);
-        switch (statId) {
-            case 1 -> {
-                if (random.nextBoolean()) {
-                    dmg += random.nextInt(-5, 40);
-                } else {
-                    dmg += gp.player.dmg * random.nextDouble(0.01, 0.2);
-                }
-            }
-            case 2 -> {
-                critical += random.nextInt(1, 10);
-            }
-            case 3 -> {
-                range += random.nextInt(1, 3);
-            }
-            case 4 -> {
-                if (random.nextBoolean()) {
-                    hp += random.nextInt(-5, 50);
-                } else {
-                    hp += gp.player.maxHP * random.nextDouble(0.01, 0.1);
-                }
-            }
-            case 5 -> {
-                if (random.nextBoolean()) {
-                    mana += random.nextInt(-5, 50);
-                } else {
-                    mana += (int) (gp.player.maxMana * random.nextDouble(0.05, 0.3));
-                }
-            }
-            case 6 -> {
-                runeSpace++;
+    private double drawHp() {
+        boolean isNegative = random.nextInt(100) > 90;
+        if (isNegative) {
+            return random.nextInt(-5, -1);
+        } else {
+            return drawWeight(40);
+        }
+    }
+
+    private double drawMana() {
+        boolean isNegative = random.nextInt(100) > 90;
+        if (isNegative) {
+            return random.nextInt(-10, -1);
+        } else {
+            return drawWeight(60);
+        }
+    }
+
+    private int drawWeight(int max) {
+        int sum = 0;
+
+        for (int i = 1; i <= max; i++) {
+            sum += i;
+        }
+
+        int num = random.nextInt(sum) + 1;
+
+        int currSum = 0;
+        for (int i = 1; i <= max; i++) {
+            currSum += (max - i + 1);
+            if (num <= currSum) {
+                return i;
             }
         }
+        return max;
     }
 
 
 }
+

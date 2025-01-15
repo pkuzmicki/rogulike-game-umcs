@@ -1,7 +1,6 @@
 package objects;
 
 import main.GamePanel;
-import map.Tile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -30,7 +29,7 @@ public class Entity {
     }
 
     public void setPositions(){
-        if (!setInHideOut) {
+        if (!gp.player.isInHideout) {
             this.x = gp.map.tileMap[col][row].x;
             this.y = gp.map.tileMap[col][row].y;
         } else {

@@ -23,13 +23,25 @@ public class Player extends Monster {
 
     public int currentMana;
     public int maxMana;
+    public double critChance;
+    public double missChance;
+    public double hitChance;
 
     public Player(GamePanel gamePanel, int col, int row, int entityID) {
         super(gamePanel, col, row, entityID);
 
         maxMana = currentMana = 100;
 
+        critChance = 0.5;
+        missChance = 0.15;
+        hitChance = 0.8;
+
         addSpells();
+    }
+
+    public void updateStats() {
+        maxHP += gp.hideout.hpBonus;
+        maxMana += gp.hideout.manaBonus;
     }
 
     public void checkManaValue() {
@@ -46,14 +58,34 @@ public class Player extends Monster {
         y = screenY;
     }
 
+    private int poisonStartTurn;
+    private int curseStartTurn;
+
+    public void applyPoison() {
+        isPoisoned = true;
+        poisonStartTurn = gp.turnManager.globalTurn;
+    }
+
+    public void applyCurse() {
+        isCursed = true;
+        curseStartTurn = gp.turnManager.globalTurn;
+    }
+
     public void checkStatusEffects(double hpDrain, int manaDrain, int duration) {
         if (isPoisoned) {
-            int counter = gp.turnManager.globalTurn;
-
-
+            if (gp.turnManager.globalTurn < poisonStartTurn + duration - 1) {
+                currentHP -= hpDrain;
+            } else {
+                isPoisoned = false;
+            }
         }
-        if (isCursed) {
 
+        if (isCursed) {
+            if (gp.turnManager.globalTurn < curseStartTurn + duration - 1) {
+                gp.player.currentMana -= manaDrain;
+            } else {
+                isCursed = false;
+            }
         }
     }
 

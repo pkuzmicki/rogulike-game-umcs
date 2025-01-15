@@ -73,7 +73,8 @@ public class GamePanel extends JPanel {
         //System.out.println(player.isEquipmentOpen);
         //System.out.println(player.col + " " + player.row);
         //System.out.println(player.isInHideout);
-        objectManager.printEntityMap();
+        //objectManager.printEntityMap();
+
 
         player.move();
         player.checkManaValue();
@@ -82,9 +83,8 @@ public class GamePanel extends JPanel {
         eq.closeEq();
         eq.dropItems();
 
+        player.checkStatusEffects(3, 7, 3);
         hideout.checkAltar();
-
-
 
         for (Entity entity : objectManager.entities) {
             if (entity.id < 30) {
@@ -117,6 +117,7 @@ public class GamePanel extends JPanel {
 
     public void drawScene(Graphics2D g2) {
         backgrounds.draw(g2);
+
         map.draw(g2);
         hideout.draw(g2);
 

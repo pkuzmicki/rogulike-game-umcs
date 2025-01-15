@@ -102,7 +102,9 @@ public class KeyHandler extends KeyAdapter {
 
             //SELF CAST
             if (key == KeyEvent.VK_X) {
-                gp.turnManager.globalTurn++;
+                //gp.turnManager.globalTurn++;
+                System.out.println("You are Cursed!");
+                gp.player.applyCurse();
             }
 
             if (key == KeyEvent.VK_F) {

@@ -61,8 +61,7 @@ public class Spell {
                 if (entity.col == col && entity.row == row && entity.id <= 20) {
                     Monster monster = (Monster) entity;
 
-                    //monster.currentHP -= damage * multiplier();
-                    System.out.println(damage + gp.hideout.dmgBonus);
+                    //System.out.println(damage + gp.hideout.dmgBonus);
                     monster.currentHP -= damage + gp.hideout.dmgBonus;
                     gp.player.currentMana -= manaCost;
                     System.out.println(monster.name + monster.currentHP);
@@ -77,7 +76,7 @@ public class Spell {
 
                     //monster.currentHP -= damage * multiplier();
                     System.out.println(damage + gp.hideout.dmgBonus);
-                    monster.currentHP -= damage + gp.hideout.dmgBonus;
+                    monster.currentHP -= (damage + gp.hideout.dmgBonus) * criticalHit();
                     gp.player.currentMana -= manaCost;
                     System.out.println(monster.name + monster.currentHP);
 
@@ -85,6 +84,21 @@ public class Spell {
                 }
             }
         }
+    }
+
+    public double criticalHit() {
+        double[] multipliers = {0, 1.0, 2};
+        double[] probabilities = {gp.player.missChance, gp.player.hitChance, gp.player.critChance};
+
+        double randomNumber = random.nextDouble();
+        double chance = 0.0;
+        for (int i = 0; i < multipliers.length; i++) {
+            chance += probabilities[i];
+            if (randomNumber <= chance) {
+                return multipliers[i];
+            }
+        }
+        return 1;
     }
 
 //    public void cast(int col, int row) {
@@ -111,19 +125,5 @@ public class Spell {
 //        }
 //    }
 
-    public double multiplier() {
-        double[] multipliers = {0.5, 0.7, 0.9, 1.0, 2};
-        double[] probabilities = {0.04, 0.10, 0.25, 0.6, 0.01};
-
-        double randomNumber = random.nextDouble();
-        double chance = 0.0;
-        for (int i = 0; i < multipliers.length; i++) {
-            chance += probabilities[i];
-            if (randomNumber <= chance) {
-                return multipliers[i];
-            }
-        }
-        return 1;
-    }
 
 }

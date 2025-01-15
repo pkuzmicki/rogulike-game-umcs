@@ -16,9 +16,14 @@ public class Hideout {
     public int hideoutX;
     public int hideoutY;
 
-    public Monster dummy;
+    //public Monster dummy;
 
     public double dmgBonus;
+    public double critBonus;
+    public int rangeBonus;
+    public double hpBonus;
+    public int manaBonus;
+    public int runeSpaceBonus;
 
     public Hideout(GamePanel gamePanel){
         this.gp = gamePanel;
@@ -28,13 +33,13 @@ public class Hideout {
         hideoutY = (gp.map.tileHeight/2) * 60;
         createHideout();
         createAltar();
-        createDummy();
+        //createDummy();
     }
 
-    public void createDummy() {
-        dummy = new Monster(gp, 3, 3, 14);
-        dummy.setInHideOut = true;
-    }
+//    public void createDummy() {
+//        dummy = new Monster(gp, 3, 3, 14);
+//        dummy.setInHideOut = true;
+//    }
 
     public void createAltar() {
         hideoutMap[7][8].setTileType(9);
@@ -44,30 +49,57 @@ public class Hideout {
     }
 
     public void checkAltar() {
-        double firstAltar = 0;
-        double secondAltar = 0;
-        double thirdAltar = 0;
-        double forthAltar = 0;
+        double[] altarsDmg = new double[4];
+        double[] altarsCri = new double[4];
+        int[] altarsRan = new int[4];
+        double[] altarsHit = new double[4];
+        int[] altarsMan = new int[4];
+        int[] altarsSpa = new int[4];
+
         for (Entity entity : entities) {
             if (entity.col == 7 && entity.row == 8) {
                 Rune rune = (Rune) entity;
-                firstAltar = rune.dmg;
-                System.out.println(rune.dmg);
+                altarsDmg[0] = rune.dmg;
+                altarsCri[0] = rune.critical;
+                altarsRan[0] = rune.range;
+                altarsHit[0] = rune.hp;
+                altarsMan[0] = rune.mana;
+                altarsSpa[0] = rune.runeSpace;
             }
             if (entity.col == 8 && entity.row == 7) {
                 Rune rune = (Rune) entity;
-                secondAltar = rune.dmg;
+                altarsDmg[1] = rune.dmg;
+                altarsCri[1] = rune.critical;
+                altarsRan[1] = rune.range;
+                altarsHit[1] = rune.hp;
+                altarsMan[1] = rune.mana;
+                altarsSpa[1] = rune.runeSpace;
             }
             if (entity.col == 10 && entity.row == 11) {
                 Rune rune = (Rune) entity;
-                thirdAltar = rune.dmg;
+                altarsDmg[2] = rune.dmg;
+                altarsCri[2] = rune.critical;
+                altarsRan[2] = rune.range;
+                altarsHit[2] = rune.hp;
+                altarsMan[2] = rune.mana;
+                altarsSpa[2] = rune.runeSpace;
             }
             if (entity.col == 11 && entity.row == 10) {
                 Rune rune = (Rune) entity;
-                forthAltar = rune.dmg;
+                altarsDmg[3] = rune.dmg;
+                altarsCri[3] = rune.critical;
+                altarsRan[3] = rune.range;
+                altarsHit[3] = rune.hp;
+                altarsMan[3] = rune.mana;
+                altarsSpa[3] = rune.runeSpace;
             }
         }
-        dmgBonus = firstAltar + secondAltar + thirdAltar + forthAltar;
+        dmgBonus = altarsDmg[0] + altarsDmg[1] + altarsDmg[2] + altarsDmg[3];
+        critBonus = altarsCri[0] + altarsCri[1] + altarsCri[2] + altarsCri[3];
+        rangeBonus = altarsRan[0] + altarsRan[1] + altarsRan[2] + altarsRan[3];
+        hpBonus = altarsHit[0] + altarsHit[1] + altarsHit[2] + altarsHit[3];
+        manaBonus = altarsMan[0] + altarsMan[1] + altarsMan[2] + altarsMan[3];
+        runeSpaceBonus = altarsSpa[0] + altarsSpa[1] + altarsSpa[2] + altarsSpa[3];
     }
 
     public void createHideout() {

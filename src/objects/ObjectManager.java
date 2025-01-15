@@ -76,11 +76,11 @@ public class ObjectManager {
 
     public List<Entity> entitiesToKill = new ArrayList<>();
 
-    public void destroyEntity(int col, int row) {
+    public void destroyEntity(int col, int row, int id) {
         //.removeIf(entity -> entity.col == col && entity.row == row);
         if (!gp.player.isInHideout) {
             for (Entity entity : entities) {
-                if (entity.col == col && entity.row == row) {
+                if (entity.col == col && entity.row == row && entity.id == id) {
                     entitiesToKill.add(entity);
                 }
             }
@@ -90,14 +90,13 @@ public class ObjectManager {
                     entitiesToKill.add(entity);
                 }
             }
-
         }
-
     }
 
     public void killAll() {
         entities.removeAll(entitiesToKill);
         gp.hideout.entities.removeAll(entitiesToKill);
+        gp.repaint();
     }
 
     public void printEntityMap() {
@@ -121,6 +120,7 @@ public class ObjectManager {
             List<Entity> objectsToDraw = new ArrayList<>(gp.hideout.entities);
             objectsToDraw.add(gp.player);
             //objectsToDraw.add(gp.hideout.dummy);
+
             objectsToDraw.sort(Comparator.comparing(Entity::getHeight));
 
             for (Entity entity : objectsToDraw) {

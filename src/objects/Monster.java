@@ -11,9 +11,13 @@ public class Monster extends Entity{
     public int dmg;
     public int manaDrop;
 
+    Random random;
+
     public Monster(GamePanel gamePanel, int col, int row, int monsterId){
         super(gamePanel, col, row, monsterId);
         setMonsterStats(this, name);
+
+        random = new Random();
     }
 
     private static void setMonsterStats(Monster monster, String monsterName) {
@@ -58,52 +62,57 @@ public class Monster extends Entity{
                 gp.ui.isGameOver = true;
             } else {
                 gp.player.currentMana += manaDrop;
-                gp.objectManager.destroyEntity(col, row);
+                generateDrop();
+                gp.objectManager.destroyEntity(col, row, id);
                 gp.objectManager.entityMap[col][row] = 0;
             }
         }
     }
 
-    public void generateDrop() {
-        switch (name) {
-            case "keeper_red" -> {
+    private void generateDrop() {
+        boolean isSpawning = random.nextInt(100) > 60;
+        if (isSpawning) {
+            gp.objectManager.createEntity(row, col, random.nextInt(31, 35));
+        }
+//                switch (name) {
+//            case "keeper_red" -> {
+//
+//            }
+//            case "keeper_blue" -> {
+//
+//            }
+//            case "keeper_green" -> {
+//
+//            }
+//            case "keeper_yellow" -> {
+//
+//            }
+//        }
+    }
 
-            }
-            case "keeper_blue" -> {
-
-            }
-            case "keeper_green" -> {
-
-            }
-            case "keeper_yellow" -> {
-
+    public void attack() {
+        for (Entity entity : gp.objectManager.entities){
+            Monster monster = (Monster) entity;
+            if (monster.id < 20){
+                if (monster.col == col - 1 && monster.row == row){
+                    //spell.cast(col - 1, row);
+                }
+                if (monster.col == col + 1 && monster.row == row){
+                    //spell.cast(col + 1, row);
+                }
+                if (monster.col == col && monster.row == row - 1){
+                    //spell.cast(col, row - 1);
+                }
+                if (monster.col == col && monster.row == row + 1){
+                    //spell.cast(col, row + 1);
+                }
             }
         }
     }
 
-//    public void attack(Spell spell) {
-//        for (Entity entity : gp.objectManager.entities){
-//            Monster monster = (Monster) entity;
-//            if (monster.id < 20){
-//                if (monster.col == col - 1 && monster.row == row){
-//                    spell.cast(col - 1, row);
-//                }
-//                if (monster.col == col + 1 && monster.row == row){
-//                    spell.cast(col + 1, row);
-//                }
-//                if (monster.col == col && monster.row == row - 1){
-//                    spell.cast(col, row - 1);
-//                }
-//                if (monster.col == col && monster.row == row + 1){
-//                    spell.cast(col, row + 1);
-//                }
-//            }
-//        }
-//    }
-
     int moveCounter = 0;
     public void monsterMove() {
-        Random random = new Random();
+
         int nextMove = random.nextInt(4) + 1;
         if (col > 0 && col < gp.map.maxWorldCol - 1 && row > 0 && row < gp.map.maxWorldRow - 1) {
             switch (moveCounter) {
