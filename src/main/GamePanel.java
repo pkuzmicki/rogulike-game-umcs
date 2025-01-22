@@ -71,15 +71,24 @@ public class GamePanel extends JPanel {
 
     public void update() {
         //System.out.println(player.isEquipmentOpen);
-        //System.out.println(player.col + " " + player.row);
+
         //System.out.println(player.isInHideout);
-        //objectManager.printEntityMap();
+        objectManager.printEntityMap();
 
 
         player.move();
         player.checkManaValue();
 
-        eq.pickUpItems();
+        if (eq.itemDropped) {
+            if (turnManager.globalTurn == eq.turnWhenDropped + 1) {
+                eq.itemDropped = false;
+            }
+        }
+
+        if (!eq.itemDropped) {
+            eq.pickUpItems();
+        }
+
         eq.closeEq();
         eq.dropItems();
 
@@ -87,32 +96,32 @@ public class GamePanel extends JPanel {
         hideout.checkAltar();
 
         for (Entity entity : objectManager.entities) {
+            if (entity.id < 30 && entity.id > 10) {
+                Monster monster = (Monster) entity;
+                //System.out.println(monster.name);
+
+                monster.randomWalk();
+                monster.follow(3);
+                monster.attack();
+            }
+        }
+
+        for (Entity entity : objectManager.entities) {
             if (entity.id < 30) {
                 Monster monster = (Monster) entity;
                 monster.checkForOverHeal();
                 monster.checkIfShouldDie(monster.col, monster.row);
-                //monster.monsterMove();
                 repaint();
             }
         }
         objectManager.killAll();
-
-//        if (turnManager.globalTurn % 2 != 0) {
-//            for (Entity entity : objectManager.entities) {
-//                Monster monster = (Monster) entity;
-//                if (monster.id != 1) {
-//
-//                    //monster.attack(castingManager.testicularTorsion);
-//                }
-//            }
-//        }
 
         if (!player.isEquipmentOpen) {
             castingManager.updateCasting();
         }
 
         turnManager.updateTurn();
-        repaint();
+        //repaint();
     }
 
     public void drawScene(Graphics2D g2) {

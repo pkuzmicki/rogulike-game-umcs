@@ -25,7 +25,7 @@ public class Entity {
         loadImage();
         setEntityName();
         setPositions();
-        setSize();
+        //setSize();
     }
 
     public void setPositions(){
@@ -36,6 +36,7 @@ public class Entity {
             this.x = gp.hideout.hideoutMap[col][row].x;
             this.y = gp.hideout.hideoutMap[col][row].y;
         }
+        setSize();
     }
 
     public void setSize(){
@@ -94,20 +95,6 @@ public class Entity {
 
     public int getHeight() {
         return col + row;
-    }
-
-    public void move(int colMove, int rowMove){
-        if (gp.objectManager.entityMap[col + colMove][row + rowMove] == 0) {
-            int prevCol = col;
-            int prevRow = row;
-            col += colMove;
-            row += rowMove;
-            setPositions();
-            setSize();
-            gp.objectManager.entityMap[col][row] = id;
-            gp.objectManager.entityMap[prevCol][prevRow] = 0;
-            //gp.repaint();
-        }
     }
 
     public void draw(Graphics2D g2) {

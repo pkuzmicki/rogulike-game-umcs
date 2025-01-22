@@ -81,9 +81,11 @@ public class CastingManager {
                 } else if (gp.map.tileMap[currentSpell.col][currentSpell.row].tileType == 0) {
                     if (gp.keyHandler.upPressed ||  gp.keyHandler.downPressed) {
                         gp.map.tileMap[currentSpell.col][currentSpell.row].setTileType(7);
+                        gp.repaint();
                         gp.player.currentMana -= currentSpell.manaCost;
                     } else if (gp.keyHandler.leftPressed || gp.keyHandler.rightPressed) {
                         gp.map.tileMap[currentSpell.col][currentSpell.row].setTileType(8);
+                        gp.repaint();
                         gp.player.currentMana -= currentSpell.manaCost;
                     }
 

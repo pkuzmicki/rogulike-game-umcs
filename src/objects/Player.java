@@ -101,14 +101,17 @@ public class Player extends Monster {
                         gp.map.dy += gp.map.tileHeight/2;
                     }
                 } else {
-                    if (col > 0 && gp.map.tileMap[col - 1][row].tileType >= 1 && gp.objectManager.entityMap[col - 1][row] == 0 || gp.objectManager.entityMap[col - 1][row] > 30) {
-                        col -= 1;
-                        gp.map.dx -= gp.map.tileWidth/2;
-                        gp.map.dy += gp.map.tileHeight/2;
+                    if (col > 0) {
+                        if (gp.map.tileMap[col - 1][row].tileType >= 1 && gp.objectManager.entityMap[col - 1][row] == 0 || gp.objectManager.entityMap[col - 1][row] > 30) {
+                            col -= 1;
+                            gp.map.dx -= gp.map.tileWidth/2;
+                            gp.map.dy += gp.map.tileHeight/2;
 
-                        //gp.y += 1;
-                        //gp.x += 1;
+                            gp.objectManager.entityMap[prevCol][prevRow] = 0;
+                            gp.objectManager.entityMap[col][row] = id;
+                        }
                     }
+
                 }
             }
             case "down" -> {
@@ -119,14 +122,17 @@ public class Player extends Monster {
                         gp.map.dy -= gp.map.tileHeight/2;
                     }
                 } else {
-                    if (col < gp.map.maxWorldCol - 1 && gp.map.tileMap[col + 1][row].tileType >= 1 && gp.objectManager.entityMap[col + 1][row] == 0 || gp.objectManager.entityMap[col + 1][row] > 30) {
-                        col += 1;
-                        gp.map.dx += gp.map.tileWidth/2;
-                        gp.map.dy -= gp.map.tileHeight/2;
+                    if (col < gp.map.maxWorldCol - 1) {
+                        if (gp.map.tileMap[col + 1][row].tileType >= 1 && gp.objectManager.entityMap[col + 1][row] == 0 || gp.objectManager.entityMap[col + 1][row] > 30) {
+                            col += 1;
+                            gp.map.dx += gp.map.tileWidth/2;
+                            gp.map.dy -= gp.map.tileHeight/2;
 
-                        //gp.y -= 1;
-                        //gp.x -= 1;
+                            gp.objectManager.entityMap[prevCol][prevRow] = 0;
+                            gp.objectManager.entityMap[col][row] = id;
+                        }
                     }
+
                 }
             }
             case "left" -> {
@@ -137,14 +143,17 @@ public class Player extends Monster {
                         gp.map.dy += gp.map.tileHeight/2;
                     }
                 } else {
-                    if (row > 0 && gp.map.tileMap[col][row - 1].tileType >= 1 && gp.objectManager.entityMap[col][row - 1] == 0 || gp.objectManager.entityMap[col][row - 1] > 30) {
-                        row -= 1;
-                        gp.map.dx += gp.map.tileWidth/2;
-                        gp.map.dy += gp.map.tileHeight/2;
+                    if (row > 0) {
+                        if (gp.map.tileMap[col][row - 1].tileType >= 1 && gp.objectManager.entityMap[col][row - 1] == 0 || gp.objectManager.entityMap[col][row - 1] > 30) {
+                            row -= 1;
+                            gp.map.dx += gp.map.tileWidth/2;
+                            gp.map.dy += gp.map.tileHeight/2;
 
-                        //gp.x += 1;
-                        //gp.y += 1;
+                            gp.objectManager.entityMap[prevCol][prevRow] = 0;
+                            gp.objectManager.entityMap[col][row] = id;
+                        }
                     }
+
                 }
             }
             case "right" -> {
@@ -155,25 +164,23 @@ public class Player extends Monster {
                         gp.map.dy -= gp.map.tileHeight/2;
                     }
                 } else {
-                    if (row < gp.map.maxWorldRow - 1 && gp.map.tileMap[col][row + 1].tileType >= 1 && gp.objectManager.entityMap[col][ row + 1] == 0 || gp.objectManager.entityMap[col][row + 1] > 30) {
-                        row += 1;
-                        gp.map.dx -= gp.map.tileWidth/2;
-                        gp.map.dy -= gp.map.tileHeight/2;
+                    if (row < gp.map.maxWorldRow - 1) {
+                        if (gp.map.tileMap[col][row + 1].tileType >= 1 && gp.objectManager.entityMap[col][ row + 1] == 0 || gp.objectManager.entityMap[col][row + 1] > 30) {
+                            row += 1;
+                            gp.map.dx -= gp.map.tileWidth/2;
+                            gp.map.dy -= gp.map.tileHeight/2;
 
-                        //gp.x -= 1;
-                        //gp.y -= 1;
+                            gp.objectManager.entityMap[prevCol][prevRow] = 0;
+                            gp.objectManager.entityMap[col][row] = id;
+                        }
                     }
                 }
             }
         }
-        if (col - 1 > 0  && col + 1 < gp.map.maxWorldCol && row - 1 > 0 && row + 1 < gp.map.maxWorldRow) {
-            gp.objectManager.entityMap[col][row] = id;
-            gp.objectManager.entityMap[prevCol][prevRow] = 0;
-        }
-
     }
 
     public void teleportToHideout() {
+        gp.objectManager.entityMap[col][row] = 0;
         gp.map.dx = gp.hideout.hideoutX;
         gp.map.dy = gp.hideout.hideoutY;
         isInHideout = true;
@@ -187,6 +194,7 @@ public class Player extends Monster {
         isInHideout = false;
         col = 1;
         row = 1;
+        gp.objectManager.entityMap[col][row] = 1;
     }
 
     public void addSpells() {

@@ -24,94 +24,63 @@ public class Equipment {
         }
     }
 
-    private List<Entity> entitiesToRemove = new ArrayList<>();
+    //private List<Entity> entitiesToRemove = new ArrayList<>();
 
     public void pickUpItems() {
         if (!gp.player.isInHideout) {
             for (Entity entity : gp.objectManager.entities) {
-                if (gp.player.col == entity.col && gp.player.row == entity.row) {
-                    if (entity.id > 30) {
-                        checkItem(entity);
+                if (entity.id > 30) {
+                    if (gp.player.col == entity.col && gp.player.row == entity.row) {
+                        Rune rune = (Rune) entity;
+                        gp.player.playerRunes.add(rune);
+                        gp.objectManager.entities.remove(rune);
+                        //gp.objectManager.entityMap[rune.col][rune.row] = 0;
+                        //entitiesToRemove.add(rune);
+                        //gp.objectManager.destroyEntity(rune.col, rune.row, rune.id);
+
+                        gp.repaint();
                     }
                 }
             }
+            //gp.objectManager.entities.removeAll(entitiesToRemove);
         } else {
             for (Entity entity : gp.hideout.entities) {
                 if (gp.player.col == entity.col && gp.player.row == entity.row) {
                     if (entity.id > 30) {
-                       checkItem(entity);
+                        Rune rune = (Rune) entity;
+                        gp.player.playerRunes.add(rune);
+                        gp.hideout.entities.remove(rune);
+                        //entitiesToRemove.add(rune);
+                        //gp.objectManager.destroyEntity(rune.col, rune.row, rune.id);
+
+                        gp.repaint();
                     }
                 }
             }
+            //gp.hideout.entities.removeAll(entitiesToRemove);
         }
-        gp.objectManager.entities.removeAll(entitiesToRemove);
-        gp.hideout.entities.removeAll(entitiesToRemove);
     }
 
-    private void checkItem(Entity entity) {
-        Rune rune = (Rune) entity;
-        Rune tempRune = new Rune(gp, rune.col, rune.row, rune.id);
-        tempRune.dmg = rune.dmg;
-        gp.player.playerRunes.add(rune);
-        entitiesToRemove.add(entity);
-        gp.player.playerRunes.getLast().dmg = tempRune.dmg;
-        gp.repaint();
-    }
+    public boolean itemDropped;
+    public int turnWhenDropped;
 
     public void dropItems() {
         if (gp.keyHandler.enterPressed && !gp.player.playerRunes.isEmpty()) {
             Rune selectedRune = gp.player.playerRunes.get(itemSelected);
-
-            gp.objectManager.createEntity(gp.player.row, gp.player.col, selectedRune.id);
-            //System.out.println(selectedRune.id);
-
-            Rune tempRune = new Rune(gp, selectedRune.col, selectedRune.row, selectedRune.id);
-            tempRune.level = selectedRune.level;
-            tempRune.selectedMods = selectedRune.selectedMods;
-            tempRune.dmg = selectedRune.dmg;
-            tempRune.critical = selectedRune.critical;
-            tempRune.range = selectedRune.range;
-            tempRune.hp = selectedRune.hp;
-            tempRune.mana = selectedRune.mana;
-            tempRune.runeSpace = selectedRune.runeSpace;
-
-            Rune rune;
-            if (!gp.player.isInHideout) {
-                rune = (Rune) gp.objectManager.entities.getLast();
-            } else {
-                rune = (Rune) gp.hideout.entities.getLast();
-            }
-
-            rune.level = tempRune.level;
-            rune.selectedMods = tempRune.selectedMods;
-            rune.dmg = tempRune.dmg;
-            rune.critical = tempRune.critical;
-            rune.range = tempRune.range;
-            rune.hp = tempRune.hp;
-            rune.mana = tempRune.mana;
-            rune.runeSpace = tempRune.runeSpace;
-
-            gp.player.updateStats();
-
-            gp.player.playerRunes.remove(itemSelected);
-            gp.keyHandler.tabPressed = false;
-            gp.player.isEquipmentOpen = false;
-            gp.repaint();
-        }
-    }
-
-    public void dropItems1() {
-        if (gp.keyHandler.enterPressed && !gp.player.playerRunes.isEmpty()) {
-            Rune selectedRune = gp.player.playerRunes.get(itemSelected);
-            //System.out.println(selectedRune.col + " " + selectedRune.row);
-            //System.out.println(selectedRune.dmg);
             selectedRune.col = gp.player.col;
             selectedRune.row = gp.player.row;
-            gp.objectManager.entities.add(selectedRune);
-            System.out.println(gp.objectManager.entities.getLast());
+            selectedRune.setPositions();
+            if (!gp.player.isInHideout) {
+                gp.objectManager.entities.add(selectedRune);
+                //gp.objectManager.entityMap[selectedRune.col][selectedRune.row] = selectedRune.id;
+            } else {
+                gp.hideout.entities.add(selectedRune);
+            }
             gp.player.playerRunes.remove(selectedRune);
             gp.keyHandler.tabPressed = false;
             gp.player.isEquipmentOpen = false;
+            itemDropped = true;
+            turnWhenDropped = gp.turnManager.globalTurn;
             gp.repaint();
         }
     }

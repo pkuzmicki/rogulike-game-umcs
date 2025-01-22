@@ -1,13 +1,11 @@
 package objects;
 
 import main.GamePanel;
-import objects.items.Item;
 import objects.items.Rune;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 public class ObjectManager {
@@ -26,15 +24,15 @@ public class ObjectManager {
         createEntity(4, 2, 33);
         createEntity(5, 2, 34);
 
-        //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
+        createEntity(4, 4, 12);
 
-//        createEntity(4, 4, 12);
+        //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
     }
 
     public void initializeMap() {
         entityMap = new int[gp.map.maxWorldCol][gp.map.maxWorldRow];
 
-        setPlayerOnMap();
+        //setPlayerOnMap();
         entities.add(gp.player);
     }
 
@@ -59,7 +57,7 @@ public class ObjectManager {
                 gp.hideout.entities.add(rune);
             } else {
                 entities.add(rune);
-                entityMap[col][row] = entityId;
+                //entityMap[col][row] = entityId;
             }
         }
     }
@@ -100,8 +98,10 @@ public class ObjectManager {
     }
 
     public void printEntityMap() {
-        for (int col = 0; col < entityMap.length; col++) {
-            for (int row = 0; row < entityMap[0].length; row++) {
+
+        for (int row = 0; row < entityMap[0].length; row++) {
+
+            for (int col = 0; col < entityMap.length; col++) {
                 System.out.print(entityMap[col][row] + " ");
             }
             System.out.println();

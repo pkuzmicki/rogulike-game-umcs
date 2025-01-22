@@ -18,7 +18,7 @@ public class DungeonGeneration {
         //generatorCaves();
         //generatorCavesSinglePath();
 
-        generateEntities();
+        //generateEntities();
 
         //gp.map.printMap();
     }
