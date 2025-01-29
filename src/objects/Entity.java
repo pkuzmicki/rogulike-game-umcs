@@ -22,10 +22,9 @@ public class Entity {
         this.id = entityID;
         this.col = col;
         this.row = row;
-        loadImage();
         setEntityName();
+        loadImage();
         setPositions();
-        //setSize();
     }
 
     public void setPositions(){
@@ -42,12 +41,13 @@ public class Entity {
     public void setSize(){
         this.x += (int) switch (id) {
             case 1 -> 0;
-            case 31, 32, 33, 34 -> image.getWidth() * 1.5;
+            case 15, 31, 32, 33, 34 -> 32 * 1.5;
             default -> image.getWidth();
         };
 
         this.y -= switch (id) {
-            case 11, 12, 13, 14, 15 -> 65;
+            case 11, 12, 13, 14 -> 65;
+            case 15 -> 10;
             case 21, 22 -> image.getHeight() / 2;
             default -> 0;
         };
@@ -55,11 +55,12 @@ public class Entity {
 
     public void setEntityName() {
         name = switch (id) {
-            case 1 -> "player";
+            case 1 -> "silly_wizard";
             case 11 -> "keeper_green";
             case 12 -> "keeper_red";
             case 13 -> "keeper_blue";
             case 14 -> "keeper_yellow";
+            case 15 -> "flaming_spirit";
             case 21 -> "sigill_of_despair";
             case 22 -> "skull_pot";
             default -> null;
@@ -67,26 +68,8 @@ public class Entity {
     }
 
     public void loadImage(){
-        String path = switch (id){
-            case 1 -> "/sprites/entities/silly_wizard.png";
-            case 11 -> "/sprites/entities/keeper_green.png";
-            case 12 -> "/sprites/entities/keeper_red.png";
-            case 13 -> "/sprites/entities/keeper_blue.png";
-            case 14 -> "/sprites/entities/keeper_yellow.png";
-            case 15 -> "/sprites/entities/crazy_wizard.png";
-
-            case 21 -> "/sprites/obstacles/sigill_of_despair.png";
-            case 22 -> "/sprites/obstacles/skull_pot.png";
-
-            case 31 -> "/sprites/items/rune01.png";
-            case 32 -> "/sprites/items/rune02.png";
-            case 33 -> "/sprites/items/rune03.png";
-            case 34 -> "/sprites/items/rune04.png";
-
-            default -> null;
-        };
-
         try {
+            String path = "/sprites/entities/" + name + ".png";
             image = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -6,8 +6,6 @@ import objects.Monster;
 import objects.Player;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Spell {
@@ -15,12 +13,13 @@ public class Spell {
     Random random;
 
     BufferedImage image;
-    String name;
+    public String name;
 
     int x, y;
     public int col, row;
 
-    int damage;
+    public double totalDmg;
+    double damage;
     int manaCost;
 
     public Spell(GamePanel gamePanel, String name) {
@@ -29,7 +28,6 @@ public class Spell {
         random = new Random();
 
         getImages();
-        //setSpellValues();
     }
 
     private void getImages() {
@@ -39,15 +37,19 @@ public class Spell {
         }
     }
 
-    public void setSpellValues(Player player) {
+    public void setSpellValues(Monster caster) {
         switch (name) {
             case "1" -> {
-                damage = player.dmg;
-                manaCost = 3;
+                if (caster.id == 1) {
+                    Player player = (Player) caster;
+                    damage = player.totalDmg;
+                    manaCost = 3;
+                } else {
+                    damage = caster.dmg;
+                    manaCost = 0;
+                }
             }
-            case "2" -> {
-                manaCost = 5;
-            }
+            case "2" -> manaCost = 5;
             case "3" -> {
                 damage = -3;
                 manaCost = 5;
@@ -61,12 +63,12 @@ public class Spell {
                 if (entity.col == col && entity.row == row && entity.id <= 20) {
                     Monster monster = (Monster) entity;
 
-                    //System.out.println(damage + gp.hideout.dmgBonus);
-                    monster.currentHP -= damage + gp.hideout.dmgBonus;
+                    totalDmg = damage * criticalHit();
+                    monster.currentHP -= totalDmg;
                     gp.player.currentMana -= manaCost;
-                    System.out.println(monster.name + monster.currentHP);
 
-                    monster.checkIfShouldDie(monster.col, monster.row);
+                    System.out.println(monster.name + monster.currentHP);
+                    //monster.checkIfShouldDie(monster.col, monster.row);
                 }
             }
         } else {
@@ -74,11 +76,9 @@ public class Spell {
                 if (entity.col == col && entity.row == row && entity.id <= 20) {
                     Monster monster = (Monster) entity;
 
-                    //monster.currentHP -= damage * multiplier();
-                    System.out.println(damage + gp.hideout.dmgBonus);
-                    monster.currentHP -= (damage + gp.hideout.dmgBonus) * criticalHit();
+                    totalDmg = damage * criticalHit();
+                    monster.currentHP -= totalDmg;
                     gp.player.currentMana -= manaCost;
-                    System.out.println(monster.name + monster.currentHP);
 
                     monster.checkIfShouldDie(monster.col, monster.row);
                 }
@@ -87,8 +87,10 @@ public class Spell {
     }
 
     public double criticalHit() {
+        double missChance = gp.player.critChance * 0.25;
+        double hitChance = 1.0 - missChance - gp.player.totalCrit;
         double[] multipliers = {0, 1.0, 2};
-        double[] probabilities = {gp.player.missChance, gp.player.hitChance, gp.player.critChance};
+        double[] probabilities = {missChance, hitChance, gp.player.totalCrit};
 
         double randomNumber = random.nextDouble();
         double chance = 0.0;
@@ -100,30 +102,5 @@ public class Spell {
         }
         return 1;
     }
-
-//    public void cast(int col, int row) {
-//        if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow) {
-//            effect(col, row);
-//
-//            x = gp.map.tileMap[col][row].x;
-//            y = gp.map.tileMap[col][row].y;
-//            System.out.println(x + " " + y);
-//            System.out.println(col + " " + row);
-//        }
-//    }
-
-//    public void cast1(int col, int row, int range, int spellID) {
-//        for (int i = 0; i < range; i++) {
-//            if (col > -1 && col < gp.map.maxWorldCol && row > -1 && row < gp.map.maxWorldRow && !gp.player.isInHideout) {
-//                for (Entity entity : gp.objectManager.entities) {
-//                    if (entity.col == col && entity.row == row && entity.id <= 20) {
-//                        Monster monster = (Monster) entity;
-//                        monster.currentHP -= damage;
-//                    }
-//                }
-//            }
-//        }
-//    }
-
 
 }

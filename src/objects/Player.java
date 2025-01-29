@@ -14,7 +14,7 @@ public class Player extends Monster {
     public boolean isInHideout = false;
 
     public boolean isPoisoned; //drains hp every turn
-    public boolean isCursed; //drains mana evrry turn
+    public boolean isCursed; //drains mana every turn
 
     public boolean isEquipmentOpen = false;
 
@@ -24,33 +24,46 @@ public class Player extends Monster {
     public int currentMana;
     public int maxMana;
     public double critChance;
-    public double missChance;
-    public double hitChance;
+
+    public double totalDmg;
+    public double totalHp;
+    public int totalMana;
+    public double totalCrit;
 
     public Player(GamePanel gamePanel, int col, int row, int entityID) {
         super(gamePanel, col, row, entityID);
 
         maxMana = currentMana = 100;
-
-        critChance = 0.5;
-        missChance = 0.15;
-        hitChance = 0.8;
+        critChance = 0.05;
 
         addSpells();
+        updateStats();
     }
 
     public void updateStats() {
-        maxHP += gp.hideout.hpBonus;
-        maxMana += gp.hideout.manaBonus;
+        totalDmg = this.dmg + gp.hideout.dmgBonus;
+        updateSpell();
+        totalHp = this.maxHP + gp.hideout.hpBonus;
+        totalMana = this.maxMana + gp.hideout.manaBonus;
+        totalCrit = this.critChance + gp.hideout.critBonus;
     }
 
     public void checkManaValue() {
          if (currentMana < 0) {
              currentMana = 0;
+             gp.repaint();
          }
-         if (currentMana > maxMana) {
-             currentMana = maxMana;
+         if (currentMana > totalMana) {
+             currentMana = totalMana;
+             gp.repaint();
          }
+    }
+
+    public void checkHpValue() {
+        if (currentHP > totalHp) {
+            currentHP = totalHp;
+            gp.repaint();
+        }
     }
 
     public void setPositions() {
@@ -180,21 +193,27 @@ public class Player extends Monster {
     }
 
     public void teleportToHideout() {
-        gp.objectManager.entityMap[col][row] = 0;
-        gp.map.dx = gp.hideout.hideoutX;
-        gp.map.dy = gp.hideout.hideoutY;
-        isInHideout = true;
-        col = 1;
-        row = 1;
+        if (!isInHideout) {
+            gp.objectManager.entityMap[col][row] = 0;
+            gp.map.dx = gp.hideout.hideoutX;
+            gp.map.dy = gp.hideout.hideoutY;
+            isInHideout = true;
+            col = 1;
+            row = 1;
+        }
     }
 
-    public void teleportToLevel() {
-        gp.map.dx = 0;
-        gp.map.dy = 0;
-        isInHideout = false;
-        col = 1;
-        row = 1;
-        gp.objectManager.entityMap[col][row] = 1;
+    public void teleportToLevel(int col, int row) {
+        //if (isInHideout) {
+            if (gp.hideout.hideoutMap[this.col][this.row].tileType == 3) {
+                gp.map.dx = 0;
+                gp.map.dy = 0;
+                isInHideout = false;
+                this.col = col;
+                this.row = row;
+                gp.objectManager.entityMap[this.col][this.row] = 1;
+            }
+        //}
     }
 
     public void addSpells() {
@@ -207,6 +226,12 @@ public class Player extends Monster {
         Spell healingSpell = new Spell(gp,"3");
         healingSpell.setSpellValues(this);
         playerSpells.add(healingSpell);
+    }
+
+    public void updateSpell() {
+        for (Spell spell : playerSpells) {
+            spell.setSpellValues(this);
+        }
     }
 
     public void draw(Graphics2D g2) {

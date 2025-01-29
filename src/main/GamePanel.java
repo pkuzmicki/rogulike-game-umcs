@@ -3,6 +3,7 @@ package main;
 import combat.CastingManager;
 import combat.TurnManager;
 import map.DungeonGeneration;
+import map.EntityGeneration;
 import map.Hideout;
 import objects.*;
 import map.Map;
@@ -22,7 +23,8 @@ public class GamePanel extends JPanel {
     public int screenHeight = 540;
 
     public Map map;
-    public DungeonGeneration generation;
+    public DungeonGeneration dgen;
+    public EntityGeneration egen;
     public Hideout hideout;
 
     public Player player;
@@ -39,6 +41,8 @@ public class GamePanel extends JPanel {
     public Backgrounds backgrounds;
     public UI ui;
 
+    public Progression progression;
+
     public GamePanel(){
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -52,7 +56,8 @@ public class GamePanel extends JPanel {
         eq = new Equipment(this);
         objectManager = new ObjectManager(this);
 
-        generation = new DungeonGeneration(this);
+        dgen = new DungeonGeneration(this);
+        egen = new EntityGeneration(this);
 
         mouseHandler = new MouseHandler(this);
         keyHandler = new KeyHandler(this);
@@ -64,20 +69,17 @@ public class GamePanel extends JPanel {
         backgrounds = new Backgrounds(this);
         ui = new UI(this);
 
+        progression = new Progression(this);
+
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
 
     }
 
     public void update() {
-        //System.out.println(player.isEquipmentOpen);
-
-        //System.out.println(player.isInHideout);
-        objectManager.printEntityMap();
-
-
         player.move();
         player.checkManaValue();
+        player.checkHpValue();
 
         if (eq.itemDropped) {
             if (turnManager.globalTurn == eq.turnWhenDropped + 1) {
@@ -96,17 +98,6 @@ public class GamePanel extends JPanel {
         hideout.checkAltar();
 
         for (Entity entity : objectManager.entities) {
-            if (entity.id < 30 && entity.id > 10) {
-                Monster monster = (Monster) entity;
-                //System.out.println(monster.name);
-
-                monster.randomWalk();
-                monster.follow(3);
-                monster.attack();
-            }
-        }
-
-        for (Entity entity : objectManager.entities) {
             if (entity.id < 30) {
                 Monster monster = (Monster) entity;
                 monster.checkForOverHeal();
@@ -114,14 +105,45 @@ public class GamePanel extends JPanel {
                 repaint();
             }
         }
+
+        for (Entity entity : objectManager.entities) {
+            if (entity.id < 30 && entity.id > 10) {
+                Monster monster = (Monster) entity;
+
+                monster.follow(3);
+                if (!monster.playerFound) {
+                    monster.randomWalk();
+                }
+                monster.attack(monster);
+            }
+        }
+
+
         objectManager.killAll();
 
         if (!player.isEquipmentOpen) {
             castingManager.updateCasting();
         }
 
+        player.updateStats();
+
+        if (player.isInHideout) {
+            if (hideout.hideoutMap[player.col][player.row].tileType == 3) {
+                player.isInHideout = false;
+                progression.chooseLevel();
+            }
+        }
+
+        if (!player.isInHideout) {
+            if (map.tileMap[player.col][player.row].tileType == 2) {
+                player.teleportToHideout();
+                objectManager.killAll();
+            }
+        }
+
+
+
         turnManager.updateTurn();
-        //repaint();
     }
 
     public void drawScene(Graphics2D g2) {

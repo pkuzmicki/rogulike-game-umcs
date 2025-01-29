@@ -96,6 +96,7 @@ public class Equipment {
             int eqHeight = gp.screenHeight/4 - gp.player.playerRunes.getFirst().image.getHeight();
 
             if (!gp.keyHandler.leftPressed && !gp.keyHandler.rightPressed) {
+                g2.drawString(String.valueOf(itemSelected), gp.screenWidth/2, eqHeight - 50);
                 g2.drawImage(gp.player.playerRunes.get(itemSelected).image,eqWidth, eqHeight,80, 80,  null);
 
                 if (itemSelected < gp.player.playerRunes.size() - 1) {
@@ -113,6 +114,7 @@ public class Equipment {
                 g2.drawImage(gp.player.playerRunes.get(itemSelected).image, eqWidth, eqHeight,80, 80,  null);
 
                 if (itemSelected != 0) {
+                    g2.drawString(String.valueOf(itemSelected), gp.screenWidth/2, eqHeight - 50);
                     g2.drawImage(gp.player.playerRunes.get(itemSelected - 1).image,eqWidth - slotsOffset, eqHeight,50, 50,  null);
                 }
                 g2.drawImage(gp.player.playerRunes.get(itemSelected + 1).image,eqWidth + slotsOffset, eqHeight,50, 50,  null);
@@ -125,21 +127,23 @@ public class Equipment {
 
                 g2.drawImage(gp.player.playerRunes.get(itemSelected).image,eqWidth, eqHeight,80, 80,  null);
 
+                g2.drawString(String.valueOf(itemSelected), gp.screenWidth/2, eqHeight - 50);
                 g2.drawImage(gp.player.playerRunes.get(itemSelected - 1).image,eqWidth - slotsOffset, eqHeight,50, 50,  null);
+
                 if (itemSelected < gp.player.playerRunes.size() - 1) {
                     g2.drawImage(gp.player.playerRunes.get(itemSelected + 1).image, eqWidth + slotsOffset, eqHeight, 50, 50, null);
                 }
 
             }
-            g2.drawString(String.valueOf(itemSelected), gp.screenWidth/2, gp.screenHeight/2 + 100);
 
             //STATS
             FontMetrics metrics = g2.getFontMetrics(gp.ui.wizardFont);
 
-            g2.drawString(String.valueOf("Level: " + gp.player.playerRunes.get(itemSelected).level), gp.screenWidth/2 - metrics.stringWidth("Level: "), gp.screenHeight/2 + 130);
+            int lastLine = gp.screenHeight/2 + 80;
+            g2.drawString("Level: " + gp.player.playerRunes.get(itemSelected).level, gp.screenWidth/2 - metrics.stringWidth("Level: "), lastLine);
 
-            int lastLine = gp.screenHeight/2 + 130;
             int spacer = 25;
+
             for (String s : gp.player.playerRunes.get(itemSelected).listOfMods) {
                 switch (s) {
                     case "dmg" -> {

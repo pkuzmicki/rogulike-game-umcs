@@ -12,14 +12,12 @@ public class DungeonGeneration {
         this.gp = gamePanel;
         random = new Random();
 
+        gp.map.resizeMap(10,10);
+
         //generatorMansion();
         //generatorBridges();
-        generatorForest();
-        //generatorCaves();
-        //generatorCavesSinglePath();
 
-        //generateEntities();
-
+        gp.map.createRoom(0, 0, "/maps/rooms/room_level_end.txt", gp.map.tileMap);
         //gp.map.printMap();
     }
 
@@ -30,12 +28,8 @@ public class DungeonGeneration {
             }
         }
 
-        splitArea(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 3, 0, 2, 2, 0.4, 0.6);
-
-        //gp.map.createRoom(0, 0 , "/maps/rooms/room01.txt");
-        //gp.map.printMap();
+        splitArea(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 4, 0, 2, 2, 0.4, 0.6);
     }
-
 
     public void generatorBridges() {
         for (int col = 0; col < gp.map.maxWorldCol; col++) {
@@ -44,10 +38,7 @@ public class DungeonGeneration {
             }
         }
 
-        splitArea1(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 5, 1, 1, 1, 0.3, 0.7);
-
-        gp.map.createRoom(0, 0 , "/maps/rooms/room01.txt", gp.map.tileMap);
-        //gp.map.printMap();
+        splitForBridges(0, 0, gp.map.maxWorldCol, gp.map.maxWorldRow, 5, 1, 1, 1, 0.3, 0.7);
     }
 
     private void splitArea(int startCol, int startRow, int width, int height, int maxSplits, int tileType, int minHeight, int minWidth, double minRatio, double maxRatio) {
@@ -102,7 +93,7 @@ public class DungeonGeneration {
     }
 
 
-    private void splitArea1(int startCol, int startRow, int width, int height, int maxSplits, int tileType, int minHeight, int minWidth, double minRatio, double maxRatio) {
+    private void splitForBridges(int startCol, int startRow, int width, int height, int maxSplits, int tileType, int minHeight, int minWidth, double minRatio, double maxRatio) {
         if (maxSplits == 0 || width <= minWidth || height <= minHeight) {
             return;
         }
@@ -121,16 +112,16 @@ public class DungeonGeneration {
             passage = startCol + random.nextInt(width);
             gp.map.tileMap[passage][splitLine].setTileType(1);
 
-            splitArea1(startCol, startRow, width, splitLine - startRow, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
-            splitArea1(startCol, splitLine + 1, width, startRow + height - splitLine - 1, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitForBridges(startCol, startRow, width, splitLine - startRow, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitForBridges(startCol, splitLine + 1, width, startRow + height - splitLine - 1, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
         } else {
             splitLine = startCol + random.nextInt((int) (width * minRatio), (int) (width * maxRatio));
             for (int row = startRow; row < startRow + height; row++) {
                 gp.map.tileMap[splitLine][row].setTileType(tileType);
             }
 
-            splitArea1(startCol, startRow, splitLine - startCol, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
-            splitArea1(splitLine + 1, startRow, startCol + width - splitLine - 1, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitForBridges(startCol, startRow, splitLine - startCol, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
+            splitForBridges(splitLine + 1, startRow, startCol + width - splitLine - 1, height, maxSplits - 1, tileType, minWidth, minHeight, minRatio, maxRatio);
         }
     }
 
@@ -144,180 +135,80 @@ public class DungeonGeneration {
                 } else {
                     gp.map.tileMap[i][j].setTileType(0);
                 }
-
             }
         }
-        gp.map.createRoom(0,0, "/maps/rooms/room01.txt", gp.map.tileMap);
-        //gp.map.printMap();
     }
 
-    public void generatorCavesSinglePath() {
-        int startCol = 1;
-        int startRow = 1;
-        int endCol = gp.map.maxWorldCol - 1;
-        int endRow = gp.map.maxWorldRow - 1;
+    private void move(Tile drunkard, int dCol, int dRow) {
+        int newCol = drunkard.x + dCol;
+        int newRow = drunkard.y + dRow;
 
-        int nextCol = startCol;
-        int nextRow = startRow;
-        int nextSide;
+        if (newCol >= 0 && newCol < gp.map.maxWorldCol && newRow >= 0 && newRow < gp.map.maxWorldRow) {
+            drunkard.x = newCol;
+            drunkard.y = newRow;
+            gp.map.tileMap[newCol][newRow].setTileType(1);
+        }
+    }
 
-        //for (int i = 0; i < 100; i++) {
-        while (gp.map.tileMap[endCol][endRow].tileType != 1) {
-            nextSide = random.nextInt(0, 4);
-            //if (nextCol > 0 && nextCol < gp.map.maxWorldCol && nextRow > 0 && nextRow < gp.map.maxWorldRow) {
-                switch (nextSide) {
-                    case 0:
-                        nextRow--;
-                        if (nextRow >= 0) {
-                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
-                        } else {
-                            nextRow++;
-                        }
-                        break;
-                    case 1:
-                        nextRow++;
-                        if (nextRow < gp.map.maxWorldRow) {
-                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
-                        } else {
-                            nextRow--;
-                        }
-                        break;
-                    case 2:
-                        nextCol--;
-                        if (nextCol >= 0) {
-                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
-                        } else {
-                            nextCol++;
-                        }
-                        break;
-                    case 3:
-                        nextCol++;
-                        if (nextCol < gp.map.maxWorldCol) {
-                            gp.map.tileMap[nextCol][nextRow].setTileType(1);
-                        } else {
-                            nextCol--;
-                        }
-                        break;
+    public void generatorCaves(int startCol, int startRow, int endCol, int endRow) {
+        Tile firstDrunkard = new Tile(startCol, startRow);
+        Tile secondDrunkard = new Tile(endCol, endRow);
+
+        int[][] moves = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int nextMove;
+
+        while (!floodFill(startCol, startRow, endCol, endRow)) {
+            nextMove = random.nextInt(moves.length);
+            move(firstDrunkard, moves[nextMove][0], moves[nextMove][1]);
+            nextMove = random.nextInt(moves.length);
+            move(secondDrunkard, moves[nextMove][0], moves[nextMove][1]);
+        }
+    }
+
+    boolean[][] visitedFields;
+
+    public void initArray() {
+        visitedFields = new boolean[gp.map.maxWorldCol][gp.map.maxWorldRow];
+    }
+
+    public boolean floodFill(int startCol, int startRow, int endCol, int endRow) {
+        initArray();
+
+        Queue<Tile> tilesToCheck = new LinkedList<>();
+
+        tilesToCheck.add(new Tile(startCol, startRow));
+        visitedFields[startCol][startRow] = true;
+
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        while (!tilesToCheck.isEmpty()) {
+            Tile current = tilesToCheck.poll();
+
+            if (current.x == endCol && current.y == endRow) {
+                return true;
+            }
+
+            for (int[] dir : directions) {
+                int newCol = current.x + dir[0];
+                int newRow = current.y + dir[1];
+
+                if (newCol >= 0 && newCol < gp.map.maxWorldCol && newRow >= 0 && newRow < gp.map.maxWorldRow) {
+                    if (!visitedFields[newCol][newRow] && gp.map.tileMap[newCol][newRow].tileType != 0) {
+                        tilesToCheck.add(new Tile(newCol, newRow));
+                        visitedFields[newCol][newRow] = true;
+                    }
                 }
-            //}
-        }
-    }
-
-    public void generatorCaves() {
-        int startCol = 1;
-        int startRow = 1;
-        int endCol = gp.map.maxWorldCol - 1;
-        int endRow = gp.map.maxWorldRow - 1;
-
-        int lowCol = startCol;
-        int lowRow = startRow;
-        int highCol = endCol;
-        int highRow = endRow;
-
-        int nextSideForLow;
-        int nextSideForHigh;
-
-        for (int i = 0; i < 300; i++) {
-            nextSideForLow = random.nextInt(0, 4);
-            switch (nextSideForLow) {
-                case 0:
-                    lowRow--;
-                    if (lowRow >= 0) {
-                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
-                    } else {
-                        lowRow++;
-                    }
-                    break;
-                case 1:
-                    lowRow++;
-                    if (lowRow < gp.map.maxWorldRow) {
-                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
-                    } else {
-                        lowRow--;
-                    }
-                    break;
-                case 2:
-                    lowCol--;
-                    if (lowCol >= 0) {
-                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
-                    } else {
-                        lowCol++;
-                    }
-                    break;
-                case 3:
-                    lowCol++;
-                    if (lowCol < gp.map.maxWorldCol) {
-                        gp.map.tileMap[lowCol][lowRow].setTileType(1);
-                    } else {
-                        lowCol--;
-                    }
-                    break;
             }
-            gp.map.tileMap[0][0].setTileType(2);
-
-            nextSideForHigh = random.nextInt(0, 4);
-            switch (nextSideForHigh) {
-                case 0:
-                    highRow--;
-                    if (highRow >= 0) {
-                        gp.map.tileMap[highCol][highRow].setTileType(1);
-                    } else {
-                        highRow++;
-                    }
-                    break;
-                case 1:
-                    highRow++;
-                    if (highRow < gp.map.maxWorldRow) {
-                        gp.map.tileMap[highCol][highRow].setTileType(1);
-                    } else {
-                        highRow--;
-                    }
-                    break;
-                case 2:
-                    highCol--;
-                    if (highCol >= 0) {
-                        gp.map.tileMap[highCol][highRow].setTileType(1);
-                    } else {
-                        highCol++;
-                    }
-                    break;
-                case 3:
-                    highCol++;
-                    if (highCol < gp.map.maxWorldCol) {
-                        gp.map.tileMap[highCol][highRow].setTileType(1);
-                    } else {
-                        highCol--;
-                    }
-                    break;
-            }
-            gp.map.tileMap[gp.map.maxWorldCol-1][gp.map.maxWorldRow-1].setTileType(2);
         }
-        //gp.map.printMap();
+
+        return false;
     }
 
-    public void generateEntities() {
-        int weakEntities = random.nextInt(7, 13);
-        int mediumEntities = random.nextInt(3, 7);
-        int roughEntities = random.nextInt(1, 3);
-        int strongEntities = random.nextInt(0, 3);
-
-        spawnEntities(weakEntities, 13, 5, 5);
-        spawnEntities(mediumEntities, 11, 5, 5);
-        spawnEntities(roughEntities, 14, 8, 8);
-        spawnEntities(strongEntities, 12, 11, 11);
-    }
-
-    private void spawnEntities(int entityType, int entityId, int colsFormPlayer, int rowsFromPlayer) {
-        int col, row;
-        while (entityType > 0) {
-            col = random.nextInt(0, gp.map.maxWorldCol);
-            row = random.nextInt(0, gp.map.maxWorldRow);
-
-            if (gp.map.tileMap[col][row].tileType != 0 && col > colsFormPlayer && row > rowsFromPlayer) {
-                gp.objectManager.createEntity(col, row, entityId);
-                entityType--;
+    public void clearMap() {
+        for (int i = 0; i < gp.map.maxWorldCol; i++) {
+            for (int j = 0; j < gp.map.maxWorldRow; j++) {
+                gp.map.tileMap[j][i].setTileType(0);
             }
         }
     }
-
 }

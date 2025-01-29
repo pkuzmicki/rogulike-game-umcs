@@ -9,6 +9,7 @@ public class CastingManager {
     GamePanel gp;
 
     public Spell currentSpell;
+    public Monster caster;
 
     public CastingManager(GamePanel gamePanel) {
         this.gp = gamePanel;
@@ -25,11 +26,11 @@ public class CastingManager {
         if (gp.keyHandler.threePressed) {
             currentSpell = gp.player.playerSpells.get(2);
         }
-        System.out.println("Current spell number is:" + currentSpell.name);
     }
 
-    public void setSpellPosition(Monster caster) {
-        switch (gp.keyHandler.directionOfAction()) {
+    public void setSpellPosition(Monster caster, String direction) {
+        this.caster = caster;
+        switch (direction) {
             case "up" -> {
                 currentSpell.col = caster.col - 1;
                 currentSpell.row = caster.row;
@@ -51,14 +52,17 @@ public class CastingManager {
                 currentSpell.row = caster.row;
             }
         }
-
-        currentSpell.x = gp.map.tileMap[currentSpell.col][currentSpell.row].x + gp.map.dx;
-        currentSpell.y = gp.map.tileMap[currentSpell.col][currentSpell.row].y + gp.map.dy;
+            currentSpell.x = gp.map.tileMap[currentSpell.col][currentSpell.row].x + gp.map.dx;
+            currentSpell.y = gp.map.tileMap[currentSpell.col][currentSpell.row].y + gp.map.dy;
     }
 
     public void applyEffect() {
-        if (gp.player.currentMana > currentSpell.manaCost){
-            currentSpell.effect();
+        if (caster.id == 1) {
+            if (gp.player.currentMana > currentSpell.manaCost){
+                currentSpell.effect();
+            }
+        } else {
+           currentSpell.effect();
         }
     }
 
@@ -68,13 +72,13 @@ public class CastingManager {
         }
 
         if (gp.keyHandler.upPressed || gp.keyHandler.downPressed || gp.keyHandler.rightPressed || gp.keyHandler.leftPressed || gp.keyHandler.xPressed){
-            setSpellPosition(gp.player);
+            setSpellPosition(gp.player, gp.keyHandler.directionOfAction());
             applyEffect();
         }
     }
 
     public void draw(Graphics2D g2) {
-        if (gp.player.currentMana > currentSpell.manaCost) {
+        if (gp.player.currentMana >= currentSpell.manaCost) {
             if (gp.keyHandler.upPressed || gp.keyHandler.downPressed || gp.keyHandler.rightPressed || gp.keyHandler.leftPressed || gp.keyHandler.xPressed) {
                 if (!currentSpell.name.equals("2")) {
                     g2.drawImage(currentSpell.image, currentSpell.x, currentSpell.y, null);

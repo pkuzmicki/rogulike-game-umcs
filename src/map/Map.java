@@ -12,8 +12,8 @@ public class Map {
     public final int tileWidth = 151;
     public final int tileHeight = 51;
 
-    public int maxWorldCol = 20;
-    public int maxWorldRow = 20;
+    public int maxWorldCol = 30;
+    public int maxWorldRow = 30;
 
     public Tile[][] tileMap;
 
@@ -61,6 +61,14 @@ public class Map {
             tileXPosition = startX;
             tileYPosition = startY;
         }
+    }
+
+    public void resizeMap(int maxCol, int maxRow) {
+        gp.map.maxWorldCol = maxCol;
+        gp.map.maxWorldRow = maxRow;
+        tileMap = new Tile[maxWorldCol][maxWorldRow];
+        gp.objectManager.initializeMap();
+        createMap(mapStartX, mapStartY, maxWorldCol, maxWorldRow, tileMap);
     }
 
     public void createRoom(int startCol, int startRow, String roomPath, Tile[][] tileMap){

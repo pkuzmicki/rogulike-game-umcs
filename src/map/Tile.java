@@ -21,31 +21,32 @@ public class Tile {
         loadImage();
     }
 
-    String pre = "/sprites/tiles/";
-    String suf = ".png";
-
     public void loadImage(){
-        String path = "";
+        String path;
+        String name = null;
 
          switch (tileType){
-            //case 0 -> "/sprites/tiles/tile00.png";
-            case 0 -> {
-                tileImage = new BufferedImage(151,51, BufferedImage.TYPE_INT_ARGB) ;
-            }
-            case 1 -> path = pre + "stone_brick_tile2" + suf;
-            case 2 -> path = pre + "tile02" + suf;
-            case 3 -> path = pre + "tile03" + suf;
-            case 4 -> path = pre + "tile00" + suf;
-            case 5 -> path = pre + "brick_tile" + suf;
-            case 6 -> path = pre + "blood_tile" + suf;
-            case 7 -> path = pre + "rainbow_bridge_tile" + suf;
-            case 8 -> path = pre + "rainbow_bridge_tile2" + suf;
-            case 9 -> path = pre + "rune_place" + suf;
-            default -> path = pre + "missing_tile" + suf;
+            case 0 -> tileImage = new BufferedImage(151,51, BufferedImage.TYPE_INT_ARGB) ;
+            case 1 -> name = "stone_brick_tile";
+            case 2 -> name = "teleport_tile";
+
+            case 5 -> name = "brick_tile";
+            case 9 -> name = "rune_place";
+            case 3 -> name = "teleport_tile2";
+            case 6 -> name = "blood_tile";
+
+            case 7 -> name = "rainbow_bridge_tile";
+            case 8 -> name = "rainbow_bridge_tile2";
+
+            default -> name = "missing_tile";
         };
 
+         path = "/sprites/tiles/" + name + ".png";
+
         try {
-            tileImage = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
+            if (tileType != 0) {
+                tileImage = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream(path))));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

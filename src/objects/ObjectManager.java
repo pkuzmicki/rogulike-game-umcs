@@ -19,12 +19,12 @@ public class ObjectManager {
 
         initializeMap();
 
-        createEntity(2, 2, 31);
-        createEntity(3, 2, 32);
-        createEntity(4, 2, 33);
-        createEntity(5, 2, 34);
+//        createEntity(4, 4, 15);
+//        createEntity(4, 5, 12);
+//        createEntity(4, 6, 12);
+//        createEntity(4, 7, 12);
+//        createEntity(4, 8, 12);
 
-        createEntity(4, 4, 12);
 
         //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
     }
@@ -51,14 +51,14 @@ public class ObjectManager {
             entities.add(obstacle);
             entityMap[col][row] = entityId;
         }
-        if (entityId > 30 && entityId <= 40) {
-            Rune rune = new Rune(gp, col, row, entityId);
-            if (gp.player.isInHideout) {
-                gp.hideout.entities.add(rune);
-            } else {
-                entities.add(rune);
-                //entityMap[col][row] = entityId;
-            }
+    }
+
+    public void createRune(int col, int row, int level) {
+        Rune rune = new Rune(gp, col, row, level);
+        if (gp.player.isInHideout) {
+            gp.hideout.entities.add(rune);
+        } else {
+            entities.add(rune);
         }
     }
 
@@ -98,9 +98,7 @@ public class ObjectManager {
     }
 
     public void printEntityMap() {
-
         for (int row = 0; row < entityMap[0].length; row++) {
-
             for (int col = 0; col < entityMap.length; col++) {
                 System.out.print(entityMap[col][row] + " ");
             }

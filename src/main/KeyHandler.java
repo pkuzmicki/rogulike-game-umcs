@@ -12,7 +12,6 @@ public class KeyHandler extends KeyAdapter {
     public boolean tabPressed = false;
     public boolean enterPressed;
     public boolean xPressed;
-    public boolean fPressed;
 
     public KeyHandler(GamePanel gamePanel){
         this.gp = gamePanel;
@@ -70,6 +69,7 @@ public class KeyHandler extends KeyAdapter {
                 rightPressed = true;
             }
 
+            //CAST ON SELF
             if (key == KeyEvent.VK_X) {
                 xPressed = true;
             }
@@ -100,43 +100,11 @@ public class KeyHandler extends KeyAdapter {
                 enterPressed = true;
             }
 
-            //SELF CAST
-            if (key == KeyEvent.VK_X) {
-                //gp.turnManager.globalTurn++;
-                System.out.println("You are Cursed!");
-                gp.player.applyCurse();
-            }
-
             if (key == KeyEvent.VK_F) {
-                fPressed = true;
                 gp.player.currentMana += 10;
             }
 
-            //DEBUG
-            if (key == KeyEvent.VK_M) {
-                gp.map.maxWorldCol = 20;
-                gp.map.maxWorldRow = 20;
-                gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY, gp.map.maxWorldCol, gp.map.maxWorldRow, gp.map.tileMap);
-                //gp.objectManager.initializeMap();
-
-                if (!gp.objectManager.entities.isEmpty()) {
-                    gp.objectManager.entities.subList(1, gp.objectManager.entities.size()).clear();
-                }
-
-                gp.generation.generatorForest();
-                gp.generation.generateEntities();
-            }
-
-            if (key == KeyEvent.VK_Q) {
-                gp.player.teleportToHideout();
-            }
-
-            if (key == KeyEvent.VK_E) {
-                gp.player.teleportToLevel();
-            }
-
             gp.update();
-            //gp.repaint();
         }
     }
 

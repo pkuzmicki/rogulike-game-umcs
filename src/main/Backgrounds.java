@@ -12,15 +12,15 @@ public class Backgrounds {
     public Backgrounds(GamePanel gamePanel) {
         this.gp = gamePanel;
         background = gp.getImage("/sprites/ui/background.png");
-        background2 = gp.getImage("/sprites/ui/background2.jpg");
+        background2 = gp.getImage("/sprites/ui/background2.png");
     }
 
 
     public void draw(Graphics2D g2) {
         if (gp.player.isInHideout) {
-            g2.drawImage(background2, -200, -100, null);
+            g2.drawImage(background2, -200, -100,  null);
         } else {
-            g2.drawImage(background, -200, -100, null);
+            g2.drawImage(background, -200, -100,2000, 1000, null);
         }
 
     }

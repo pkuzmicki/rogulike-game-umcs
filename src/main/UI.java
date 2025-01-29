@@ -17,6 +17,10 @@ public class UI {
     BufferedImage[] hpBar = new BufferedImage[10];
     BufferedImage[] manaBar = new BufferedImage[10];
 
+    BufferedImage[] bridgeSpell = new BufferedImage[2];
+    BufferedImage[] healSpell = new BufferedImage[2];
+    BufferedImage[] dmgSpell = new BufferedImage[2];
+
     public Font wizardFont;
 
     public UI(GamePanel gamePanel) {
@@ -41,12 +45,19 @@ public class UI {
             hp = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/hp_bar.png"))));
             mana = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/mana_bar.png"))));
             deathScreen = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/YOU_DIED.png"))));
+
+            bridgeSpell[0] = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/spells/bridge_active.png"))));
+            bridgeSpell[1] = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/spells/bridge_inactive.png"))));
+
+            healSpell[0] = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/spells/heal_active.png"))));
+            healSpell[1] = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/spells/heal_inactive.png"))));
+
+            dmgSpell[0] = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/spells/dmg_active.png"))));
+            dmgSpell[1] = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/sprites/ui/spells/dmg_inactive.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 
     public void cutSheet(int sprites, BufferedImage[] cutImages, BufferedImage spriteSheet) {
         int w = 66;
@@ -60,28 +71,34 @@ public class UI {
     }
 
     public void draw(Graphics2D g2) {
-
-//        g2.setFont(wizardFont);
-//        if (gp.turnManager.globalTurn < 8) {
-//            g2.drawString("W", gp.map.tileMap[0][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[0][1].y + gp.map.tileHeight/2 + gp.map.dy);
-//            g2.drawString("A", gp.map.tileMap[1][0].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][0].y + gp.map.tileHeight/2 + gp.map.dy);
-//            g2.drawString("S", gp.map.tileMap[2][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[2][1].y + gp.map.tileHeight/2 + gp.map.dy);
-//            g2.drawString("D", gp.map.tileMap[1][2].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][2].y + gp.map.tileHeight/2 + gp.map.dy);
-//        }
-//        if (gp.turnManager.globalTurn > 8 && gp.turnManager.globalTurn < 16 ) {
-//            g2.drawString("->", gp.map.tileMap[0][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[0][1].y + gp.map.tileHeight/2 + gp.map.dy);
-//            g2.drawString("<-", gp.map.tileMap[1][0].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][0].y + gp.map.tileHeight/2 + gp.map.dy);
-//            g2.drawString("<-", gp.map.tileMap[2][1].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[2][1].y + gp.map.tileHeight/2 + gp.map.dy);
-//            g2.drawString("->", gp.map.tileMap[1][2].x + gp.map.tileWidth/2 + gp.map.dx, gp.map.tileMap[1][2].y + gp.map.tileHeight/2 + gp.map.dy);
-//        }
+        double skillsScale = 2;
+        int skillWidth = (int) (bridgeSpell[0].getWidth() * skillsScale);
+        int skillHeight = (int) (bridgeSpell[0].getHeight() * skillsScale);
 
 
+        if (gp.castingManager.currentSpell.name.equals("1")) {
+            g2.drawImage(dmgSpell[0], gp.screenWidth/2 - skillWidth/2 - 80, gp.screenHeight - 70, skillWidth, skillHeight, null);
+        } else {
+            g2.drawImage(dmgSpell[1], gp.screenWidth/2 - skillWidth/2 - 80, gp.screenHeight - 70, skillWidth, skillHeight, null);
+        }
+
+        if (gp.castingManager.currentSpell.name.equals("2")) {
+            g2.drawImage(bridgeSpell[0], gp.screenWidth/2 - skillWidth/2, gp.screenHeight - 70, skillWidth, skillHeight, null);
+        } else {
+            g2.drawImage(bridgeSpell[1], gp.screenWidth/2 - skillWidth/2, gp.screenHeight - 70, skillWidth, skillHeight, null);
+        }
+
+        if (gp.castingManager.currentSpell.name.equals("3")) {
+            g2.drawImage(healSpell[0], gp.screenWidth/2 - skillWidth/2 + 80, gp.screenHeight - 70, skillWidth, skillHeight, null);
+        } else {
+            g2.drawImage(healSpell[1], gp.screenWidth/2 - skillWidth/2 + 80, gp.screenHeight - 70, skillWidth, skillHeight, null);
+        }
 
         double scale = 2.2;
         int width = (int) (hpBar[0].getWidth() * scale);
         int height = (int) (hpBar[0].getHeight() * scale);
 
-        int hp = (int) (gp.player.currentHP / gp.player.maxHP * 100);
+        int hp = (int) (gp.player.currentHP / gp.player.totalHp * 100);
         int hpX = 0;
         int hpY = (int) (gp.screenHeight - hpBar[0].getHeight() * scale);
 
@@ -99,7 +116,7 @@ public class UI {
             g2.drawImage(hpBar[2], hpX, hpY, width, height, null);
         } else if (hp > 75 && hp <= 90) {
             g2.drawImage(hpBar[1], hpX, hpY, width, height, null);
-        } else if (hp > 90 && hp <= 100){
+        } else if (hp > 90){
             g2.drawImage(hpBar[0], hpX, hpY, width, height, null);
         } else {
             g2.drawImage(hpBar[8], hpX, hpY, width, height, null);
@@ -109,7 +126,7 @@ public class UI {
         g2.drawImage(hpBar[9], hpX, hpY, width, height, null);
         g2.drawString(String.valueOf(gp.player.currentHP), hpX + 80, hpY + 80);
 
-        int mana = (int) ((double) gp.player.currentMana / gp.player.maxMana * 100);
+        int mana = (int) ((double) gp.player.currentMana / gp.player.totalMana * 100);
         int manaX = (int) (gp.screenWidth - manaBar[0].getWidth() * scale);
         int manaY = (int) (gp.screenHeight - manaBar[0].getHeight() * scale);
 
@@ -127,7 +144,7 @@ public class UI {
             g2.drawImage(manaBar[2], manaX, manaY, width, height, null);
         } else if (mana > 75 && mana <= 90) {
             g2.drawImage(manaBar[1], manaX, manaY, width, height, null);
-        } else if (mana > 90 && mana <= 100) {
+        } else if (mana > 90) {
             g2.drawImage(manaBar[0], manaX, manaY, width, height, null);
         } else {
             g2.drawImage(manaBar[8], manaX, manaY, width, height, null);
