@@ -1,9 +1,7 @@
 package objects;
 
-import combat.Spell;
 import main.GamePanel;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class Monster extends Entity{
@@ -11,6 +9,7 @@ public class Monster extends Entity{
     public double currentHP;
     public double dmg;
     public int manaDrop;
+    public boolean isDead = false;
 
     Random random;
 
@@ -19,40 +18,6 @@ public class Monster extends Entity{
         setMonsterStats(this, name);
 
         random = new Random();
-    }
-
-    private static void setMonsterStats(Monster monster, String monsterName) {
-        switch (monsterName) {
-            case "silly_wizard" -> {
-                monster.maxHP = monster.currentHP = 20;
-                monster.dmg = 5;
-            }
-            case "flaming_spirit" -> {
-                monster.maxHP = monster.currentHP = 5;
-                monster.dmg = 0.5;
-                monster.manaDrop = 3;
-            }
-            case "keeper_blue" -> {
-                monster.maxHP = monster.currentHP = 7;
-                monster.dmg = 1.5;
-                monster.manaDrop = 5;
-            }
-            case "keeper_green" -> {
-                monster.maxHP = monster.currentHP = 100;
-                monster.dmg = 2;
-                monster.manaDrop = 40;
-            }
-            case "keeper_yellow" -> {
-                monster.maxHP = monster.currentHP = 10;
-                monster.dmg = 40;
-                monster.manaDrop = 20;
-            }
-            case "keeper_red" -> {
-                monster.maxHP = monster.currentHP = 40;
-                monster.dmg = 15;
-                monster.manaDrop = 20;
-            }
-        }
     }
 
     public void checkForOverHeal() {
@@ -68,6 +33,7 @@ public class Monster extends Entity{
             if (id == 1) {
                 gp.ui.isGameOver = true;
             } else {
+                isDead = true;
                 gp.player.currentMana += manaDrop;
                 generateDrop();
                 gp.objectManager.destroyEntity(col, row, id);
@@ -76,11 +42,45 @@ public class Monster extends Entity{
         }
     }
 
+    private static void setMonsterStats(Monster monster, String monsterName) {
+        switch (monsterName) {
+            case "silly_wizard" -> {
+                monster.maxHP = monster.currentHP = 20;
+                monster.dmg = 5;
+            }
+            case "flaming_spirit" -> {
+                monster.maxHP = monster.currentHP = 5;
+                monster.dmg = 0.5;
+                monster.manaDrop = 7;
+            }
+            case "keeper_blue" -> {
+                monster.maxHP = monster.currentHP = 15;
+                monster.dmg = 2;
+                monster.manaDrop = 15;
+            }
+            case "keeper_green" -> {
+                monster.maxHP = monster.currentHP = 100;
+                monster.dmg = 0.6;
+                monster.manaDrop = 60;
+            }
+            case "keeper_yellow" -> {
+                monster.maxHP = monster.currentHP = 10;
+                monster.dmg = 40;
+                monster.manaDrop = 45;
+            }
+            case "keeper_red" -> {
+                monster.maxHP = monster.currentHP = 40;
+                monster.dmg = 15;
+                monster.manaDrop = 50;
+            }
+        }
+    }
+
     private void generateDrop() {
         boolean isDropping;
         switch (name) {
             case "flaming_spirit" -> {
-                isDropping = random.nextInt(100) > 80;
+                isDropping = random.nextInt(100) > 85;
                 if (isDropping) {
                     gp.objectManager.createRune(row, col, 0);
                 }
@@ -92,19 +92,19 @@ public class Monster extends Entity{
                 }
             }
             case "keeper_green" -> {
-                isDropping = random.nextInt(100) > 60;
+                isDropping = random.nextInt(100) > 50;
                 if (isDropping) {
                     gp.objectManager.createRune(row, col, random.nextInt(1, 3));
                 }
             }
             case "keeper_yellow" -> {
-                isDropping = random.nextInt(100) > 50;
+                isDropping = random.nextInt(100) > 30;
                 if (isDropping) {
                     gp.objectManager.createRune(row, col, random.nextInt(2, 3));
                 }
             }
             case "keeper_red" -> {
-                isDropping = random.nextInt(100) > 50;
+                isDropping = random.nextInt(100) > 20;
                 if (isDropping) {
                     gp.objectManager.createRune(row, col, 4);
                 }
@@ -114,42 +114,30 @@ public class Monster extends Entity{
 
     public void attack(Monster monster) {
         if (monster.col == gp.player.col - 1 && monster.row == gp.player.row){
-//                    gp.castingManager.setSpellPosition(this, "up");
-//                    gp.castingManager.applyEffect();
-            gp.player.currentHP -= monster.dmg;
-            System.out.println(monster.dmg);
-//                    gp.map.tileMap[col - 1][row].setTileType(6);
+            if (random.nextInt(0, 100) > 50) {
+                gp.player.currentHP -= monster.dmg;
+                System.out.println(monster.dmg);
+            }
         }
         if (monster.col == gp.player.col + 1 && monster.row == gp.player.row){
-//                    gp.castingManager.setSpellPosition(this, "down");
-//                    gp.castingManager.applyEffect();
-            gp.player.currentHP -= monster.dmg;
-            System.out.println(monster.dmg);
-            //gp.map.tileMap[col + 1][row].setTileType(6);
+            if (random.nextInt(0, 100) > 50) {
+                gp.player.currentHP -= monster.dmg;
+                System.out.println(monster.dmg);
+            }
         }
         if (monster.col == gp.player.col && monster.row == gp.player.row - 1){
-//                    gp.castingManager.setSpellPosition(this, "left");
-//                    gp.castingManager.applyEffect();
-            gp.player.currentHP -= monster.dmg;
-            System.out.println(monster.dmg);
-            //gp.map.tileMap[col][row - 1].setTileType(6);
+            if (random.nextInt(0, 100) > 50) {
+                gp.player.currentHP -= monster.dmg;
+                System.out.println(monster.dmg);
+            }
         }
         if (monster.col == gp.player.gp.player.col && monster.row == gp.player.row + 1){
-//                    gp.castingManager.setSpellPosition(this, "right");
-//                    gp.castingManager.applyEffect();
-            gp.player.currentHP -= monster.dmg;
-            System.out.println(monster.dmg);
-            //gp.map.tileMap[col][row + 1].setTileType(6);
+            if (random.nextInt(0, 100) > 50) {
+                gp.player.currentHP -= monster.dmg;
+                System.out.println(monster.dmg);
+            }
         }
     }
-
-//    public void attack() {
-//        gp.castingManager.setSpellPosition(this, "up");
-//        gp.castingManager.setSpellPosition(this, "down");
-//        gp.castingManager.setSpellPosition(this, "left");
-//        gp.castingManager.setSpellPosition(this, "right");
-//        gp.castingManager.applyEffect();
-//    }
 
     public boolean playerFound = false;
     public void follow(int range) {
@@ -268,7 +256,6 @@ public class Monster extends Entity{
         this.row += dRow;
         setPositions();
     }
-
 
     public void move() {
         if (!possibleDirections.isEmpty()) {

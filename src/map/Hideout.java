@@ -12,7 +12,7 @@ public class Hideout {
     GamePanel gp;
     public Tile[][] hideoutMap;
     public ArrayList<Entity> entities;
-    public int maxCol = 20, maxRow = 20;
+    public int maxCol = 10, maxRow = 25;
     public int hideoutX;
     public int hideoutY;
 
@@ -30,9 +30,8 @@ public class Hideout {
         hideoutMap = new Tile[maxCol][maxRow];
         entities = new ArrayList<>();
         hideoutX = 0;
-        hideoutY = (gp.map.tileHeight/2) * 60;
+        hideoutY = (gp.map.tileHeight/2) * 60; //zaczyna sie rysowac tyle pol nad mapa tam gdzie nie widac jej
         createHideout();
-        createAltar();
         //createDummy();
     }
 
@@ -40,13 +39,6 @@ public class Hideout {
 //        dummy = new Monster(gp, 3, 3, 14);
 //        dummy.setInHideOut = true;
 //    }
-
-    public void createAltar() {
-        hideoutMap[7][8].setTileType(9);
-        hideoutMap[8][7].setTileType(9);
-        hideoutMap[10][11].setTileType(9);
-        hideoutMap[11][10].setTileType(9);
-    }
 
     public void checkAltar() {
         double[] altarsDmg = new double[4];
@@ -57,7 +49,7 @@ public class Hideout {
         int[] altarsSpa = new int[4];
 
         for (Entity entity : entities) {
-            if (entity.col == 7 && entity.row == 8) {
+            if (entity.col == 3 && entity.row == 11) {
                 Rune rune = (Rune) entity;
                 altarsDmg[0] = rune.dmg;
                 altarsCri[0] = rune.critical;
@@ -66,7 +58,7 @@ public class Hideout {
                 altarsMan[0] = rune.mana;
                 altarsSpa[0] = rune.runeSpace;
             }
-            if (entity.col == 8 && entity.row == 7) {
+            if (entity.col == 3 && entity.row == 13) {
                 Rune rune = (Rune) entity;
                 altarsDmg[1] = rune.dmg;
                 altarsCri[1] = rune.critical;
@@ -75,7 +67,7 @@ public class Hideout {
                 altarsMan[1] = rune.mana;
                 altarsSpa[1] = rune.runeSpace;
             }
-            if (entity.col == 10 && entity.row == 11) {
+            if (entity.col == 5 && entity.row == 11) {
                 Rune rune = (Rune) entity;
                 altarsDmg[2] = rune.dmg;
                 altarsCri[2] = rune.critical;
@@ -84,7 +76,7 @@ public class Hideout {
                 altarsMan[2] = rune.mana;
                 altarsSpa[2] = rune.runeSpace;
             }
-            if (entity.col == 11 && entity.row == 10) {
+            if (entity.col == 5 && entity.row == 13) {
                 Rune rune = (Rune) entity;
                 altarsDmg[3] = rune.dmg;
                 altarsCri[3] = rune.critical;
@@ -104,7 +96,7 @@ public class Hideout {
 
     public void createHideout() {
         gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY - hideoutY, maxCol, maxRow, hideoutMap);
-        gp.map.createRoom(0, 0, "/maps/rooms/hideout", hideoutMap);
+        gp.map.createRoom(0, 0, "/maps/rooms/hideout1", hideoutMap);
     }
 
     public void draw(Graphics2D g2) {

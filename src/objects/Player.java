@@ -195,25 +195,55 @@ public class Player extends Monster {
     public void teleportToHideout() {
         if (!isInHideout) {
             gp.objectManager.entityMap[col][row] = 0;
-            gp.map.dx = gp.hideout.hideoutX;
-            gp.map.dy = gp.hideout.hideoutY;
+            gp.map.dx = gp.hideout.hideoutX + gp.map.tileWidth;
+            gp.map.dy = gp.hideout.hideoutY - gp.map.tileHeight * 2;
+
             isInHideout = true;
-            col = 1;
-            row = 1;
+            col = 4;
+            row = 2;
+
+            for (int i = gp.objectManager.entities.size() - 1; i >= 0 ; i--) {
+                if (!gp.objectManager.entities.get(i).name.equals("silly_wizard")) {
+                    gp.objectManager.entities.remove(i);
+                }
+            }
         }
     }
 
-    public void teleportToLevel(int col, int row) {
-        //if (isInHideout) {
-            if (gp.hideout.hideoutMap[this.col][this.row].tileType == 3) {
-                gp.map.dx = 0;
-                gp.map.dy = 0;
-                isInHideout = false;
-                this.col = col;
-                this.row = row;
-                gp.objectManager.entityMap[this.col][this.row] = 1;
+    public void teleportToLevel() {
+        if (gp.hideout.hideoutMap[this.col][this.row].tileType == 3) {
+            switch (gp.progression.startPoint) {
+                case 0 -> {
+                    gp.map.dx = 0;
+                    gp.map.dy = 0;
+                    this.col = 1;
+                    this.row = 1;
+                }
+                case 1 -> {
+                    gp.map.dx = (-gp.map.tileWidth/2) * (gp.map.maxWorldCol - 3);
+                    gp.map.dy = (-gp.map.tileHeight/2) * (gp.map.maxWorldRow - 3);
+
+                    this.col = 1;
+                    this.row = gp.map.maxWorldRow - 2;
+                }
+                case 2 -> {
+                    gp.map.dx = (gp.map.tileWidth/2) * (gp.map.maxWorldCol - 3);
+                    gp.map.dy = (-gp.map.tileHeight/2) * (gp.map.maxWorldRow - 3);
+
+                    this.col = gp.map.maxWorldCol - 2;
+                    this.row = 1;
+                }
+                case 3 -> {
+                    gp.map.dx = 0;
+                    gp.map.dy = (-gp.map.tileHeight/2) * ((gp.map.maxWorldRow * 2) - 6);
+
+                    this.col = gp.map.maxWorldCol - 2;
+                    this.row = gp.map.maxWorldRow - 2;
+                }
             }
-        //}
+            isInHideout = false;
+            gp.objectManager.entityMap[this.col][this.row] = 1;
+        }
     }
 
     public void addSpells() {

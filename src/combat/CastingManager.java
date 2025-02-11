@@ -78,21 +78,23 @@ public class CastingManager {
     }
 
     public void draw(Graphics2D g2) {
-        if (gp.player.currentMana >= currentSpell.manaCost) {
-            if (gp.keyHandler.upPressed || gp.keyHandler.downPressed || gp.keyHandler.rightPressed || gp.keyHandler.leftPressed || gp.keyHandler.xPressed) {
-                if (!currentSpell.name.equals("2")) {
-                    g2.drawImage(currentSpell.image, currentSpell.x, currentSpell.y, null);
-                } else if (gp.map.tileMap[currentSpell.col][currentSpell.row].tileType == 0) {
-                    if (gp.keyHandler.upPressed ||  gp.keyHandler.downPressed) {
-                        gp.map.tileMap[currentSpell.col][currentSpell.row].setTileType(7);
-                        gp.repaint();
-                        gp.player.currentMana -= currentSpell.manaCost;
-                    } else if (gp.keyHandler.leftPressed || gp.keyHandler.rightPressed) {
-                        gp.map.tileMap[currentSpell.col][currentSpell.row].setTileType(8);
-                        gp.repaint();
-                        gp.player.currentMana -= currentSpell.manaCost;
-                    }
+        if (!gp.player.isInHideout) {
+            if (gp.player.currentMana >= currentSpell.manaCost) {
+                if (gp.keyHandler.upPressed || gp.keyHandler.downPressed || gp.keyHandler.rightPressed || gp.keyHandler.leftPressed || gp.keyHandler.xPressed) {
+                    if (!currentSpell.name.equals("2")) {
+                        g2.drawImage(currentSpell.image, currentSpell.x, currentSpell.y, null);
+                    } else if (gp.map.tileMap[currentSpell.col][currentSpell.row].tileType == 0) {
+                        if (gp.keyHandler.upPressed || gp.keyHandler.downPressed) {
+                            gp.map.tileMap[currentSpell.col][currentSpell.row].setTileType(7);
+                            gp.repaint();
+                            gp.player.currentMana -= currentSpell.manaCost;
+                        } else if (gp.keyHandler.leftPressed || gp.keyHandler.rightPressed) {
+                            gp.map.tileMap[currentSpell.col][currentSpell.row].setTileType(8);
+                            gp.repaint();
+                            gp.player.currentMana -= currentSpell.manaCost;
+                        }
 
+                    }
                 }
             }
         }

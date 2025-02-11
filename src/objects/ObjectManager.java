@@ -6,6 +6,7 @@ import objects.items.Rune;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class ObjectManager {
@@ -17,34 +18,25 @@ public class ObjectManager {
     public ObjectManager(GamePanel gamePanel){
         this.gp = gamePanel;
 
-        initializeMap();
-
-//        createEntity(4, 4, 15);
-//        createEntity(4, 5, 12);
-//        createEntity(4, 6, 12);
-//        createEntity(4, 7, 12);
-//        createEntity(4, 8, 12);
-
-
-        //setEntitiesFromFile("/maps/room01E.txt", 1, 1);
+        entityMap = new int[gp.map.maxWorldCol][gp.map.maxWorldRow];
+        //initializeMap();
     }
 
     public void initializeMap() {
         entityMap = new int[gp.map.maxWorldCol][gp.map.maxWorldRow];
 
-        //setPlayerOnMap();
         entities.add(gp.player);
     }
 
-    void setPlayerOnMap() {
-        entityMap[gp.player.col][gp.player.row] = 1;
-    }
+//    void setPlayerOnMap() {
+//        entityMap[gp.player.col][gp.player.row] = 1;
+//    }
 
     public void createEntity(int col, int row, int entityId){
         if (entityId > 10 && entityId <= 20) {
             Monster monster = new Monster(gp, col, row, entityId);
             entities.add(monster);
-            entityMap[col][row] = entityId;
+            //entityMap[col][row] = entityId;
         }
         if (entityId > 20 && entityId <= 30) {
             Obstacle obstacle = new Obstacle(gp, col, row, entityId);
@@ -75,17 +67,12 @@ public class ObjectManager {
     public List<Entity> entitiesToKill = new ArrayList<>();
 
     public void destroyEntity(int col, int row, int id) {
-        //.removeIf(entity -> entity.col == col && entity.row == row);
         if (!gp.player.isInHideout) {
-            for (Entity entity : entities) {
+            Iterator<Entity> iterator = entities.iterator();
+            while (iterator.hasNext()) {
+                Entity entity = iterator.next();
                 if (entity.col == col && entity.row == row && entity.id == id) {
-                    entitiesToKill.add(entity);
-                }
-            }
-        } else {
-            for (Entity entity : gp.hideout.entities) {
-                if (entity.col == col && entity.row == row) {
-                    entitiesToKill.add(entity);
+                    iterator.remove();
                 }
             }
         }

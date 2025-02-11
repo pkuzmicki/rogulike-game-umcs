@@ -10,7 +10,7 @@ public class Game {
         window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //window.setResizable(false);
-        window.setTitle("DoD");
+        window.setTitle("Curse Of the Keepers");
 
         GamePanel gp = new GamePanel();
         window.add(gp);

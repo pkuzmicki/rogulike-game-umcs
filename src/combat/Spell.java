@@ -49,7 +49,7 @@ public class Spell {
                     manaCost = 0;
                 }
             }
-            case "2" -> manaCost = 5;
+            case "2" -> manaCost = 3;
             case "3" -> {
                 damage = -3;
                 manaCost = 5;

@@ -13,7 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 public class GamePanel extends JPanel {
     //public int screenWidth = 640;
@@ -43,6 +45,8 @@ public class GamePanel extends JPanel {
 
     public Progression progression;
 
+    Random random;
+
     public GamePanel(){
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -71,6 +75,8 @@ public class GamePanel extends JPanel {
 
         progression = new Progression(this);
 
+        random = new Random();
+
         this.addKeyListener(keyHandler);
         this.addMouseListener(mouseHandler);
 
@@ -97,12 +103,15 @@ public class GamePanel extends JPanel {
         player.checkStatusEffects(3, 7, 3);
         hideout.checkAltar();
 
-        for (Entity entity : objectManager.entities) {
+        ArrayList<Entity> entitiesToProcess = new ArrayList<>(objectManager.entities);
+        for (Entity entity : entitiesToProcess) {
             if (entity.id < 30) {
                 Monster monster = (Monster) entity;
-                monster.checkForOverHeal();
-                monster.checkIfShouldDie(monster.col, monster.row);
-                repaint();
+                if (!monster.isDead) {
+                    monster.checkForOverHeal();
+                    monster.checkIfShouldDie(monster.col, monster.row);
+                    repaint();
+                }
             }
         }
 
@@ -111,13 +120,12 @@ public class GamePanel extends JPanel {
                 Monster monster = (Monster) entity;
 
                 monster.follow(3);
-                if (!monster.playerFound) {
+                if (!monster.playerFound || random.nextInt(0, 100) > 60) {
                     monster.randomWalk();
                 }
                 monster.attack(monster);
             }
         }
-
 
         objectManager.killAll();
 
@@ -140,8 +148,6 @@ public class GamePanel extends JPanel {
                 objectManager.killAll();
             }
         }
-
-
 
         turnManager.updateTurn();
     }

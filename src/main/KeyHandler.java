@@ -104,6 +104,16 @@ public class KeyHandler extends KeyAdapter {
                 gp.player.currentMana += 10;
             }
 
+
+
+//            if (key == KeyEvent.VK_Z) {
+//                System.out.println("list of entities: ");
+//                for (int i = 0; i < gp.objectManager.entities.size(); i++) {
+//                    System.out.println(gp.objectManager.entities.get(i).name);
+//
+//                }
+//            }
+
             gp.update();
         }
     }

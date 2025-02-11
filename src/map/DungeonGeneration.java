@@ -12,7 +12,7 @@ public class DungeonGeneration {
         this.gp = gamePanel;
         random = new Random();
 
-        gp.map.resizeMap(10,10);
+        //gp.map.resizeMap(10,10);
 
         //generatorMansion();
         //generatorBridges();
