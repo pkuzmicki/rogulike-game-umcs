@@ -96,7 +96,7 @@ public class Hideout {
 
     public void createHideout() {
         gp.map.createMap(gp.map.mapStartX, gp.map.mapStartY - hideoutY, maxCol, maxRow, hideoutMap);
-        gp.map.createRoom(0, 0, "/maps/rooms/hideout1", hideoutMap);
+        gp.map.createRoom(0, 0, "/maps/rooms/hideout1.txt", hideoutMap);
     }
 
     public void draw(Graphics2D g2) {
