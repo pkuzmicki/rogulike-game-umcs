@@ -92,8 +92,8 @@ public class Equipment {
         int slotsOffset = 150;
 
         if (!gp.player.playerRunes.isEmpty() && gp.keyHandler.tabPressed) {
-            int eqWidth = gp.screenWidth/2 - gp.player.playerRunes.getFirst().image.getWidth();
-            int eqHeight = gp.screenHeight/4 - gp.player.playerRunes.getFirst().image.getHeight();
+            int eqWidth = gp.screenWidth/2 - gp.player.playerRunes.get(0).image.getWidth();
+            int eqHeight = gp.screenHeight/4 - gp.player.playerRunes.get(0).image.getHeight();
 
             if (!gp.keyHandler.leftPressed && !gp.keyHandler.rightPressed) {
                 g2.drawString(String.valueOf(itemSelected), gp.screenWidth/2, eqHeight - 50);
