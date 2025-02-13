@@ -8,7 +8,7 @@ public class EntityGeneration {
     GamePanel gp;
     Random random;
 
-    int prevAmount = 0;
+    int prevAmount = 1;
     int currAmount = 4;
 
     public EntityGeneration(GamePanel gamePanel) {
