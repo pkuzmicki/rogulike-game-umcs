@@ -116,25 +116,25 @@ public class Monster extends Entity{
         if (monster.col == gp.player.col - 1 && monster.row == gp.player.row){
             if (random.nextInt(0, 100) > 50) {
                 gp.player.currentHP -= monster.dmg;
-                System.out.println(monster.dmg);
+                //System.out.println(monster.dmg);
             }
         }
         if (monster.col == gp.player.col + 1 && monster.row == gp.player.row){
             if (random.nextInt(0, 100) > 50) {
                 gp.player.currentHP -= monster.dmg;
-                System.out.println(monster.dmg);
+                //System.out.println(monster.dmg);
             }
         }
         if (monster.col == gp.player.col && monster.row == gp.player.row - 1){
             if (random.nextInt(0, 100) > 50) {
                 gp.player.currentHP -= monster.dmg;
-                System.out.println(monster.dmg);
+                //System.out.println(monster.dmg);
             }
         }
         if (monster.col == gp.player.gp.player.col && monster.row == gp.player.row + 1){
             if (random.nextInt(0, 100) > 50) {
                 gp.player.currentHP -= monster.dmg;
-                System.out.println(monster.dmg);
+                //System.out.println(monster.dmg);
             }
         }
     }
