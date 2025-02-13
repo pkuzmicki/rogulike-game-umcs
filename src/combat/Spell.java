@@ -68,6 +68,7 @@ public class Spell {
                     gp.player.currentMana -= manaCost;
 
                     System.out.println(monster.name + monster.currentHP);
+                    System.out.println("player dmg: " + gp.player.totalDmg);
                     //monster.checkIfShouldDie(monster.col, monster.row);
                 }
             }

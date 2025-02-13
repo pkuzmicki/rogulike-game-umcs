@@ -31,7 +31,7 @@ public class EntityGeneration {
     }
 
     private void setZone(int id) {
-        System.out.println("start point: " + gp.progression.startPoint);
+        //System.out.println("start point: " + gp.progression.startPoint);
         switch (gp.progression.startPoint) {
             case 0 -> checkSizeSetZone(0, id);
             case 1 -> checkSizeSetZone(1, id);
