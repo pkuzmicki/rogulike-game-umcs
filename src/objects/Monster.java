@@ -54,7 +54,7 @@ public class Monster extends Entity{
                 monster.manaDrop = 7;
             }
             case "keeper_blue" -> {
-                monster.maxHP = monster.currentHP = 15;
+                monster.maxHP = monster.currentHP = 10;
                 monster.dmg = 2;
                 monster.manaDrop = 15;
             }
