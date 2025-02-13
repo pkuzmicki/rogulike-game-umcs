@@ -80,13 +80,13 @@ public class Monster extends Entity{
         boolean isDropping;
         switch (name) {
             case "flaming_spirit" -> {
-                isDropping = random.nextInt(100) > 85;
+                isDropping = random.nextInt(100) > 70;
                 if (isDropping) {
                     gp.objectManager.createRune(row, col, 0);
                 }
             }
             case "keeper_blue" -> {
-                isDropping = random.nextInt(100) > 70;
+                isDropping = random.nextInt(100) > 40;
                 if (isDropping) {
                     gp.objectManager.createRune(row, col, random.nextInt(0, 2));
                 }
